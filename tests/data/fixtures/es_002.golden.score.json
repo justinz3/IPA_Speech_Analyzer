@@ -1,0 +1,968 @@
+[
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 0.5,
+    "end_s": 0.52,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 0.54,
+    "end_s": 0.56,
+    "ok": true
+  },
+  {
+    "expected": "ɾ",
+    "produced": "r",
+    "start_s": 0.58,
+    "end_s": 0.6,
+    "ok": false
+  },
+  {
+    "expected": "o",
+    "produced": "v",
+    "start_s": 0.62,
+    "end_s": 0.64,
+    "ok": false
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 0.66,
+    "end_s": 0.68,
+    "ok": true
+  },
+  {
+    "expected": "ʎ",
+    "produced": "ʒ",
+    "start_s": 0.76,
+    "end_s": 0.78,
+    "ok": false
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 0.84,
+    "end_s": 0.86,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 1.62,
+    "end_s": 1.64,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 1.64,
+    "end_s": 1.66,
+    "ok": true
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 1.76,
+    "end_s": 1.78,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 1.8,
+    "end_s": 1.82,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 1.9,
+    "end_s": 1.92,
+    "ok": true
+  },
+  {
+    "expected": "d",
+    "produced": "d",
+    "start_s": 1.94,
+    "end_s": 1.96,
+    "ok": true
+  },
+  {
+    "expected": "ɾ",
+    "produced": "r",
+    "start_s": 2.0,
+    "end_s": 2.02,
+    "ok": false
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 2.04,
+    "end_s": 2.06,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 2.14,
+    "end_s": 2.16,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 2.18,
+    "end_s": 2.2,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 2.28,
+    "end_s": 2.3,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 2.36,
+    "end_s": 2.38,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 2.46,
+    "end_s": 2.48,
+    "ok": true
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 2.58,
+    "end_s": 2.6,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 2.64,
+    "end_s": 2.66,
+    "ok": true
+  },
+  {
+    "expected": "ɾ",
+    "produced": "r",
+    "start_s": 2.74,
+    "end_s": 2.76,
+    "ok": false
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 2.84,
+    "end_s": 2.88,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 2.88,
+    "end_s": 2.9,
+    "ok": true
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 2.98,
+    "end_s": 3.0,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 3.02,
+    "end_s": 3.04,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 3.1,
+    "end_s": 3.12,
+    "ok": true
+  },
+  {
+    "expected": "w",
+    "produced": "u",
+    "start_s": 3.14,
+    "end_s": 3.16,
+    "ok": false
+  },
+  {
+    "expected": "e",
+    "produced": "∅",
+    "start_s": 3.2,
+    "end_s": 3.22,
+    "ok": false
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 3.22,
+    "end_s": 3.24,
+    "ok": false
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 3.34,
+    "end_s": 3.36,
+    "ok": true
+  },
+  {
+    "expected": "ɾ",
+    "produced": "r",
+    "start_s": 3.4,
+    "end_s": 3.42,
+    "ok": false
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 3.44,
+    "end_s": 3.46,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 3.58,
+    "end_s": 3.6,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 3.7,
+    "end_s": 3.74,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 3.84,
+    "end_s": 3.86,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 3.88,
+    "end_s": 3.9,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 3.98,
+    "end_s": 4.0,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 4.02,
+    "end_s": 4.04,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 4.14,
+    "end_s": 4.16,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 4.28,
+    "end_s": 4.3,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 4.4,
+    "end_s": 4.44,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 4.52,
+    "end_s": 4.54,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 4.56,
+    "end_s": 4.58,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "∅",
+    "start_s": 4.64,
+    "end_s": 4.66,
+    "ok": false
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 4.74,
+    "end_s": 4.76,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 4.76,
+    "end_s": 4.78,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 4.84,
+    "end_s": 4.86,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 4.88,
+    "end_s": 4.9,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "∅",
+    "start_s": 4.94,
+    "end_s": 4.96,
+    "ok": false
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 5.16,
+    "end_s": 5.2,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 5.22,
+    "end_s": 5.24,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 5.36,
+    "end_s": 5.38,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 5.44,
+    "end_s": 5.46,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 5.52,
+    "end_s": 5.54,
+    "ok": false
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 5.6,
+    "end_s": 5.62,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 5.64,
+    "end_s": 5.66,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 5.76,
+    "end_s": 5.78,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 5.82,
+    "end_s": 5.84,
+    "ok": true
+  },
+  {
+    "expected": "β",
+    "produced": "v",
+    "start_s": 5.92,
+    "end_s": 5.94,
+    "ok": false
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 5.98,
+    "end_s": 6.0,
+    "ok": true
+  },
+  {
+    "expected": "β",
+    "produced": "v",
+    "start_s": 6.16,
+    "end_s": 6.18,
+    "ok": false
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 6.22,
+    "end_s": 6.24,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 6.88,
+    "end_s": 6.9,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 6.98,
+    "end_s": 7.0,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 7.02,
+    "end_s": 7.04,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 7.1,
+    "end_s": 7.12,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 7.18,
+    "end_s": 7.2,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 7.22,
+    "end_s": 7.24,
+    "ok": true
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 7.3,
+    "end_s": 7.32,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 7.32,
+    "end_s": 7.34,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 7.38,
+    "end_s": 7.4,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 7.42,
+    "end_s": 7.44,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "x",
+    "start_s": 7.48,
+    "end_s": 7.5,
+    "ok": false
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 7.7,
+    "end_s": 7.72,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 7.74,
+    "end_s": 7.78,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 7.9,
+    "end_s": 7.92,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 8.14,
+    "end_s": 8.16,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 8.18,
+    "end_s": 8.2,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 8.34,
+    "end_s": 8.36,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 8.78,
+    "end_s": 8.8,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 8.8,
+    "end_s": 8.82,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 8.9,
+    "end_s": 8.92,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 8.98,
+    "end_s": 9.0,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 9.06,
+    "end_s": 9.08,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 9.12,
+    "end_s": 9.14,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 9.16,
+    "end_s": 9.18,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 9.22,
+    "end_s": 9.24,
+    "ok": false
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 9.28,
+    "end_s": 9.3,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 9.3,
+    "end_s": 9.32,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 9.36,
+    "end_s": 9.38,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 9.4,
+    "end_s": 9.42,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 9.46,
+    "end_s": 9.48,
+    "ok": false
+  },
+  {
+    "expected": "r",
+    "produced": "r",
+    "start_s": 9.66,
+    "end_s": 9.68,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 9.72,
+    "end_s": 9.74,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 9.96,
+    "end_s": 9.98,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.02,
+    "end_s": 10.04,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 10.16,
+    "end_s": 10.18,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 10.58,
+    "end_s": 10.6,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.62,
+    "end_s": 10.64,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 10.7,
+    "end_s": 10.72,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.78,
+    "end_s": 10.8,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 10.84,
+    "end_s": 10.88,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 10.92,
+    "end_s": 10.94,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.96,
+    "end_s": 10.98,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 11.0,
+    "end_s": 11.02,
+    "ok": false
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 11.06,
+    "end_s": 11.08,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 11.1,
+    "end_s": 11.12,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 11.18,
+    "end_s": 11.2,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 11.2,
+    "end_s": 11.22,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 11.3,
+    "end_s": 11.32,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 11.5,
+    "end_s": 11.52,
+    "ok": true
+  },
+  {
+    "expected": "ɾ",
+    "produced": "r",
+    "start_s": 11.62,
+    "end_s": 11.64,
+    "ok": false
+  },
+  {
+    "expected": "β",
+    "produced": "β",
+    "start_s": 11.74,
+    "end_s": 11.76,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 11.78,
+    "end_s": 11.8,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 11.88,
+    "end_s": 11.9,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "i",
+    "start_s": 11.92,
+    "end_s": 11.94,
+    "ok": false
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 11.98,
+    "end_s": 12.0,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 12.06,
+    "end_s": 12.08,
+    "ok": true
+  },
+  {
+    "expected": "r",
+    "produced": "r",
+    "start_s": 12.26,
+    "end_s": 12.28,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 12.32,
+    "end_s": 12.34,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "o",
+    "start_s": 12.54,
+    "end_s": 12.56,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 12.68,
+    "end_s": 12.7,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 13.1,
+    "end_s": 13.12,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 13.14,
+    "end_s": 13.16,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "∅",
+    "start_s": 13.18,
+    "end_s": 13.2,
+    "ok": false
+  },
+  {
+    "expected": "ð",
+    "produced": "ð",
+    "start_s": 13.26,
+    "end_s": 13.28,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 13.3,
+    "end_s": 13.32,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 13.36,
+    "end_s": 13.38,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 13.38,
+    "end_s": 13.42,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "h",
+    "start_s": 13.44,
+    "end_s": 13.46,
+    "ok": false
+  },
+  {
+    "expected": "β",
+    "produced": "p",
+    "start_s": 13.56,
+    "end_s": 13.58,
+    "ok": false
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 13.62,
+    "end_s": 13.64,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "x",
+    "start_s": 13.72,
+    "end_s": 13.74,
+    "ok": false
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 13.92,
+    "end_s": 13.94,
+    "ok": true
+  },
+  {
+    "expected": "ja",
+    "produced": "i",
+    "start_s": 13.98,
+    "end_s": 14.0,
+    "ok": false
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 14.22,
+    "end_s": 14.24,
+    "ok": true
+  }
+]
