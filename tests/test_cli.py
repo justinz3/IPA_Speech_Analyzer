@@ -37,8 +37,24 @@ def test_help_shows_usage() -> None:
 
 
 def test_unsupported_language_exits_nonzero(sine_wav_16k: Path) -> None:
-    result = runner.invoke(app, [str(sine_wav_16k), "--lang", "fr"])
+    result = runner.invoke(app, [str(sine_wav_16k), "--lang", "ja"])
     assert result.exit_code != 0
+
+
+def test_french_lang_is_accepted(sine_wav_16k: Path) -> None:
+    fake = Transcription(
+        ipa="b ɔ̃ ʒ u ʁ",
+        raw_phonemes="b ɔ̃ ʒ u ʁ",
+        language="fr",
+        model="facebook/wav2vec2-lv-60-espeak-cv-ft",
+        audio_seconds=1.0,
+        model_load_seconds=0.1,
+        inference_seconds=0.05,
+    )
+    with patch("vocal_ipa.cli.transcribe", return_value=fake):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "fr"])
+    assert result.exit_code == 0
+    assert result.stdout.strip() == "b ɔ̃ ʒ u ʁ"
 
 
 def test_missing_audio_exits_nonzero() -> None:
@@ -137,6 +153,6 @@ def test_reference_with_raw_is_rejected(sine_wav_16k: Path) -> None:
 
 
 def test_reference_with_unsupported_lang_exits_nonzero(sine_wav_16k: Path) -> None:
-    # Lang enum already restricts to es; this confirms the typer-level rejection.
-    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "ça", "--lang", "fr"])
+    # Lang enum restricts to {es, fr}; ja is not in the enum, so typer rejects.
+    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "今日は", "--lang", "ja"])
     assert result.exit_code != 0

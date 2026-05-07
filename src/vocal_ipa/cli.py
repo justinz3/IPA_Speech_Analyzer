@@ -15,13 +15,14 @@ from .score import ScoreResult, score
 
 app = typer.Typer(
     add_completion=False,
-    help="Audio -> IPA pronunciation transcription. Phase 1: Spanish only.",
+    help="Audio -> IPA pronunciation transcription. Spanish and French.",
     no_args_is_help=True,
 )
 
 
 class Lang(StrEnum):
     es = "es"
+    fr = "fr"
 
 
 class Fmt(StrEnum):
@@ -48,7 +49,7 @@ def main(
     audio: Path = typer.Argument(
         ..., exists=True, readable=True, help="Path to a WAV/FLAC/OGG audio file."
     ),
-    lang: Lang = typer.Option(Lang.es, "--lang", help="Language code (Phase 1: only 'es')."),
+    lang: Lang = typer.Option(Lang.es, "--lang", help="Language code (es, fr)."),
     fmt: Fmt = typer.Option(Fmt.text, "--format", help="Output format."),
     device: Device = typer.Option(Device.auto, "--device", help="Inference device."),
     model: str = typer.Option(DEFAULT_MODEL, "--model", help="Hugging Face model id."),
