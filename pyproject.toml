@@ -26,6 +26,8 @@ dependencies = [
     "soundfile>=0.12,<1.0",
     "numpy>=1.26,<3.0",
     "typer>=0.12,<1.0",
+    "protobuf>=4.25,<7.0",
+    "phonemizer>=3.2,<4.0",
 ]
 
 [project.optional-dependencies]
@@ -34,6 +36,9 @@ dev = [
     "pytest-cov>=5.0,<6.0",
     "ruff>=0.6,<1.0",
 ]
+
+[project.scripts]
+pronounce = "vocal_ipa.cli:app"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/vocal_ipa"]
