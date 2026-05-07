@@ -10,6 +10,7 @@ from typer.testing import CliRunner
 
 from vocal_ipa.cli import app
 from vocal_ipa.pipeline import Transcription
+from vocal_ipa.score import ScoredPhoneme, ScoreResult
 
 runner = CliRunner()
 
@@ -78,3 +79,64 @@ def test_json_format_with_raw_includes_raw_phonemes(sine_wav_16k: Path) -> None:
     assert result.exit_code == 0
     payload = json.loads(result.stdout)
     assert payload["raw_phonemes"] == "  o   l   a  "
+
+
+# -- --reference scoring path -------------------------------------------------
+
+
+def _fake_score_result(per: float = 0.25) -> ScoreResult:
+    return ScoreResult(
+        phonemes=[
+            ScoredPhoneme(
+                expected="k", produced="k", start_s=0.04, end_s=0.10, score=-0.1, ok=True
+            ),
+            ScoredPhoneme(
+                expected="a", produced="a", start_s=0.10, end_s=0.18, score=-0.2, ok=True
+            ),
+            ScoredPhoneme(
+                expected="s", produced="s", start_s=0.18, end_s=0.22, score=-0.3, ok=True
+            ),
+            ScoredPhoneme(
+                expected="a", produced="o", start_s=0.22, end_s=0.30, score=-1.5, ok=False
+            ),
+        ],
+        per=per,
+        reference_ipa="kasa",
+        transcription=_fake_transcription(),
+    )
+
+
+def test_reference_text_format_renders_table(sine_wav_16k: Path) -> None:
+    with patch("vocal_ipa.cli.score", return_value=_fake_score_result()):
+        result = runner.invoke(app, [str(sine_wav_16k), "--reference", "casa"])
+    assert result.exit_code == 0
+    assert "expected" in result.stdout
+    assert "produced" in result.stdout
+    assert "PER:" in result.stdout
+    # Ok and not-ok rows both present
+    assert "✓" in result.stdout
+    assert "✗" in result.stdout
+    assert "1/4 phonemes wrong" in result.stdout
+
+
+def test_reference_json_format_emits_score_result(sine_wav_16k: Path) -> None:
+    with patch("vocal_ipa.cli.score", return_value=_fake_score_result(per=0.25)):
+        result = runner.invoke(app, [str(sine_wav_16k), "--reference", "casa", "--format", "json"])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload["per"] == 0.25
+    assert len(payload["phonemes"]) == 4
+    assert payload["phonemes"][3]["ok"] is False
+    assert payload["transcription"]["ipa"] == "o l a"
+
+
+def test_reference_with_raw_is_rejected(sine_wav_16k: Path) -> None:
+    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "casa", "--raw"])
+    assert result.exit_code != 0
+    assert "raw" in result.stderr.lower() or "raw" in result.stdout.lower()
+
+
+def test_reference_with_unsupported_lang_exits_nonzero(sine_wav_16k: Path) -> None:
+    # Lang enum already restricts to es; this confirms the typer-level rejection.
+    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "ça", "--lang", "fr"])
+    assert result.exit_code != 0
