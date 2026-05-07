@@ -1,0 +1,57 @@
+[
+  {
+    "id": "es_001",
+    "audio": "es_001.flac",
+    "transcript": "es_001.txt",
+    "speaker_id": "11266",
+    "duration_seconds": 14.96,
+    "source_dataset": "facebook/multilingual_librispeech",
+    "config": "spanish",
+    "split": "test",
+    "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  },
+  {
+    "id": "es_002",
+    "audio": "es_002.flac",
+    "transcript": "es_002.txt",
+    "speaker_id": "11266",
+    "duration_seconds": 14.71,
+    "source_dataset": "facebook/multilingual_librispeech",
+    "config": "spanish",
+    "split": "test",
+    "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  },
+  {
+    "id": "es_003",
+    "audio": "es_003.flac",
+    "transcript": "es_003.txt",
+    "speaker_id": "11266",
+    "duration_seconds": 10.49,
+    "source_dataset": "facebook/multilingual_librispeech",
+    "config": "spanish",
+    "split": "test",
+    "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  },
+  {
+    "id": "es_004",
+    "audio": "es_004.flac",
+    "transcript": "es_004.txt",
+    "speaker_id": "11266",
+    "duration_seconds": 13.51,
+    "source_dataset": "facebook/multilingual_librispeech",
+    "config": "spanish",
+    "split": "test",
+    "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  },
+  {
+    "id": "es_005",
+    "audio": "es_005.flac",
+    "transcript": "es_005.txt",
+    "speaker_id": "11266",
+    "duration_seconds": 12.49,
+    "source_dataset": "facebook/multilingual_librispeech",
+    "config": "spanish",
+    "split": "test",
+    "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  }
+]

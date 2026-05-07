@@ -36,6 +36,10 @@ dev = [
     "pytest-cov>=5.0,<6.0",
     "ruff>=0.6,<1.0",
 ]
+fixtures = [
+    "datasets>=3.0,<5.0",   # used by scripts/fetch_fixtures.py only
+    "torchcodec>=0.4,<2.0", # datasets uses torchcodec for audio decode
+]
 
 [project.scripts]
 pronounce = "vocal_ipa.cli:app"
