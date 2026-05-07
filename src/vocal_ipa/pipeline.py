@@ -1,0 +1,82 @@
+"""End-to-end audio -> IPA pipeline."""
+
+from __future__ import annotations
+
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+
+import torch
+
+from .audio import TARGET_SR, ensure_16k, load_audio
+from .model import DEFAULT_MODEL, load, resolve_device
+
+SUPPORTED_LANGUAGES = frozenset({"es"})
+
+
+@dataclass
+class Transcription:
+    ipa: str
+    raw_phonemes: str
+    language: str
+    model: str
+    audio_seconds: float
+    model_load_seconds: float
+    inference_seconds: float
+
+    def to_dict(self, include_raw: bool = False) -> dict:
+        d = asdict(self)
+        if not include_raw:
+            d.pop("raw_phonemes")
+        return d
+
+
+def transcribe(
+    audio_path: str | Path,
+    lang: str = "es",
+    device: str = "auto",
+    model_id: str = DEFAULT_MODEL,
+) -> Transcription:
+    if lang not in SUPPORTED_LANGUAGES:
+        raise ValueError(
+            f"Phase 1 supports Spanish only; got lang={lang!r}. See pronunciation_app_roadmap.md."
+        )
+
+    samples, sr = load_audio(Path(audio_path))
+    samples = ensure_16k(samples, sr)
+    audio_seconds = len(samples) / TARGET_SR
+
+    dev = resolve_device(device)
+    t0 = time.perf_counter()
+    processor, model = load(model_id, dev)
+    model_load_seconds = time.perf_counter() - t0
+
+    inputs = processor(samples, sampling_rate=TARGET_SR, return_tensors="pt")
+    inputs = {k: v.to(dev) for k, v in inputs.items()}
+
+    t1 = time.perf_counter()
+    with torch.inference_mode():
+        logits = model(**inputs).logits
+    pred_ids = logits.argmax(dim=-1)
+    raw = processor.batch_decode(pred_ids)[0]
+    inference_seconds = time.perf_counter() - t1
+
+    return Transcription(
+        ipa=postprocess(raw),
+        raw_phonemes=raw,
+        language=lang,
+        model=model_id,
+        audio_seconds=audio_seconds,
+        model_load_seconds=model_load_seconds,
+        inference_seconds=inference_seconds,
+    )
+
+
+def postprocess(raw: str) -> str:
+    """Phase 1: collapse whitespace only.
+
+    The espeak-ng IPA inventory and the wav2vec2 model's emitted labels do not
+    match exactly (roadmap risk). Real mapping work happens after observing
+    failure modes on real Spanish audio (Phase 1 close).
+    """
+    return " ".join(raw.split())
