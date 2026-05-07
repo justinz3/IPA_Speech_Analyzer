@@ -5,25 +5,49 @@ sdk_version: 5.50.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Audio to IPA pronunciation feedback. Spanish only (Phase 1).
+short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish only (Phase 2).
 ---
 
 # vocal-ipa-trainer
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 1 — Spanish only, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 2 — Spanish only, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
 Reads a recording of you speaking and prints what your audio sounds like in
-the International Phonetic Alphabet. The intended use is comparing your
-pronunciation against the reference IPA for the sentence you meant to say —
-that comparison itself is Phase 2 work; Phase 1 just gives you the IPA.
+the International Phonetic Alphabet. With `--reference`, it goes one step
+further: forced-aligns your audio against the reference IPA and tells you
+which phonemes the model heard a different sound at.
+
+Free transcription:
 
 ```
 $ pronounce tests/data/fixtures/es_001.flac --lang es
 k o m o t o ð a s l a x p e n a s a n k e t a n t a s s o n u n a s o l a p e n a u n a s o l a ɲ i n f i n i t a ...
+```
+
+Per-phoneme scoring against a known sentence:
+
+```
+$ pronounce tests/data/fixtures/es_001.flac \
+            --reference "$(cat tests/data/fixtures/es_001.txt)"
+expected  produced  start   end     ok
+k         k         0.54    0.56    ✓
+o         o         0.58    0.60    ✓
+m         m         0.66    0.70    ✓
+o         o         0.70    0.72    ✓
+t         t         0.90    0.92    ✓
+o         o         0.96    0.98    ✓
+ð         ð         1.08    1.10    ✓
+a         a         1.12    1.14    ✓
+s         s         1.18    1.20    ✓
+l         l         1.26    1.28    ✓
+a         a         1.28    1.30    ✓
+s         x         1.34    1.36    ✗
+...
+PER: 0.073  (8/109 phonemes wrong)
 ```
 
 Behind the scenes: a wav2vec2 phoneme recognizer
@@ -58,16 +82,17 @@ Cached after that.
 
 ```
 pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
-                  [--model HF_ID] [--raw]
+                  [--model HF_ID] [--raw] [--reference TEXT]
 ```
 
-| Flag        | Default                                | Notes |
-|-------------|----------------------------------------|-------|
-| `--lang`    | `es`                                   | Phase 1 only accepts Spanish. |
-| `--format`  | `text`                                 | `text` is one IPA line, pipe-friendly. `json` includes timing fields. |
-| `--device`  | `auto`                                 | `auto` picks CUDA if available else CPU. |
-| `--model`   | `facebook/wav2vec2-lv-60-espeak-cv-ft` | Override at your own risk. |
-| `--raw`     | off                                    | Emit the model's raw labels before whitespace cleanup. |
+| Flag          | Default                                | Notes |
+|---------------|----------------------------------------|-------|
+| `--lang`      | `es`                                   | Phase 1 only accepts Spanish. |
+| `--format`    | `text`                                 | `text` is one IPA line (free transcribe) or a per-phoneme table (scoring). `json` includes timing/score fields. |
+| `--device`    | `auto`                                 | `auto` picks CUDA if available else CPU. |
+| `--model`     | `facebook/wav2vec2-lv-60-espeak-cv-ft` | Override at your own risk. |
+| `--raw`       | off                                    | Emit the model's raw labels before whitespace cleanup. Free-transcribe only. |
+| `--reference` | unset                                  | When set, score audio against this sentence (forced alignment + per-phoneme errors). Cannot combine with `--raw`. |
 
 `pronounce --help` prints the full surface.
 
@@ -83,16 +108,35 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
    espeak↔IPA inventory mismatch; that's tracked and will be addressed when
    real failure modes surface (Phase 1 close).
 
+### Scoring (`--reference`)
+
+5. Run `phonemizer` over the reference text to get its IPA.
+6. Greedy-tokenize the reference IPA into the model's vocabulary, bypassing
+   `Wav2Vec2PhonemeCTCTokenizer`'s built-in (English-by-default) phonemizer
+   so Spanish phonemes don't get silently anglicized into `oʊ`/`ɑː`/`iː`.
+7. Forced-align the reference token sequence against the CTC log-probs via
+   `torchaudio.functional.forced_align` (Viterbi). This yields per-phoneme
+   start/end frame indices with 20 ms granularity (50 Hz frame rate).
+8. For each aligned span, take the most-frequent non-blank argmax across the
+   span's frames as the *produced* phoneme; compare to *expected*. The
+   headline PER is the count of mismatches divided by the total reference
+   phonemes — no insertion/deletion noise because alignment forces the
+   reference shape.
+
 ## Known limitations
 
 - **L2 speech is noisy.** The model was fine-tuned on Common Voice native
   speakers; non-native pronunciation will mis-recognize more often.
 - **espeak ↔ IPA inventory mismatch.** What espeak emits for Spanish IPA may
   not perfectly match what the wav2vec2 model emits. Tracked.
-- **Single-word audio is unreliable.** Forced alignment (Phase 2) will need
-  sentence-level prompts as the minimum unit. Already true for Phase 1 too.
-- **No per-segment timestamps.** The model exposes 50 Hz CTC frames internally
-  but Phase 1 doesn't expose timestamps; that's Phase 2 alignment work.
+- **Single-word audio is unreliable.** Forced alignment needs enough context
+  to find sensible spans; sentence-level prompts are the practical minimum.
+- **Stress is not scored.** The wav2vec2 model's vocabulary doesn't contain
+  espeak's `ˈ`/`ˌ` stress marks (it was trained on stress-stripped labels),
+  so a learner stressing the wrong syllable in `papel` won't be caught by
+  `--reference` scoring. Stress is a pitch + duration problem and shares
+  machinery with tonal/pitch-accent scoring; both land later in the
+  roadmap.
 
 ## Known model failure modes
 
@@ -155,9 +199,9 @@ upgrading dependencies, update both.
 
 Full plan: [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md).
 
-- **Phase 1 (here):** Spanish-only audio → IPA CLI.
-- **Phase 1.5:** Gradio web UI with mic recording.
-- **Phase 2:** Forced alignment + per-phoneme scoring (still Spanish).
+- **Phase 1:** Spanish-only audio → IPA CLI. ✓
+- **Phase 1.5:** Gradio web UI with mic recording. ✓
+- **Phase 2 (here):** Forced alignment + per-phoneme scoring (still Spanish, phoneme identity only — stress not scored).
 - **Phase 3:** French — the actual target.
 - **Phase 4:** Curated correction lookup (phoneme → articulatory diagram + reference video).
 
@@ -171,7 +215,7 @@ uv run pytest -m "not slow"     # fast tests, no model load
 uv run pronounce path/to/audio.wav --lang es
 ```
 
-Slow tests (snapshot + PER, ~35s, downloads model on first run):
+Slow tests (snapshot + PER + score behavior, ~75 s, downloads model on first run):
 
 ```
 uv run pytest -m slow
@@ -182,8 +226,9 @@ LibriVox-derived fixture set or accepting model output drift):
 
 ```
 uv sync --extra fixtures
-uv run python scripts/fetch_fixtures.py     # 5 short Spanish clips from MLS
-uv run python scripts/regen_goldens.py      # frozen IPA snapshots
+uv run python scripts/fetch_fixtures.py        # 5 short Spanish clips from MLS
+uv run python scripts/regen_goldens.py         # frozen IPA snapshots (free transcribe)
+uv run python scripts/regen_score_goldens.py   # frozen per-phoneme score snapshots
 ```
 
 ## License
