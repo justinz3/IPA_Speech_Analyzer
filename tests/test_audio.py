@@ -34,7 +34,7 @@ def test_ensure_16k_resamples_22k_to_16k(sine_wav_22k: Path) -> None:
     samples, sr = load_audio(sine_wav_22k)
     assert sr == 22_050
     out = ensure_16k(samples, sr)
-    expected_len = int(round(len(samples) * TARGET_SR / sr))
+    expected_len = round(len(samples) * TARGET_SR / sr)
     # torchaudio's resampler may differ by a few samples vs the naive ratio.
     assert abs(len(out) - expected_len) <= 4
     assert out.dtype == np.float32

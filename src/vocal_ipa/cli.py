@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 
 import typer
@@ -19,16 +19,16 @@ app = typer.Typer(
 )
 
 
-class Lang(str, Enum):
+class Lang(StrEnum):
     es = "es"
 
 
-class Fmt(str, Enum):
+class Fmt(StrEnum):
     text = "text"
     json = "json"
 
 
-class Device(str, Enum):
+class Device(StrEnum):
     auto = "auto"
     cpu = "cpu"
     cuda = "cuda"

@@ -53,3 +53,24 @@ markers = [
     "slow: tests that load the wav2vec2 model (requires ~1GB download); skip by default",
 ]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["tests/data"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # flake8-bugbear
+    "UP",       # pyupgrade
+    "RUF",      # ruff-specific
+]
+ignore = [
+    "E501",  # line length (the formatter handles long lines well enough)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/vocal_ipa/cli.py" = ["B008"]  # typer.Option() in defaults is the canonical pattern
