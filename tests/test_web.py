@@ -68,7 +68,44 @@ def test_run_with_reference_renders_scored_html(monkeypatch, tmp_path) -> None:
     assert "1/2 phonemes wrong" in scored
 
 
-def _run_helper(audio_path, reference: str):
+def _run_helper(audio_path, reference: str, lang: str = "es"):
     from vocal_ipa.web import _run
 
-    return _run(str(audio_path), reference)
+    return _run(str(audio_path), reference, lang)
+
+
+def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
+    """Selecting French in the radio must propagate to score()."""
+    from vocal_ipa import web as web_module
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+
+    captured = {}
+
+    def fake_score(audio_path, reference_text, lang="es"):
+        captured["lang"] = lang
+        return ScoreResult(
+            phonemes=[
+                ScoredPhoneme(
+                    expected="b", produced="b", start_s=0.0, end_s=0.02, score=-0.1, ok=True
+                ),
+            ],
+            per=0.0,
+            reference_ipa="bɔ̃ʒuʁ",
+            transcription=Transcription(
+                ipa="b",
+                raw_phonemes="b",
+                language="fr",
+                model="stub",
+                audio_seconds=0.02,
+                model_load_seconds=0.0,
+                inference_seconds=0.0,
+            ),
+        )
+
+    monkeypatch.setattr(web_module, "score", fake_score)
+
+    audio = tmp_path / "fake.wav"
+    audio.write_bytes(b"")
+    _run_helper(audio, reference="bonjour", lang="fr")
+    assert captured["lang"] == "fr"

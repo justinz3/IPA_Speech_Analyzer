@@ -24,11 +24,11 @@ from .score import ScoreResult, score
 DESCRIPTION = """\
 # Audio → IPA
 
-Record yourself speaking Spanish (or upload a file). Leave **Reference text**
-empty for free transcription, or paste the sentence you meant to read to get
-per-phoneme scoring against the reference IPA.
+Pick a language, record yourself speaking (or upload a file). Leave
+**Reference text** empty for free transcription, or paste the sentence
+you meant to read to get per-phoneme scoring against the reference IPA.
 
-*Phase 1: Spanish only. The model loads on first use (~1 GB download), then
+*Spanish and French. The model loads on first use (~1 GB download), then
 subsequent runs take well under a second.*
 """
 
@@ -49,7 +49,9 @@ _SCORED_STYLES = """
 """
 
 
-def _run(audio_path: str | None, reference_text: str) -> tuple[str, str, str, str]:
+def _run(
+    audio_path: str | None, reference_text: str, lang: str = "es"
+) -> tuple[str, str, str, str]:
     """Returns (ipa, raw_phonemes, timing_summary, scored_html).
 
     Empty reference → existing free-transcribe path (scored_html is blank).
@@ -60,7 +62,7 @@ def _run(audio_path: str | None, reference_text: str) -> tuple[str, str, str, st
         return ("", "", "Record or upload audio first.", "")
 
     if not reference_text.strip():
-        result = transcribe(audio_path, lang="es")
+        result = transcribe(audio_path, lang=lang)
         timing = _format_timing(
             audio_s=result.audio_seconds,
             load_s=result.model_load_seconds,
@@ -68,7 +70,7 @@ def _run(audio_path: str | None, reference_text: str) -> tuple[str, str, str, st
         )
         return result.ipa, result.raw_phonemes, timing, ""
 
-    score_result = score(audio_path, reference_text, lang="es")
+    score_result = score(audio_path, reference_text, lang=lang)
     txn = score_result.transcription
     timing = _format_timing(
         audio_s=txn.audio_seconds,
@@ -115,6 +117,11 @@ def _render_scored_html(result: ScoreResult) -> str:
 def build_app() -> gr.Blocks:
     with gr.Blocks(title="vocal-ipa-trainer") as app:
         gr.Markdown(DESCRIPTION)
+        lang = gr.Radio(
+            choices=["es", "fr"],
+            value="es",
+            label="Language",
+        )
         reference = gr.Textbox(
             label="Reference text (optional)",
             placeholder="que pase un buen día",
@@ -126,7 +133,11 @@ def build_app() -> gr.Blocks:
         ipa = gr.Textbox(label="IPA", lines=2, show_copy_button=True)
         raw = gr.Textbox(label="Raw model output", lines=2, show_copy_button=True)
         timing = gr.Markdown()
-        btn.click(_run, inputs=[audio, reference], outputs=[ipa, raw, timing, scored])
+        btn.click(
+            _run,
+            inputs=[audio, reference, lang],
+            outputs=[ipa, raw, timing, scored],
+        )
     return app
 
 
