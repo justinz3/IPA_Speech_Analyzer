@@ -1,3 +1,13 @@
+---
+title: vocal-ipa-trainer
+sdk: gradio
+sdk_version: 5.50.0
+app_file: app.py
+pinned: false
+license: mit
+short_description: Audio to IPA pronunciation feedback. Spanish only (Phase 1).
+---
+
 # vocal-ipa-trainer
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
@@ -83,6 +93,29 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
   sentence-level prompts as the minimum unit. Already true for Phase 1 too.
 - **No per-segment timestamps.** The model exposes 50 Hz CTC frames internally
   but Phase 1 doesn't expose timestamps; that's Phase 2 alignment work.
+
+## Hosted demo (Hugging Face Spaces)
+
+Deploy `pronounce-web` as a free hosted demo on [Hugging Face Spaces](https://huggingface.co/spaces):
+
+1. Create a new Space — SDK: **Gradio**.
+2. Add this repo as a remote and push:
+
+   ```
+   git remote add space https://huggingface.co/spaces/<your-user>/vocal-ipa-trainer
+   git push space main
+   ```
+
+   Spaces reads its config from the YAML frontmatter at the top of this README
+   (`sdk: gradio`, `app_file: app.py`). Python deps come from
+   [`requirements.txt`](requirements.txt); apt packages (libsndfile1,
+   espeak-ng) come from [`packages.txt`](packages.txt). The model is pulled
+   from Hugging Face on first request and cached.
+
+3. Open the Space URL — it shares the same UI as `pronounce-web` locally.
+
+`requirements.txt` mirrors `pyproject.toml`'s base + `[web]` deps. When
+upgrading dependencies, update both.
 
 ## Roadmap
 

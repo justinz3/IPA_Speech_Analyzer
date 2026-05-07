@@ -1,0 +1,13 @@
+# Hugging Face Spaces install path. Mirrors [project.dependencies] +
+# [project.optional-dependencies.web] in pyproject.toml; keep in sync when
+# upgrading deps. Local dev uses `uv sync --extra web` instead.
+torch>=2.3,<3.0
+torchaudio>=2.3,<3.0
+transformers>=4.44,<5.0
+soundfile>=0.12,<1.0
+numpy>=1.26,<3.0
+typer>=0.12,<1.0
+protobuf>=4.25,<7.0
+phonemizer>=3.2,<4.0
+jiwer>=3.0,<4.0
+gradio>=4.40,<6.0
