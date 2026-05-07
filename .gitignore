@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtualenvs / package managers
+.venv/
+.uv/
+
+# Caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# Audio (user recordings) — fixtures under tests/data/fixtures/ are exempted below
+*.wav
+*.flac
+*.mp3
+*.ogg
+*.m4a
+!tests/data/fixtures/*.flac
+
+# Hugging Face cache override (if user sets HF_HOME locally)
+hf_cache/
+
+# Notebooks
+.ipynb_checkpoints/

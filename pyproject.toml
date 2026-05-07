@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vocal-ipa-trainer"
+version = "0.1.0"
+description = "Audio → IPA pronunciation feedback for language learners"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Justin Zhu" }]
+keywords = ["ipa", "phonetics", "pronunciation", "wav2vec2", "language-learning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+    "torch>=2.3,<3.0",
+    "torchaudio>=2.3,<3.0",
+    "transformers>=4.44,<5.0",
+    "soundfile>=0.12,<1.0",
+    "numpy>=1.26,<3.0",
+    "typer>=0.12,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0,<9.0",
+    "pytest-cov>=5.0,<6.0",
+    "ruff>=0.6,<1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vocal_ipa"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: tests that load the wav2vec2 model (requires ~1GB download); skip by default",
+]
+testpaths = ["tests"]
