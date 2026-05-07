@@ -1,0 +1,926 @@
+[
+  {
+    "expected": "ɔ̃",
+    "produced": "ɔ̃",
+    "start_s": 0.7,
+    "end_s": 0.72,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 0.74,
+    "end_s": 0.76,
+    "ok": true
+  },
+  {
+    "expected": "ə",
+    "produced": "ə",
+    "start_s": 0.78,
+    "end_s": 0.8,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 0.86,
+    "end_s": 0.88,
+    "ok": true
+  },
+  {
+    "expected": "o",
+    "produced": "ə",
+    "start_s": 0.94,
+    "end_s": 0.96,
+    "ok": false
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 1.0,
+    "end_s": 1.02,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "e",
+    "start_s": 1.06,
+    "end_s": 1.08,
+    "ok": false
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 1.16,
+    "end_s": 1.18,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 1.2,
+    "end_s": 1.22,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 1.26,
+    "end_s": 1.28,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 1.3,
+    "end_s": 1.32,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 1.4,
+    "end_s": 1.42,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 1.44,
+    "end_s": 1.48,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 1.5,
+    "end_s": 1.52,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 1.66,
+    "end_s": 1.68,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 1.76,
+    "end_s": 1.78,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 2.14,
+    "end_s": 2.16,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 2.18,
+    "end_s": 2.2,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 2.26,
+    "end_s": 2.28,
+    "ok": true
+  },
+  {
+    "expected": "f",
+    "produced": "f",
+    "start_s": 2.36,
+    "end_s": 2.4,
+    "ok": true
+  },
+  {
+    "expected": "y",
+    "produced": "y",
+    "start_s": 2.48,
+    "end_s": 2.5,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 2.6,
+    "end_s": 2.62,
+    "ok": true
+  },
+  {
+    "expected": "ɔ̃",
+    "produced": "ɔ̃",
+    "start_s": 2.68,
+    "end_s": 2.7,
+    "ok": true
+  },
+  {
+    "expected": "d",
+    "produced": "d",
+    "start_s": 2.78,
+    "end_s": 2.8,
+    "ok": true
+  },
+  {
+    "expected": "e",
+    "produced": "e",
+    "start_s": 2.82,
+    "end_s": 2.84,
+    "ok": true
+  },
+  {
+    "expected": "z",
+    "produced": "z",
+    "start_s": 2.9,
+    "end_s": 2.92,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 2.96,
+    "end_s": 2.98,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 3.06,
+    "end_s": 3.08,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 3.2,
+    "end_s": 3.22,
+    "ok": true
+  },
+  {
+    "expected": "w",
+    "produced": "w",
+    "start_s": 3.26,
+    "end_s": 3.3,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 3.32,
+    "end_s": 3.34,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 3.56,
+    "end_s": 3.58,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 4.02,
+    "end_s": 4.04,
+    "ok": true
+  },
+  {
+    "expected": "ø",
+    "produced": "ə",
+    "start_s": 4.08,
+    "end_s": 4.1,
+    "ok": false
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 4.16,
+    "end_s": 4.18,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 4.24,
+    "end_s": 4.26,
+    "ok": true
+  },
+  {
+    "expected": "f",
+    "produced": "f",
+    "start_s": 4.4,
+    "end_s": 4.42,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "ɛ",
+    "start_s": 4.46,
+    "end_s": 4.48,
+    "ok": false
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 4.56,
+    "end_s": 4.58,
+    "ok": true
+  },
+  {
+    "expected": "y",
+    "produced": "y",
+    "start_s": 4.72,
+    "end_s": 4.74,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 5.0,
+    "end_s": 5.02,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 5.1,
+    "end_s": 5.12,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "∅",
+    "start_s": 5.18,
+    "end_s": 5.2,
+    "ok": false
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 5.24,
+    "end_s": 5.26,
+    "ok": true
+  },
+  {
+    "expected": "ə",
+    "produced": "ə",
+    "start_s": 5.28,
+    "end_s": 5.3,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 5.42,
+    "end_s": 5.44,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 5.48,
+    "end_s": 5.5,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 5.56,
+    "end_s": 5.58,
+    "ok": true
+  },
+  {
+    "expected": "d",
+    "produced": "z",
+    "start_s": 5.66,
+    "end_s": 5.68,
+    "ok": false
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 5.72,
+    "end_s": 5.74,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 5.8,
+    "end_s": 5.82,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 5.84,
+    "end_s": 5.86,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 5.94,
+    "end_s": 5.96,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 6.12,
+    "end_s": 6.14,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 6.16,
+    "end_s": 6.2,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 6.22,
+    "end_s": 6.24,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 7.0,
+    "end_s": 7.04,
+    "ok": true
+  },
+  {
+    "expected": "ə",
+    "produced": "ə",
+    "start_s": 7.06,
+    "end_s": 7.08,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 7.14,
+    "end_s": 7.16,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 7.18,
+    "end_s": 7.2,
+    "ok": true
+  },
+  {
+    "expected": "d",
+    "produced": "d",
+    "start_s": 7.28,
+    "end_s": 7.3,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 7.32,
+    "end_s": 7.34,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 7.48,
+    "end_s": 7.5,
+    "ok": true
+  },
+  {
+    "expected": "ɔ",
+    "produced": "ɑ̃",
+    "start_s": 7.52,
+    "end_s": 7.54,
+    "ok": false
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 7.58,
+    "end_s": 7.6,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 7.62,
+    "end_s": 7.64,
+    "ok": true
+  },
+  {
+    "expected": "ə",
+    "produced": "ə",
+    "start_s": 7.64,
+    "end_s": 7.66,
+    "ok": true
+  },
+  {
+    "expected": "ʒ",
+    "produced": "ʒ",
+    "start_s": 7.72,
+    "end_s": 7.74,
+    "ok": true
+  },
+  {
+    "expected": "u",
+    "produced": "u",
+    "start_s": 7.8,
+    "end_s": 7.82,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 7.86,
+    "end_s": 7.88,
+    "ok": true
+  },
+  {
+    "expected": "k",
+    "produced": "k",
+    "start_s": 7.92,
+    "end_s": 7.94,
+    "ok": true
+  },
+  {
+    "expected": "ɔ",
+    "produced": "ɔ",
+    "start_s": 7.96,
+    "end_s": 7.98,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 8.04,
+    "end_s": 8.06,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 8.08,
+    "end_s": 8.1,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 8.18,
+    "end_s": 8.2,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 8.26,
+    "end_s": 8.28,
+    "ok": true
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 8.34,
+    "end_s": 8.36,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 8.4,
+    "end_s": 8.42,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 8.48,
+    "end_s": 8.5,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 8.52,
+    "end_s": 8.54,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 8.62,
+    "end_s": 8.64,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 8.68,
+    "end_s": 8.7,
+    "ok": true
+  },
+  {
+    "expected": "t",
+    "produced": "d",
+    "start_s": 8.86,
+    "end_s": 8.88,
+    "ok": false
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 8.9,
+    "end_s": 8.94,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 9.72,
+    "end_s": 9.74,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 9.82,
+    "end_s": 9.84,
+    "ok": true
+  },
+  {
+    "expected": "n",
+    "produced": "n",
+    "start_s": 10.0,
+    "end_s": 10.02,
+    "ok": true
+  },
+  {
+    "expected": "u",
+    "produced": "u",
+    "start_s": 10.04,
+    "end_s": 10.06,
+    "ok": true
+  },
+  {
+    "expected": "b",
+    "produced": "b",
+    "start_s": 10.14,
+    "end_s": 10.16,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 10.18,
+    "end_s": 10.22,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 10.24,
+    "end_s": 10.28,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.38,
+    "end_s": 10.4,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 10.54,
+    "end_s": 10.56,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 10.6,
+    "end_s": 10.62,
+    "ok": true
+  },
+  {
+    "expected": "d",
+    "produced": "d",
+    "start_s": 10.74,
+    "end_s": 10.76,
+    "ok": true
+  },
+  {
+    "expected": "ə",
+    "produced": "ə",
+    "start_s": 10.78,
+    "end_s": 10.8,
+    "ok": true
+  },
+  {
+    "expected": "f",
+    "produced": "f",
+    "start_s": 10.9,
+    "end_s": 10.92,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 10.96,
+    "end_s": 10.98,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 11.1,
+    "end_s": 11.12,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 11.14,
+    "end_s": 11.16,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 11.2,
+    "end_s": 11.22,
+    "ok": true
+  },
+  {
+    "expected": "p",
+    "produced": "p",
+    "start_s": 11.28,
+    "end_s": 11.3,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 11.34,
+    "end_s": 11.36,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 11.4,
+    "end_s": 11.42,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 11.5,
+    "end_s": 11.52,
+    "ok": true
+  },
+  {
+    "expected": "ʁ",
+    "produced": "ʁ",
+    "start_s": 11.66,
+    "end_s": 11.68,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 11.74,
+    "end_s": 11.76,
+    "ok": true
+  },
+  {
+    "expected": "b",
+    "produced": "b",
+    "start_s": 11.9,
+    "end_s": 11.92,
+    "ok": true
+  },
+  {
+    "expected": "ɔ̃",
+    "produced": "ɑ̃",
+    "start_s": 11.94,
+    "end_s": 11.96,
+    "ok": false
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 12.06,
+    "end_s": 12.08,
+    "ok": true
+  },
+  {
+    "expected": "y",
+    "produced": "ə",
+    "start_s": 12.08,
+    "end_s": 12.1,
+    "ok": false
+  },
+  {
+    "expected": "z",
+    "produced": "z",
+    "start_s": 12.14,
+    "end_s": 12.16,
+    "ok": true
+  },
+  {
+    "expected": "y",
+    "produced": "y",
+    "start_s": 12.22,
+    "end_s": 12.24,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 12.3,
+    "end_s": 12.32,
+    "ok": true
+  },
+  {
+    "expected": "m",
+    "produced": "m",
+    "start_s": 12.4,
+    "end_s": 12.42,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 12.44,
+    "end_s": 12.46,
+    "ok": true
+  },
+  {
+    "expected": "ɑ̃",
+    "produced": "ɑ̃",
+    "start_s": 12.84,
+    "end_s": 12.86,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 12.96,
+    "end_s": 13.0,
+    "ok": true
+  },
+  {
+    "expected": "yi",
+    "produced": "y",
+    "start_s": 13.08,
+    "end_s": 13.1,
+    "ok": false
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 13.24,
+    "end_s": 13.26,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "e",
+    "start_s": 13.3,
+    "end_s": 13.32,
+    "ok": false
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 13.38,
+    "end_s": 13.4,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 13.4,
+    "end_s": 13.42,
+    "ok": true
+  },
+  {
+    "expected": "ʒ",
+    "produced": "ʒ",
+    "start_s": 13.48,
+    "end_s": 13.5,
+    "ok": true
+  },
+  {
+    "expected": "u",
+    "produced": "u",
+    "start_s": 13.54,
+    "end_s": 13.56,
+    "ok": true
+  },
+  {
+    "expected": "t",
+    "produced": "t",
+    "start_s": 13.66,
+    "end_s": 13.68,
+    "ok": true
+  },
+  {
+    "expected": "a",
+    "produced": "a",
+    "start_s": 13.72,
+    "end_s": 13.74,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 13.82,
+    "end_s": 13.84,
+    "ok": true
+  },
+  {
+    "expected": "ɛ",
+    "produced": "ɛ",
+    "start_s": 13.9,
+    "end_s": 13.92,
+    "ok": true
+  },
+  {
+    "expected": "l",
+    "produced": "l",
+    "start_s": 13.98,
+    "end_s": 14.0,
+    "ok": true
+  },
+  {
+    "expected": "s",
+    "produced": "s",
+    "start_s": 14.06,
+    "end_s": 14.1,
+    "ok": true
+  },
+  {
+    "expected": "i",
+    "produced": "i",
+    "start_s": 14.24,
+    "end_s": 14.26,
+    "ok": true
+  }
+]
