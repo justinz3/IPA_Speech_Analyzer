@@ -185,6 +185,13 @@ IPA are actually the model faithfully capturing your audio. Common ones:
 When in doubt: if the surface "error" matches a known L2 pattern, suspect
 the audio before suspecting the model.
 
+For per-language patterns observed during dogfooding, see
+[`spanish_failure_modes.md`](spanish_failure_modes.md) and
+[`french_failure_modes.md`](french_failure_modes.md). Each organizes
+misses by attribution (your audio vs reference dialect vs model
+artifact) — useful when you're trying to figure out whether a "wrong"
+phoneme is something to drill or something to ignore.
+
 ## Hosted demo (Hugging Face Spaces)
 
 Deploy `pronounce-web` as a free hosted demo on [Hugging Face Spaces](https://huggingface.co/spaces):
