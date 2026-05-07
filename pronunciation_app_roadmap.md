@@ -84,7 +84,15 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - Web UI / containerize / deploy
 - IaC (CDK) tier only if still motivated and resume-shaped value still feels missing
 
-Portfolio value is unlocked by end of Phase 4. Phases 5–6 are bonus.
+### Phase 7 — Read-aloud companion (exploratory, "borderline another project")
+Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets pronunciation feedback as they go. Phonetic scoring is solved by Phase 2–3; the *new* work is **position tracking** — knowing where in the OCR'd text the reader currently is so divergences can be flagged in context.
+- Cheap version (today, no code): OCR a page elsewhere, paste into the Reference field, record, score. Already works.
+- v1: in-app OCR (Apple Vision / Google Vision / Tesseract) → reference text → batched scoring. One page at a time.
+- v2: continuous audio + advancing position pointer. 5–10 s lag is acceptable — not strict real-time. Streaming CTC over chunked audio with overlap windows; alignment converges → pointer advances.
+- **Manga is its own research project.** Chinese/Japanese manga reads non-linearly (panel order, speech bubbles, vertical / RTL text); sequential position tracking won't work without upstream panel+bubble detection. Standard L→R book pages are the v1 target; manga is explicitly out of scope until v3+.
+- **Watch for scope creep.** This is borderline its own project — the only reason it lives here is that it consumes the phonetic scorer's output. Don't let v2 work pull focus from Phase 3 (French) or Phase 4 (curated corrections), which unlock the project's core value.
+
+Portfolio value is unlocked by end of Phase 4. Phases 5–7 are bonus.
 
 ## First concrete tasks (Phase 1)
 
