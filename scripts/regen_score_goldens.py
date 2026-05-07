@@ -34,11 +34,13 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for entry in manifest:
         clip_id = entry["id"]
+        # Pre-Phase-3 manifests didn't carry language; default to es for backcompat.
+        lang = entry.get("language", "es")
         audio_path = FIXTURE_DIR / entry["audio"]
         transcript_path = FIXTURE_DIR / entry["transcript"]
         transcript = transcript_path.read_text(encoding="utf-8").strip()
 
-        result = score(audio_path, transcript, lang="es")
+        result = score(audio_path, transcript, lang=lang)
         snapshot = [
             {
                 "expected": p.expected,
@@ -55,8 +57,8 @@ def main() -> None:
         )
         wrong = sum(1 for p in result.phonemes if not p.ok)
         print(
-            f"{clip_id}: PER {result.per:.3f} ({wrong}/{len(result.phonemes)} wrong) "
-            f"-> {out_path.name}"
+            f"{clip_id} ({lang}): PER {result.per:.3f} "
+            f"({wrong}/{len(result.phonemes)} wrong) -> {out_path.name}"
         )
 
 
