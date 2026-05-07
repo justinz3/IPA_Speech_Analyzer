@@ -36,12 +36,15 @@ _SCORED_STYLES = """
 <style>
 .scored-line { font-size: 1.4em; line-height: 2.2em; margin: 0.5em 0; }
 .scored-line .phoneme { padding: 2px 4px; border-radius: 4px; margin-right: 2px; }
+/* Force both bg + fg so the highlight is readable on dark themes. */
 .scored-line .phoneme.ok { background: #d4edda; color: #155724; }
 .scored-line .phoneme.miss { background: #f8d7da; color: #721c24; text-decoration: line-through; }
 .scored-summary { margin: 0.5em 0; font-weight: 600; }
 .scored-table { border-collapse: collapse; font-size: 0.95em; }
-.scored-table th, .scored-table td { padding: 4px 10px; border-bottom: 1px solid #eee; text-align: left; }
-.scored-table tr.miss td { background: #fff5f5; }
+.scored-table th, .scored-table td { padding: 4px 10px; border-bottom: 1px solid currentColor; text-align: left; }
+/* No row tinting — ✓/✗ already conveys ok/miss, and a tinted bg without an
+   explicit fg breaks contrast on dark themes (Gradio's text turns white on
+   dark, so light-pink bg + white text ≈ white-on-white). */
 </style>
 """
 
@@ -92,9 +95,8 @@ def _render_scored_html(result: ScoreResult) -> str:
             f'data-start="{p.start_s:.2f}" data-end="{p.end_s:.2f}" '
             f'title="{escape(title)}">{escape(p.expected)}</span>'
         )
-        row_cls = "" if p.ok else 'class="miss"'
         rows.append(
-            f"<tr {row_cls}><td>{escape(p.expected)}</td><td>{escape(p.produced)}</td>"
+            f"<tr><td>{escape(p.expected)}</td><td>{escape(p.produced)}</td>"
             f"<td>{p.start_s:.2f}</td><td>{p.end_s:.2f}</td>"
             f"<td>{'✓' if p.ok else '✗'}</td></tr>"
         )
