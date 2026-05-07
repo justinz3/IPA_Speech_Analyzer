@@ -114,13 +114,19 @@ know when reading the IPA, not bugs to file:
   model drops `/l/` in syllable-final positions before another consonant.
 - **Hesitation gets transcribed.** Filler like "uhh" comes out as repeated
   vowels (`o o o`). The model doesn't distinguish speech from non-speech.
-- **Dialect bias varies by phoneme.** The "ll" in `me llamo` was returned
-  as `ʒ` (Río de la Plata-style) rather than `ʝ` or `ʎ`. The model was
-  trained multilingually; its dialect choice is not user-controllable.
 
-For your own pronunciation feedback: when the IPA shows a glide on what
-should be a pure Spanish vowel (`oɪ`, `aɪ`), or `v` where Spanish has `β`,
-that's likely your audio, not a model failure.
+For your own pronunciation feedback: many things that look "wrong" in the
+IPA are actually the model faithfully capturing your audio. Common ones:
+
+- A glide on what should be a pure Spanish vowel (`oɪ`, `aɪ`) — Spanish
+  vowels don't diphthongize the way English ones do.
+- `v` (English labiodental) where Spanish has `β` (bilabial fricative).
+- `ʒ` or `ʃ` for "ll" — Spanish dialects realize "ll" as `/ʝ/`, `/j/`,
+  `/ʎ/`, or in Río de la Plata `/ʒ ʃ/`. If you're an English speaker
+  reaching for "ll", you may land in the postalveolar zone by accident.
+
+When in doubt: if the surface "error" matches a known L2 pattern, suspect
+the audio before suspecting the model.
 
 ## Hosted demo (Hugging Face Spaces)
 
