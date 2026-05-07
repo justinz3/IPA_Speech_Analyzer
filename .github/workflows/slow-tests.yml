@@ -1,0 +1,39 @@
+name: slow-tests
+
+# Tier B (snapshot) and Tier C (PER) tests. These load the wav2vec2 model
+# (~1GB download on first run) and run against committed LibriVox fixtures,
+# so they take ~1-2 minutes after a warm cache. Run on a weekly cron and
+# on-demand — not on every PR.
+
+on:
+  schedule:
+    - cron: "0 4 * * 0"  # Sundays 04:00 UTC
+  workflow_dispatch:
+
+jobs:
+  slow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system deps
+        run: sudo apt-get update && sudo apt-get install -y libsndfile1 espeak-ng
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          python-version: "3.12"
+
+      - name: Sync dev deps
+        run: uv sync --extra dev
+
+      - name: Cache Hugging Face model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-wav2vec2-lv-60-espeak-cv-ft-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            hf-wav2vec2-lv-60-espeak-cv-ft-
+
+      - name: Slow tests (snapshot + PER)
+        run: uv run pytest -m slow -v
