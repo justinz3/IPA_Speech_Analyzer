@@ -41,9 +41,13 @@ fixtures = [
     "datasets>=3.0,<5.0",   # used by scripts/fetch_fixtures.py only
     "torchcodec>=0.4,<2.0", # datasets uses torchcodec for audio decode
 ]
+web = [
+    "gradio>=4.40,<6.0",    # Phase 1.5 mic-recording UI
+]
 
 [project.scripts]
-pronounce = "vocal_ipa.cli:app"
+pronounce     = "vocal_ipa.cli:app"
+pronounce-web = "vocal_ipa.web:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/vocal_ipa"]
