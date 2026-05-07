@@ -20,24 +20,29 @@ FIXTURES = Path(__file__).parent / "data" / "fixtures"
 MANIFEST = FIXTURES / "manifest.json"
 
 
-def _fixture_ids() -> list[str]:
+def _fixture_params():
     if not MANIFEST.exists():
         return []
-    return [entry["id"] for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))]
+    return [
+        pytest.param(entry, id=entry["id"])
+        for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))
+    ]
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("clip_id", _fixture_ids())
-def test_snapshot_matches_golden(clip_id: str) -> None:
+@pytest.mark.parametrize("entry", _fixture_params())
+def test_snapshot_matches_golden(entry: dict) -> None:
+    clip_id = entry["id"]
+    lang = entry["language"]
     audio_path = FIXTURES / f"{clip_id}.flac"
     golden_path = FIXTURES / f"{clip_id}.golden.ipa"
     if not golden_path.exists():
         pytest.skip(f"No golden for {clip_id}; run scripts/regen_goldens.py")
 
     expected = golden_path.read_text(encoding="utf-8").strip()
-    result = transcribe(audio_path, lang="es")
+    result = transcribe(audio_path, lang=lang)
     assert result.ipa == expected, (
-        f"\n  clip:     {clip_id}"
+        f"\n  clip:     {clip_id} ({lang})"
         f"\n  expected: {expected!r}"
         f"\n  got:      {result.ipa!r}"
         f"\n  Regenerate via: uv run python scripts/regen_goldens.py"

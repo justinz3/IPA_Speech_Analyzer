@@ -29,24 +29,29 @@ MANIFEST = FIXTURES / "manifest.json"
 PER_THRESHOLD = 0.35
 
 
-def _fixture_ids() -> list[str]:
+def _fixture_params():
     if not MANIFEST.exists():
         return []
-    return [entry["id"] for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))]
+    return [
+        pytest.param(entry, id=entry["id"])
+        for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))
+    ]
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("clip_id", _fixture_ids())
-def test_per_under_threshold(clip_id: str) -> None:
+@pytest.mark.parametrize("entry", _fixture_params())
+def test_per_under_threshold(entry: dict) -> None:
+    clip_id = entry["id"]
+    lang = entry["language"]
     audio = FIXTURES / f"{clip_id}.flac"
     transcript = (FIXTURES / f"{clip_id}.txt").read_text(encoding="utf-8").strip()
 
-    reference = text_to_ipa(transcript, lang="es")
-    hypothesis = transcribe(audio, lang="es").ipa
+    reference = text_to_ipa(transcript, lang=lang)
+    hypothesis = transcribe(audio, lang=lang).ipa
 
     rate = phoneme_error_rate(hypothesis, reference)
     assert rate < PER_THRESHOLD, (
-        f"\n  clip:       {clip_id}"
+        f"\n  clip:       {clip_id} ({lang})"
         f"\n  PER:        {rate:.3f} (threshold {PER_THRESHOLD})"
         f"\n  reference:  {reference!r}"
         f"\n  hypothesis: {hypothesis!r}"

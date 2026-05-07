@@ -21,15 +21,20 @@ FIXTURES = Path(__file__).parent / "data" / "fixtures"
 MANIFEST = FIXTURES / "manifest.json"
 
 
-def _fixture_ids() -> list[str]:
+def _fixture_params():
     if not MANIFEST.exists():
         return []
-    return [entry["id"] for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))]
+    return [
+        pytest.param(entry, id=entry["id"])
+        for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))
+    ]
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("clip_id", _fixture_ids())
-def test_score_snapshot_matches_golden(clip_id: str) -> None:
+@pytest.mark.parametrize("entry", _fixture_params())
+def test_score_snapshot_matches_golden(entry: dict) -> None:
+    clip_id = entry["id"]
+    lang = entry["language"]
     audio_path = FIXTURES / f"{clip_id}.flac"
     transcript_path = FIXTURES / f"{clip_id}.txt"
     golden_path = FIXTURES / f"{clip_id}.golden.score.json"
@@ -39,7 +44,7 @@ def test_score_snapshot_matches_golden(clip_id: str) -> None:
     transcript = transcript_path.read_text(encoding="utf-8").strip()
     golden = json.loads(golden_path.read_text(encoding="utf-8"))
 
-    result = score(audio_path, transcript, lang="es")
+    result = score(audio_path, transcript, lang=lang)
     actual = [
         {
             "expected": p.expected,
@@ -52,7 +57,7 @@ def test_score_snapshot_matches_golden(clip_id: str) -> None:
     ]
 
     assert actual == golden, (
-        f"\n  clip: {clip_id}"
+        f"\n  clip: {clip_id} ({lang})"
         f"\n  Snapshot drift detected. If intentional, regenerate via:"
         f"\n    uv run python scripts/regen_score_goldens.py"
     )

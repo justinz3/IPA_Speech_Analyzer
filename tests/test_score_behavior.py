@@ -27,10 +27,14 @@ SELF_CONSISTENCY_PER_THRESHOLD = 0.30
 CROSS_PAIR_PER_FLOOR = 0.50
 
 
-def _fixture_ids() -> list[str]:
+def _all_entries() -> list[dict]:
     if not MANIFEST.exists():
         return []
-    return [entry["id"] for entry in json.loads(MANIFEST.read_text(encoding="utf-8"))]
+    return json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+
+def _fixture_params():
+    return [pytest.param(entry, id=entry["id"]) for entry in _all_entries()]
 
 
 def _transcript(clip_id: str) -> str:
@@ -38,28 +42,41 @@ def _transcript(clip_id: str) -> str:
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("clip_id", _fixture_ids())
-def test_score_self_consistency(clip_id: str) -> None:
+@pytest.mark.parametrize("entry", _fixture_params())
+def test_score_self_consistency(entry: dict) -> None:
     """Audio against its own transcript should land under the PER threshold."""
+    clip_id = entry["id"]
+    lang = entry["language"]
     audio_path = FIXTURES / f"{clip_id}.flac"
     transcript = _transcript(clip_id)
-    result = score(audio_path, transcript, lang="es")
+    result = score(audio_path, transcript, lang=lang)
     assert result.per < SELF_CONSISTENCY_PER_THRESHOLD, (
-        f"{clip_id}: PER {result.per:.3f} >= {SELF_CONSISTENCY_PER_THRESHOLD}"
+        f"{clip_id} ({lang}): PER {result.per:.3f} >= {SELF_CONSISTENCY_PER_THRESHOLD}"
     )
 
 
 @pytest.mark.slow
 def test_score_cross_pair_detects_mismatch() -> None:
-    """Audio against a *different* clip's transcript should produce many errors."""
-    ids = _fixture_ids()
-    if len(ids) < 2:
-        pytest.skip("Need at least 2 fixtures for a cross-pair test")
+    """Audio against a *different* clip's transcript should produce many errors.
 
+    Restricted to same-language pairs — a cross-language pair would conflate
+    'wrong reference' with 'wrong-language phoneme inventory.' We use Spanish
+    as the original validated path; if no Spanish pair exists, fall back to
+    the first language with at least two fixtures.
+    """
+    by_lang: dict[str, list[str]] = {}
+    for entry in _all_entries():
+        by_lang.setdefault(entry["language"], []).append(entry["id"])
+    candidates = ["es"] + [lang for lang in by_lang if lang != "es"]
+    pair_lang = next((lang for lang in candidates if len(by_lang.get(lang, [])) >= 2), None)
+    if pair_lang is None:
+        pytest.skip("Need 2+ fixtures of the same language for a cross-pair test")
+
+    ids = by_lang[pair_lang]
     audio_path = FIXTURES / f"{ids[0]}.flac"
     wrong_transcript = _transcript(ids[1])
-    result = score(audio_path, wrong_transcript, lang="es")
+    result = score(audio_path, wrong_transcript, lang=pair_lang)
     assert result.per > CROSS_PAIR_PER_FLOOR, (
-        f"Mismatched audio/transcript pair only produced PER {result.per:.3f}; "
+        f"Mismatched {pair_lang} audio/transcript pair only produced PER {result.per:.3f}; "
         f"expected > {CROSS_PAIR_PER_FLOOR} (scoring should clearly detect a wrong reference)"
     )
