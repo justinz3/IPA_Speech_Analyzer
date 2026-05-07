@@ -94,6 +94,34 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
 - **No per-segment timestamps.** The model exposes 50 Hz CTC frames internally
   but Phase 1 doesn't expose timestamps; that's Phase 2 alignment work.
 
+## Known model failure modes
+
+Quirks of `wav2vec2-lv-60-espeak-cv-ft` observed on real Spanish input
+(both the LibriVox fixtures and informal recordings). These are things to
+know when reading the IPA, not bugs to file:
+
+- **Spurious vowel-length marks** (`oː`, `eː`). Spanish vowel length isn't
+  phonemic; the model emits length marks anyway, mostly on stressed or held
+  vowels. Treat as decoration.
+- **Intervocalic lenition is inconsistent.** Spanish lenites `/b d g/` to
+  `/β ð ɣ/` between vowels. The model gets this right most of the time, but
+  you'll occasionally see a surface stop where it should be a fricative
+  (and vice versa). Don't treat a single character as definitive.
+- **/t/ can drop in clusters.** `detrás /deˈtɾas/` has come back as
+  `d e r a s`, and `Estados /esˈta.ðos/` close to `e s a o s`. The /t/
+  weakens in `/tɾ/` and `/st/` contexts.
+- **Coda /l/ can disappear.** `los → o s` is common in fast speech; the
+  model drops `/l/` in syllable-final positions before another consonant.
+- **Hesitation gets transcribed.** Filler like "uhh" comes out as repeated
+  vowels (`o o o`). The model doesn't distinguish speech from non-speech.
+- **Dialect bias varies by phoneme.** The "ll" in `me llamo` was returned
+  as `ʒ` (Río de la Plata-style) rather than `ʝ` or `ʎ`. The model was
+  trained multilingually; its dialect choice is not user-controllable.
+
+For your own pronunciation feedback: when the IPA shows a glide on what
+should be a pure Spanish vowel (`oɪ`, `aɪ`), or `v` where Spanish has `β`,
+that's likely your audio, not a model failure.
+
 ## Hosted demo (Hugging Face Spaces)
 
 Deploy `pronounce-web` as a free hosted demo on [Hugging Face Spaces](https://huggingface.co/spaces):
