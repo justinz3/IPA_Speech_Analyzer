@@ -9,6 +9,14 @@ from __future__ import annotations
 
 from phonemizer import phonemize
 
+# espeak's language codes are inconsistent: it accepts bare "es" for Spanish
+# but rejects bare "fr" — French requires "fr-fr". Public lang codes here are
+# the project's canonical ISO-639-1 codes; this map adapts them at the boundary.
+_ESPEAK_LANG = {
+    "es": "es",
+    "fr": "fr-fr",
+}
+
 
 def text_to_ipa(text: str, lang: str = "es") -> str:
     """Convert orthographic text to a reference IPA string.
@@ -18,9 +26,10 @@ def text_to_ipa(text: str, lang: str = "es") -> str:
     is itself an approximation (espeak rules are imperfect, dialect varies),
     so use it as a soft oracle for PER, not absolute ground truth.
     """
+    espeak_lang = _ESPEAK_LANG.get(lang, lang)
     out = phonemize(
         text,
-        language=lang,
+        language=espeak_lang,
         backend="espeak",
         strip=True,
         preserve_punctuation=False,

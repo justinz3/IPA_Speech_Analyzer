@@ -17,11 +17,11 @@ from vocal_ipa.score import ScoredPhoneme, ScoreResult, _score_span, score
 # -- argument validation ------------------------------------------------------
 
 
-def test_score_rejects_non_spanish_lang(tmp_path):
+def test_score_rejects_unsupported_lang(tmp_path):
     audio = tmp_path / "fake.wav"
     audio.write_bytes(b"")
-    with pytest.raises(ValueError, match="Spanish only"):
-        score(audio, "irrelevant", lang="fr")
+    with pytest.raises(ValueError, match="Unsupported language"):
+        score(audio, "irrelevant", lang="ja")
 
 
 def test_score_rejects_empty_reference(tmp_path):

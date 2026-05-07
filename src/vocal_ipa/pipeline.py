@@ -11,7 +11,7 @@ import torch
 from .audio import TARGET_SR, ensure_16k, load_audio
 from .model import DEFAULT_MODEL, load, resolve_device
 
-SUPPORTED_LANGUAGES = frozenset({"es"})
+SUPPORTED_LANGUAGES = frozenset({"es", "fr"})
 
 
 @dataclass
@@ -54,7 +54,8 @@ def _run_model(
     """
     if lang not in SUPPORTED_LANGUAGES:
         raise ValueError(
-            f"Phase 1 supports Spanish only; got lang={lang!r}. See pronunciation_app_roadmap.md."
+            f"Unsupported language {lang!r}; supported: {sorted(SUPPORTED_LANGUAGES)}. "
+            "See pronunciation_app_roadmap.md."
         )
 
     samples, sr = load_audio(Path(audio_path))

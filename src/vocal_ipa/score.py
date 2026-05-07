@@ -60,7 +60,8 @@ def score(
     """
     if lang not in SUPPORTED_LANGUAGES:
         raise ValueError(
-            f"Phase 1 supports Spanish only; got lang={lang!r}. See pronunciation_app_roadmap.md."
+            f"Unsupported language {lang!r}; supported: {sorted(SUPPORTED_LANGUAGES)}. "
+            "See pronunciation_app_roadmap.md."
         )
     if not reference_text.strip():
         raise ValueError("reference_text must be non-empty")
