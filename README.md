@@ -5,14 +5,14 @@ sdk_version: 5.50.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish only (Phase 2).
+short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish and French.
 ---
 
 # vocal-ipa-trainer
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 2 — Spanish only, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 3 — Spanish and French, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -87,7 +87,7 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
 
 | Flag          | Default                                | Notes |
 |---------------|----------------------------------------|-------|
-| `--lang`      | `es`                                   | Phase 1 only accepts Spanish. |
+| `--lang`      | `es`                                   | Language of the audio. Supports `es` (Spanish) and `fr` (French). |
 | `--format`    | `text`                                 | `text` is one IPA line (free transcribe) or a per-phoneme table (scoring). `json` includes timing/score fields. |
 | `--device`    | `auto`                                 | `auto` picks CUDA if available else CPU. |
 | `--model`     | `facebook/wav2vec2-lv-60-espeak-cv-ft` | Override at your own risk. |
@@ -127,8 +127,8 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
 
 - **L2 speech is noisy.** The model was fine-tuned on Common Voice native
   speakers; non-native pronunciation will mis-recognize more often.
-- **espeak ↔ IPA inventory mismatch.** What espeak emits for Spanish IPA may
-  not perfectly match what the wav2vec2 model emits. Tracked.
+- **espeak ↔ IPA inventory mismatch.** What espeak emits for Spanish or
+  French IPA may not perfectly match what the wav2vec2 model emits. Tracked.
 - **Single-word audio is unreliable.** Forced alignment needs enough context
   to find sensible spans; sentence-level prompts are the practical minimum.
 - **Stress is not scored.** The wav2vec2 model's vocabulary doesn't contain
@@ -137,6 +137,19 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
   `--reference` scoring. Stress is a pitch + duration problem and shares
   machinery with tonal/pitch-accent scoring; both land later in the
   roadmap.
+- **French liaison is partial.** Phonemizer applies some liaisons
+  (`les amis → lez ami`) and skips others (`comment allez-vous → kɔmɑ̃ alevu`,
+  no /t/ liaison). Don't expect uniform liaison treatment in the reference.
+- **French schwas are kept.** Phonemizer surfaces all `/ə/` in the formal
+  pronunciation (`je ne sais pas → ʒə nə sɛ pa`); casual French drops them.
+  Dropping schwas in your audio will register as a mismatch — that's
+  honest feedback, not a bug.
+- **French /ɥ/ is not emitted.** Phonemizer outputs `lui → lyi`, `huit → yit`
+  rather than using the labio-palatal glide. The model vocab also lacks `ɥ`,
+  so this is consistent end-to-end.
+- **French nasal merger not applied.** Phonemizer keeps `/ɛ̃/` and `/œ̃/`
+  distinct (`vin → vɛ̃`, `un → œ̃`). Many Parisian speakers merge them; if
+  your audio merges them, the model may flag the difference.
 
 ## Known model failure modes
 
@@ -201,8 +214,8 @@ Full plan: [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md).
 
 - **Phase 1:** Spanish-only audio → IPA CLI. ✓
 - **Phase 1.5:** Gradio web UI with mic recording. ✓
-- **Phase 2 (here):** Forced alignment + per-phoneme scoring (still Spanish, phoneme identity only — stress not scored).
-- **Phase 3:** French — the actual target.
+- **Phase 2:** Forced alignment + per-phoneme scoring (Spanish, phoneme identity only — stress not scored). ✓
+- **Phase 3 (here):** Add French. Same scoring; no new ML — phonemizer's `fr-fr` and the multilingual model handle it.
 - **Phase 4:** Curated correction lookup (phoneme → articulatory diagram + reference video).
 
 ## Development
@@ -215,7 +228,8 @@ uv run pytest -m "not slow"     # fast tests, no model load
 uv run pronounce path/to/audio.wav --lang es
 ```
 
-Slow tests (snapshot + PER + score behavior, ~75 s, downloads model on first run):
+Slow tests (snapshot + PER + score behavior across 15 fixtures, ~170 s,
+downloads model on first run):
 
 ```
 uv run pytest -m slow
@@ -226,7 +240,8 @@ LibriVox-derived fixture set or accepting model output drift):
 
 ```
 uv sync --extra fixtures
-uv run python scripts/fetch_fixtures.py        # 5 short Spanish clips from MLS
+uv run python scripts/fetch_fixtures.py --language es        # default 5 Spanish clips from MLS
+uv run python scripts/fetch_fixtures.py --language fr -n 10  # 10 French clips
 uv run python scripts/regen_goldens.py         # frozen IPA snapshots (free transcribe)
 uv run python scripts/regen_score_goldens.py   # frozen per-phoneme score snapshots
 ```

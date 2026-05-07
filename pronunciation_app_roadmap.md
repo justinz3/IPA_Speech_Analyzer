@@ -68,9 +68,9 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - Output: which phonemes were missed, what was produced instead
 
 ### Phase 3 — French (week 4+)
-- Add French to the pipeline
+- Add French to the pipeline ✓ (2026-05-07)
 - Real dogfooding starts here
-- Expect to spend time on the French-specific phoneme challenges listed above
+- The phoneme challenges above (front rounded vowels, nasal vowels, liaison, schwas) all surfaced cleanly in phonemizer's `fr-fr` output and the model vocab; no per-phoneme remediation work was needed. Self-consistency PERs on 10 LibriVox French fixtures range 0.075-0.170 — comparable to or better than Spanish.
 
 ### Phase 4 — Correction lookup
 - Curated reference library: phoneme → articulatory diagram + linked YouTube reference
