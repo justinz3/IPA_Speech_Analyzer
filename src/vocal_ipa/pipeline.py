@@ -37,6 +37,21 @@ def transcribe(
     device: str = "auto",
     model_id: str = DEFAULT_MODEL,
 ) -> Transcription:
+    transcription, _, _ = _run_model(audio_path, lang, device, model_id)
+    return transcription
+
+
+def _run_model(
+    audio_path: str | Path,
+    lang: str = "es",
+    device: str = "auto",
+    model_id: str = DEFAULT_MODEL,
+) -> tuple[Transcription, torch.Tensor, int]:
+    """Run the model once; return Transcription plus CTC log-probs and blank id.
+
+    transcribe() discards the extras; score() (Phase 2) uses them for forced
+    alignment, so both paths share a single forward pass.
+    """
     if lang not in SUPPORTED_LANGUAGES:
         raise ValueError(
             f"Phase 1 supports Spanish only; got lang={lang!r}. See pronunciation_app_roadmap.md."
@@ -59,9 +74,10 @@ def transcribe(
         logits = model(**inputs).logits
     pred_ids = logits.argmax(dim=-1)
     raw = processor.batch_decode(pred_ids)[0]
+    log_probs = torch.log_softmax(logits[0], dim=-1).cpu()
     inference_seconds = time.perf_counter() - t1
 
-    return Transcription(
+    transcription = Transcription(
         ipa=postprocess(raw),
         raw_phonemes=raw,
         language=lang,
@@ -70,6 +86,7 @@ def transcribe(
         model_load_seconds=model_load_seconds,
         inference_seconds=inference_seconds,
     )
+    return transcription, log_probs, processor.tokenizer.pad_token_id
 
 
 def postprocess(raw: str) -> str:
