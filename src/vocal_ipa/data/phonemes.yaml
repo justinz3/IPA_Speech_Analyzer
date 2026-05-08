@@ -11,35 +11,32 @@
 #   video   — optional URL to a tutorial video. null in v1.
 #   notes   — optional language-specific prose. Keyed by language code.
 #
-# Inventory is populated incrementally:
-#   - This commit (4b-5): a starter set covering the entries the override
-#     library needs for tests to pass.
-#   - 4b-7: full sweep of every IPA token observed across the es+fr fixtures.
-#   - 4b-11: image and audio fields populated from Wikimedia Commons.
+# Token coverage: every distinct token that appears in the existing es+fr
+# fixtures (transcribe goldens + reference-IPA tokenization) plus a few
+# referenced by spanish_failure_modes.md / french_failure_modes.md (tʃ,
+# dʒ, eː, oː). Multi-char "tokens" like 'aʊ', 'oɪ', 'ja', 'ie', 'yi' are
+# vocab artifacts — they're entries in the wav2vec2 vocab that the model
+# emits as single units rather than two-character sequences.
 
-β:
-  name: voiced bilabial fricative
+# -- Vowels: oral monophthongs --
+
+a:
+  name: open front unrounded vowel
   image: null
   audio: null
   video: null
   notes:
-    es: Realization of /b/ and /v/ between vowels in Spanish. Lips touch lightly without contact between lower lip and upper teeth.
+    es: "Spanish `a` — pure, no glide. Position constant from start to end."
+    fr: "French `a` in `ami`, `papa`."
 
-v:
-  name: voiced labiodental fricative
+e:
+  name: close-mid front unrounded vowel
   image: null
   audio: null
   video: null
   notes:
-    en: English `v` in `vine`. Lower lip touches upper teeth.
-
-y:
-  name: close front rounded vowel
-  image: null
-  audio: null
-  video: null
-  notes:
-    fr: Heard in `tu`, `lune`, `huit`. No English equivalent — round the lips as for /u/ but place the tongue as for /i/.
+    es: "Spanish `e` — same height as French `é`; no glide."
+    fr: "French `é` in `été`."
 
 i:
   name: close front unrounded vowel
@@ -47,4 +44,407 @@ i:
   audio: null
   video: null
   notes:
-    en: English `ee` in `see`. Tongue high and front, lips spread.
+    en: "English `ee` in `see`. Tongue high and front, lips spread."
+
+o:
+  name: close-mid back rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `o` — pure, no glide to /ʊ/ as in English."
+
+u:
+  name: close back rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `u` — pure, no glide."
+    fr: "French `ou` in `tout`. Distinguished from /y/ which is front rounded."
+
+y:
+  name: close front rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `u` in `tu`, `lune`, `huit`. No English equivalent — round the lips as for /u/ but place the tongue as for /i/."
+
+ø:
+  name: close-mid front rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `eu` in `peu`, `bleues`. Front rounded — say `é` with rounded lips."
+
+œ:
+  name: open-mid front rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `œu` in `fleurs`, `peur`. More open than /ø/."
+
+ɛ:
+  name: open-mid front unrounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `è` in `mère`, `plaît`. More open than /e/."
+
+ɔ:
+  name: open-mid back rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `o` in `homme`, `bord`. More open than /o/."
+
+ə:
+  name: mid central vowel (schwa)
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `e` in `je`, `petit`. Often dropped in casual speech but kept in formal."
+    en: "English unstressed vowel as in `sofa`."
+
+# -- Length marks (model-emitted, decorative on Spanish) --
+
+eː:
+  name: close-mid front unrounded vowel (long)
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Vowel-length marks are not phonemic in Spanish; the model emits them on stressed/held vowels. Treat as decoration of /e/."
+
+oː:
+  name: close-mid back rounded vowel (long)
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Vowel-length marks are not phonemic in Spanish; the model emits them on stressed/held vowels. Treat as decoration of /o/."
+
+# -- Vowels: nasals (combining tilde) --
+
+ɑ̃:
+  name: open back nasal vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `an`/`en` in `grand`, `comment`. Nasalize while pronouncing the vowel."
+
+ɛ̃:
+  name: open-mid front nasal vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `in`/`ain` in `vin`, `pain`. No English analogue."
+
+ɔ̃:
+  name: open-mid back nasal vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `on` in `bon`, `bonjour`."
+
+œ̃:
+  name: open-mid front rounded nasal vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `un` in `un`, `parfum`. Many Parisian speakers merge /œ̃/ with /ɛ̃/; phonemizer keeps them distinct."
+
+# -- Glides / vocab-fused two-vowel tokens --
+
+j:
+  name: voiced palatal approximant
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `y` in `yes`."
+
+w:
+  name: voiced labio-velar approximant
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `u` before another vowel in `bueno`, `puerto`."
+
+aʊ:
+  name: open-to-near-close diphthong (/a/ → /ʊ/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `ow` in `now`. Spanish vowels do *not* glide; if you see /aʊ/ where the reference is just /a/, that's English diphthongization."
+
+oɪ:
+  name: close-mid back to near-close front diphthong (/o/ → /ɪ/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `oy` in `boy`. Spanish vowels do *not* glide; /oɪ/ for /o/ is English diphthongization."
+
+ja:
+  name: glide + open vowel sequence (/j a/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Vocab artifact — the model treats /ja/ as a single token. Appears in `día → dja → d ja` when accents are missing on the reference."
+
+ie:
+  name: vowel sequence (/i e/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Vocab artifact — `ie` appears as a single token in `tiempo`, `siempre`."
+
+yi:
+  name: front rounded vowel + close front (/y i/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "Vocab artifact in `huit → yit` (phonemizer doesn't emit /ɥ/, so /ɥi/ is approximated as /yi/)."
+
+# -- Consonants: stops --
+
+p:
+  name: voiceless bilabial stop
+  image: null
+  audio: null
+  video: null
+
+b:
+  name: voiced bilabial stop
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `b` is realized as [β] (bilabial fricative) between vowels; only stop-form in absolute initial position or after /m/, /n/."
+
+t:
+  name: voiceless alveolar stop
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish /t/ is dental, not alveolar — tongue tip touches the back of upper teeth, not the alveolar ridge."
+
+d:
+  name: voiced alveolar stop
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish /d/ is realized as [ð] (dental fricative) between vowels; only stop-form initially or after /n/, /l/."
+
+k:
+  name: voiceless velar stop
+  image: null
+  audio: null
+  video: null
+
+ɡ:
+  name: voiced velar stop
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish /g/ is realized as [ɣ] (velar fricative) between vowels."
+
+# -- Consonants: fricatives --
+
+f:
+  name: voiceless labiodental fricative
+  image: null
+  audio: null
+  video: null
+
+v:
+  name: voiced labiodental fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `v` in `vine`. Lower lip touches upper teeth."
+    es: "Spanish does NOT use /v/ — both written `v` and intervocalic `b` realize as [β], the bilabial fricative."
+
+s:
+  name: voiceless alveolar fricative
+  image: null
+  audio: null
+  video: null
+
+z:
+  name: voiced alveolar fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `z` in `zéro`, also liaison `s` between vowel-final + vowel-initial words (`les amis → lez ami`)."
+
+θ:
+  name: voiceless dental fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Castilian Spanish `z` and soft `c` (`manzana`, `cinco`). Latin American Spanish uses /s/ instead — set --dialect es-419."
+
+ð:
+  name: voiced dental fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Realization of intervocalic /d/ in Spanish (`nada → naða`). English `th` in `this`."
+
+ʃ:
+  name: voiceless postalveolar fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `sh` in `she`."
+
+ʒ:
+  name: voiced postalveolar fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `j` in `je`, `jour`."
+
+x:
+  name: voiceless velar fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `j` in `jardín`, `mujer`. Back-of-throat scrape, NOT English /h/."
+
+h:
+  name: voiceless glottal fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `h` in `hat`. Spanish does NOT have /h/ — if the model emits /h/ in a Spanish context, you're substituting English /h/ for Spanish /x/."
+
+ɣ:
+  name: voiced velar fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Realization of intervocalic /g/ in Spanish (`agua → aɣwa`)."
+
+β:
+  name: voiced bilabial fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Realization of /b/ and /v/ between vowels in Spanish. Lips touch lightly without contact between lower lip and upper teeth."
+
+ʁ:
+  name: voiced uvular fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: "French `r`. Back-of-throat zone, similar to German `ach` or Spanish /x/. Different articulation from English /r/."
+
+# -- Consonants: affricates --
+
+tʃ:
+  name: voiceless postalveolar affricate
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `ch` in `leche`, `mucho`. Stays voiceless even between vowels."
+    en: "English `ch` in `chair`."
+
+dʒ:
+  name: voiced postalveolar affricate
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `j` in `jam`. Spanish `ch` should NOT voice between vowels — keep it /tʃ/."
+
+# -- Consonants: nasals --
+
+m:
+  name: voiced bilabial nasal
+  image: null
+  audio: null
+  video: null
+
+n:
+  name: voiced alveolar nasal
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Assimilates to following consonant: `un buen` → `[um bwen]` (n→m before bilabial)."
+
+ɲ:
+  name: voiced palatal nasal
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `ñ` in `niño`, `año`."
+    fr: "French `gn` in `agneau`, `montagne`."
+
+# -- Consonants: liquids --
+
+l:
+  name: voiced alveolar lateral approximant
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish /l/ stays clear (no `dark l` velarization) in all positions, unlike American English coda /l/."
+
+r:
+  name: voiced alveolar trill
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish trilled `r` — multiple taps. Used for `rr` (`perro`) and word-initial `r` (`rosa`). Single intervocalic `r` is the tap /ɾ/, not /r/."
+
+ɾ:
+  name: voiced alveolar tap
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish single `r` (`pero`, `caro`). Same articulation as the `tt` in American English `butter`. NOT a trill."
+
+ʎ:
+  name: voiced palatal lateral approximant
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: "Spanish `ll` in conservative dialects. Most modern speakers use /ʝ/ or /j/ instead (yeísmo)."

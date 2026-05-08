@@ -93,3 +93,33 @@ def test_lookup_miss_french_override_works() -> None:
     assert result is not None
     assert result.tip is not None
     assert "round" in result.tip.tip.lower()
+
+
+# -- inventory coverage ------------------------------------------------------
+
+
+def test_phoneme_inventory_covers_observed_es_fr_tokens() -> None:
+    """Every IPA token observed across the fixture transcribe goldens must
+    have a Phoneme entry. Catches inventory gaps at test time before they
+    become silent runtime nulls."""
+    import json
+    from pathlib import Path
+
+    fixtures = Path(__file__).parent / "data" / "fixtures"
+    manifest_path = fixtures / "manifest.json"
+    if not manifest_path.exists():
+        return
+
+    inv = load_phonemes()
+    observed: set[str] = set()
+    for entry in json.loads(manifest_path.read_text()):
+        golden = fixtures / f"{entry['id']}.golden.ipa"
+        if golden.exists():
+            observed.update(golden.read_text().split())
+
+    missing = sorted(observed - set(inv))
+    assert not missing, (
+        f"Phoneme inventory is missing {len(missing)} token(s) observed in "
+        f"transcribe goldens: {missing}. Add entries to "
+        f"src/vocal_ipa/data/phonemes.yaml."
+    )

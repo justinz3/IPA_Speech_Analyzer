@@ -261,18 +261,32 @@ def test_score_dedups_miss_references_across_repeated_pairs(monkeypatch, tmp_pat
 
 
 def test_score_miss_reference_is_none_when_token_not_in_inventory(monkeypatch, tmp_path):
-    # This is the existing _patch_pipeline (vocab has k/a/s/u — none in
-    # inventory). Misses get no coaching info; miss_references stays empty.
-    log_probs = _flat_log_probs([1, 1, 2, 2, 4, 4, 2, 2])
-    _patch_pipeline(
-        monkeypatch,
-        log_probs=log_probs,
-        target_ids=[1, 2, 3, 2],
-        transcription=_stub_transcription(),
+    # Use synthetic non-IPA tokens (Q, R, S) that are guaranteed not to be
+    # in the real phonemes.yaml inventory. Misses get no coaching info;
+    # miss_references stays empty — graceful degradation, no runtime error.
+    monkeypatch.setattr(
+        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "QRQ"
+    )
+    monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
+    vocab = {"<pad>": 0, "Q": 1, "R": 2, "S": 3}
+    proc = _StubProcessor(vocab)
+    monkeypatch.setattr(score_module, "load", lambda model_id, dev: (proc, object()))
+    monkeypatch.setattr(
+        score_module,
+        "reference_to_token_ids",
+        lambda ref, p: ([1, 2, 1], ["Q", "R", "Q"]),
+    )
+    # Targets [Q, R, Q]; model emits S in the middle slot (a miss).
+    log_probs = _flat_log_probs([1, 1, 3, 3, 1, 1])
+    monkeypatch.setattr(
+        score_module,
+        "_run_model",
+        lambda *args, **kwargs: (_stub_transcription(), log_probs, 0),
     )
     audio = tmp_path / "ignored.wav"
     audio.write_bytes(b"")
 
-    result = score(audio, "casa", lang="es")
-    assert result.miss_references == []
+    result = score(audio, "QRQ", lang="es")
+    assert any(not p.ok for p in result.phonemes)  # there IS a miss…
+    assert result.miss_references == []  # …but no coaching info available
     assert all(p.miss_reference is None for p in result.phonemes)
