@@ -12,7 +12,7 @@ short_description: Audio to IPA pronunciation feedback with per-phoneme scoring.
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 4 in progress — Spanish + French with dialect selection, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 4 — Spanish + French with dialect selection and coaching tips, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -53,6 +53,24 @@ PER: 0.073  (8/109 phonemes wrong)
 Behind the scenes: a wav2vec2 phoneme recognizer
 ([`facebook/wav2vec2-lv-60-espeak-cv-ft`](https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft))
 trained with espeak-ng phoneme labels.
+
+When a miss matches a curated error pattern, the score table appends a
+"Misses" block with the expected vs produced phoneme names plus a
+targeted tip:
+
+```
+Misses (1 unique):
+
+  expected β  voiced bilabial fricative
+  produced v  voiced labiodental fricative
+  tip: Don't use English [v]
+       Lips touch lightly without contact between lower lip and upper teeth.
+       Same articulation as a Spanish `b` between vowels — bilabial, not
+       labiodental.
+```
+
+The Gradio UI renders the same as side-by-side comparison cards (with
+slots for articulator diagrams and audio samples once those land).
 
 ## Install
 
@@ -249,7 +267,7 @@ Full plan: [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md).
 - **Phase 1.5:** Gradio web UI with mic recording. ✓
 - **Phase 2:** Forced alignment + per-phoneme scoring (Spanish, phoneme identity only — stress not scored). ✓
 - **Phase 3:** Add French. Same scoring; no new ML — phonemizer's `fr-fr` and the multilingual model handle it. ✓
-- **Phase 4 (in progress):** Dialect selection (es-es / es-419 / fr-fr) + curated coaching lookup (per-phoneme reference media + override tips for common error pairs).
+- **Phase 4:** Dialect selection (es-es / es-419 / fr-fr) + curated coaching lookup (per-phoneme reference + override tips for common error pairs). Plumbing complete; phoneme media curation is a follow-up content commit. ✓
 
 ## Development
 

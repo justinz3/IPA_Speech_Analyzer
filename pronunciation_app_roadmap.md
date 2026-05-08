@@ -72,9 +72,10 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - Real dogfooding starts here
 - The phoneme challenges above (front rounded vowels, nasal vowels, liaison, schwas) all surfaced cleanly in phonemizer's `fr-fr` output and the model vocab; no per-phoneme remediation work was needed. Self-consistency PERs on 10 LibriVox French fixtures range 0.075-0.170 — comparable to or better than Spanish.
 
-### Phase 4 — Correction lookup
-- Curated reference library: phoneme → articulatory diagram + linked YouTube reference
-- Start dumb (mismatch → static diagram); add intelligence later if useful
+### Phase 4 — Dialect selection + coaching lookup ✓ (2026-05-07)
+- **Dialect selection** (`--dialect` flag, composite codes on `--lang`, Gradio dropdown). Spanish gets Castilian (`es-es`) vs LatAm (`es-419`); French has only `fr-fr` at the IPA level (espeak's regional voices share phonemic rules — `fr-be`/`fr-ch`/`fr-ca` produce identical IPA, just different synth timbre). Real Quebec/Belgian dialect handling needs a non-espeak reference source.
+- **Coaching lookup**: per-phoneme reference media (image/audio/video) is the foundation, with hand-written override tips for common error pairs as an additive layer. ~52 phoneme entries cover the es+fr inventory; 13 override tips lifted from the failure-modes docs (β/v, ɾ/r, x/h, tʃ/dʒ for es; y/i, ø/eː, ʁ/∅, t→tʃ for fr).
+- **Phoneme media is deferred.** The plumbing is wired (CLI prints image/audio paths, Gradio renders `<img>`/`<audio>` via `allowed_paths`), but no PNG/OGG files ship in v1. Curation from Wikimedia Commons (CC-BY-SA / public domain) is a follow-up content commit — no engineering blocker.
 
 ### Phase 5 — Add another language
 - Mandarin (tonal scoring is a *new* ML problem — pitch contour extraction + DTW vs canonical tone shapes) or Japanese (pitch accent — also a pitch contour problem, simpler)
