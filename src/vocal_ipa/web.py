@@ -15,9 +15,11 @@ Or run from a clone:
 from __future__ import annotations
 
 from html import escape
+from importlib.resources import files
 
 import gradio as gr
 
+from .coaching import MissReference
 from .pipeline import transcribe
 from .score import ScoreResult, score
 
@@ -47,8 +49,26 @@ _SCORED_STYLES = """
 /* No row tinting — ✓/✗ already conveys ok/miss, and a tinted bg without an
    explicit fg breaks contrast on dark themes (Gradio's text turns white on
    dark, so light-pink bg + white text ≈ white-on-white). */
+
+/* Miss comparison cards (Phase 4b coaching panel). */
+.misses-heading { margin: 1em 0 0.5em; font-weight: 600; }
+.miss-card { display: flex; flex-wrap: wrap; gap: 1em; margin: 0.7em 0;
+             padding: 0.8em; border: 1px solid currentColor; border-radius: 6px;
+             align-items: flex-start; }
+.miss-side { flex: 1 1 220px; min-width: 200px; }
+.miss-label { display: block; font-size: 0.85em; opacity: 0.7; }
+.miss-token { font-size: 1.6em; margin-right: 0.4em; }
+.miss-name { font-style: italic; }
+.miss-card img { display: block; max-width: 100%; height: auto; margin: 0.4em 0; }
+.miss-card audio { display: block; width: 100%; margin: 0.4em 0; }
+.miss-tip { flex: 1 1 100%; padding-top: 0.4em; border-top: 1px solid currentColor;
+            font-size: 0.95em; }
+.miss-tip strong { display: block; margin-bottom: 0.2em; }
+.miss-tip p { margin: 0; white-space: pre-wrap; }
 </style>
 """
+
+_DATA_DIR = files("vocal_ipa") / "data"
 
 # Per-language dialect options as (label, value) tuples for gr.Dropdown.
 # `None` = use the language's default. Spanish has a real dialect axis;
@@ -135,13 +155,73 @@ def _render_scored_html(result: ScoreResult) -> str:
     summary = (
         f'<div class="scored-summary">PER {result.per:.3f} ({wrong}/{total} phonemes wrong)</div>'
     )
+    misses_html = _render_misses_html(result.miss_references)
     body = (
         locale_line
         + '<div class="scored-line">' + "".join(spans) + "</div>"
         + summary
         + table
+        + misses_html
     )
     return _SCORED_STYLES + body
+
+
+def _render_misses_html(miss_refs: list[MissReference]) -> str:
+    if not miss_refs:
+        return ""
+    cards = []
+    for ref in miss_refs:
+        cards.append(_render_miss_card(ref))
+    return (
+        f'<div class="misses-heading">Misses ({len(miss_refs)} unique):</div>'
+        + "".join(cards)
+    )
+
+
+def _render_miss_card(ref: MissReference) -> str:
+    parts = ['<div class="miss-card">']
+    parts.append(_render_miss_side("Expected", ref.expected))
+    if ref.produced is not None:
+        parts.append(_render_miss_side("You said", ref.produced))
+    if ref.tip is not None:
+        parts.append(
+            '<div class="miss-tip">'
+            f'<strong>{escape(ref.tip.title)}</strong>'
+            f'<p>{escape(ref.tip.tip.rstrip())}</p>'
+            "</div>"
+        )
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def _render_miss_side(label: str, phoneme) -> str:
+    parts = [
+        '<div class="miss-side">',
+        f'<span class="miss-label">{escape(label)}</span>',
+        f'<span class="miss-token">{escape(phoneme.token)}</span>',
+        f'<span class="miss-name">{escape(phoneme.name)}</span>',
+    ]
+    image_src = _media_url(phoneme.image)
+    if image_src:
+        parts.append(f'<img src="{image_src}" alt="{escape(phoneme.name)} diagram">')
+    audio_src = _media_url(phoneme.audio)
+    if audio_src:
+        parts.append(f'<audio controls preload="none" src="{audio_src}"></audio>')
+    if phoneme.video:
+        parts.append(
+            f'<a href="{escape(phoneme.video)}" target="_blank" rel="noreferrer">video</a>'
+        )
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def _media_url(rel_path: str | None) -> str | None:
+    """Map a phoneme.yaml relative path (e.g. "phonemes/foo.png") to a URL
+    Gradio will serve via its allowed_paths-backed file route."""
+    if not rel_path:
+        return None
+    abs_path = str(_DATA_DIR / rel_path)
+    return f"/gradio_api/file={abs_path}"
 
 
 def _on_lang_change(new_lang: str) -> gr.Dropdown:
@@ -181,7 +261,10 @@ def build_app() -> gr.Blocks:
 
 
 def main() -> None:
-    build_app().launch()
+    # Allow Gradio to serve phoneme reference media (images, audio) shipped
+    # in the package's data/ directory. Required for the miss-comparison
+    # cards once 4b-11 populates image/audio fields.
+    build_app().launch(allowed_paths=[str(_DATA_DIR)])
 
 
 if __name__ == "__main__":

@@ -172,3 +172,103 @@ def test_build_app_lays_out_lang_and_dialect_controls() -> None:
             labels.append(label)
     assert "Language" in labels
     assert "Dialect" in labels
+
+
+def test_render_scored_html_includes_miss_cards_when_present() -> None:
+    from vocal_ipa.coaching import MissReference, Phoneme, Tip
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+    from vocal_ipa.web import _render_scored_html
+
+    miss = MissReference(
+        expected=Phoneme(token="β", name="voiced bilabial fricative"),
+        produced=Phoneme(token="v", name="voiced labiodental fricative"),
+        tip=Tip(
+            lang="es",
+            expected="β",
+            produced="v",
+            title="Don't use English [v]",
+            tip="Lips touch lightly without contact between lower lip and upper teeth.",
+        ),
+    )
+    result = ScoreResult(
+        phonemes=[
+            ScoredPhoneme(expected="β", produced="v", start_s=0.0, end_s=0.04, score=-1.5, ok=False),
+        ],
+        per=1.0,
+        reference_ipa="β",
+        transcription=Transcription(
+            ipa="v", raw_phonemes="v", language="es", dialect="es-es",
+            model="stub", audio_seconds=0.04, model_load_seconds=0.0, inference_seconds=0.0,
+        ),
+        language="es",
+        dialect="es-es",
+        miss_references=[miss],
+    )
+
+    html = _render_scored_html(result)
+    assert 'class="misses-heading"' in html
+    assert "Misses (1 unique):" in html
+    assert 'class="miss-card"' in html
+    # Both sides present.
+    assert "Expected" in html
+    assert "You said" in html
+    assert "voiced bilabial fricative" in html
+    assert "voiced labiodental fricative" in html
+    # Tip rendered.
+    assert "Don&#x27;t use English [v]" in html or "Don't use English [v]" in html
+    # No image/audio elements (skeleton inventory has null fields).
+    assert "<img" not in html
+    assert "<audio" not in html
+
+
+def test_render_scored_html_omits_misses_block_when_empty() -> None:
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+    from vocal_ipa.web import _render_scored_html
+
+    result = ScoreResult(
+        phonemes=[
+            ScoredPhoneme(expected="a", produced="a", start_s=0.0, end_s=0.04, score=-0.1, ok=True),
+        ],
+        per=0.0,
+        reference_ipa="a",
+        transcription=Transcription(
+            ipa="a", raw_phonemes="a", language="es", dialect="es-es",
+            model="stub", audio_seconds=0.04, model_load_seconds=0.0, inference_seconds=0.0,
+        ),
+        language="es",
+        dialect="es-es",
+        miss_references=[],
+    )
+    html = _render_scored_html(result)
+    # The CSS rules with these classes are always present (in <style>);
+    # check for the actual elements opening tags instead.
+    assert 'class="misses-heading"' not in html
+    assert 'class="miss-card"' not in html
+
+
+def test_render_miss_side_emits_image_when_phoneme_has_image() -> None:
+    from vocal_ipa.coaching import MissReference, Phoneme
+    from vocal_ipa.web import _render_miss_card
+
+    ref = MissReference(
+        expected=Phoneme(
+            token="β",
+            name="voiced bilabial fricative",
+            image="phonemes/voiced_bilabial_fricative.png",
+            audio="phonemes/voiced_bilabial_fricative.ogg",
+        ),
+        produced=None,
+        tip=None,
+    )
+    html = _render_miss_card(ref)
+    # Image and audio elements should reference the package data path
+    # via Gradio's /gradio_api/file= scheme.
+    assert "<img" in html
+    assert "voiced_bilabial_fricative.png" in html
+    assert "/gradio_api/file=" in html
+    assert "<audio" in html
+    assert "voiced_bilabial_fricative.ogg" in html
+    # No produced side because produced is None.
+    assert "You said" not in html
