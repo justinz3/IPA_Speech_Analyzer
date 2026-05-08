@@ -216,6 +216,41 @@ def test_conflicting_lang_and_dialect_exits_nonzero(sine_wav_16k: Path) -> None:
     assert "Conflicting" in combined or "conflict" in combined.lower()
 
 
+def test_score_table_renders_misses_block_when_miss_references_present(sine_wav_16k: Path) -> None:
+    from vocal_ipa.coaching import MissReference, Phoneme, Tip
+
+    sr = _fake_score_result()
+    sr.miss_references = [
+        MissReference(
+            expected=Phoneme(token="β", name="voiced bilabial fricative"),
+            produced=Phoneme(token="v", name="voiced labiodental fricative"),
+            tip=Tip(
+                lang="es",
+                expected="β",
+                produced="v",
+                title="Don't use English [v]",
+                tip="Lips touch lightly without contact between lower lip and upper teeth.",
+            ),
+        )
+    ]
+    with patch("vocal_ipa.cli.score", return_value=sr):
+        result = runner.invoke(app, [str(sine_wav_16k), "--reference", "favor"])
+    assert result.exit_code == 0
+    assert "Misses (1 unique):" in result.stdout
+    assert "expected β  voiced bilabial fricative" in result.stdout
+    assert "produced v  voiced labiodental fricative" in result.stdout
+    assert "tip: Don't use English [v]" in result.stdout
+
+
+def test_score_table_omits_misses_block_when_no_miss_references(sine_wav_16k: Path) -> None:
+    sr = _fake_score_result()
+    # Default _fake_score_result has no miss_references populated.
+    with patch("vocal_ipa.cli.score", return_value=sr):
+        result = runner.invoke(app, [str(sine_wav_16k), "--reference", "casa"])
+    assert result.exit_code == 0
+    assert "Misses" not in result.stdout
+
+
 def test_score_table_shows_resolved_dialect(sine_wav_16k: Path) -> None:
     sr = _fake_score_result()
     sr.language = "es"

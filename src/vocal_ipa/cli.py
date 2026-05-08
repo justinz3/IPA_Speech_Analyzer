@@ -144,6 +144,40 @@ def _render_score_table(result: ScoreResult) -> str:
         lines.append(
             f"(dropped {result.dropped_reference_count} reference char(s) not in model vocab)"
         )
+    misses_block = _render_misses(result)
+    if misses_block:
+        lines.append("")
+        lines.append(misses_block)
+    return "\n".join(lines)
+
+
+def _render_misses(result: ScoreResult) -> str:
+    """Render the per-unique-miss comparison block. Empty string if no
+    miss has a coaching MissReference attached."""
+    if not result.miss_references:
+        return ""
+    blocks = [f"Misses ({len(result.miss_references)} unique):", ""]
+    for ref in result.miss_references:
+        blocks.append(_render_one_miss(ref))
+    return "\n".join(blocks)
+
+
+def _render_one_miss(ref) -> str:
+    lines = []
+    lines.append(f"  expected {ref.expected.token}  {ref.expected.name}")
+    for label, value in (("image", ref.expected.image), ("audio", ref.expected.audio)):
+        if value:
+            lines.append(f"            {label}: {value}")
+    if ref.produced is not None:
+        lines.append(f"  produced {ref.produced.token}  {ref.produced.name}")
+        for label, value in (("image", ref.produced.image), ("audio", ref.produced.audio)):
+            if value:
+                lines.append(f"            {label}: {value}")
+    if ref.tip is not None:
+        lines.append(f"  tip: {ref.tip.title}")
+        for tip_line in ref.tip.tip.rstrip().splitlines():
+            lines.append(f"       {tip_line}")
+    lines.append("")
     return "\n".join(lines)
 
 
