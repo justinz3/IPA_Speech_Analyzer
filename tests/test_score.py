@@ -187,3 +187,92 @@ def test_score_result_to_dict_is_jsonable(monkeypatch, tmp_path):
 def test_scored_phoneme_is_dataclass():
     p = ScoredPhoneme(expected="a", produced="a", start_s=0.0, end_s=0.04, score=-0.1, ok=True)
     assert p.ok is True
+
+
+# -- coaching integration: miss_reference population --------------------------
+
+
+def _patch_pipeline_for_inventory_tokens(monkeypatch, *, log_probs, target_ids, transcription):
+    """Variant of _patch_pipeline with a vocab that overlaps the coaching
+    inventory (β, v, y, i) — so lookup_miss finds entries."""
+    monkeypatch.setattr(
+        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "βvβ"
+    )
+    monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
+    vocab = {"<pad>": 0, "β": 1, "v": 2, "y": 3, "i": 4}
+    proc = _StubProcessor(vocab)
+    monkeypatch.setattr(score_module, "load", lambda model_id, dev: (proc, object()))
+    monkeypatch.setattr(
+        score_module,
+        "reference_to_token_ids",
+        lambda ref, p: (target_ids, ["β", "v", "β"]),
+    )
+    monkeypatch.setattr(
+        score_module,
+        "_run_model",
+        lambda *args, **kwargs: (transcription, log_probs, 0),
+    )
+
+
+def test_score_populates_miss_reference_for_known_inventory_token(monkeypatch, tmp_path):
+    # Targets [β, v, β]; model produces [β, β, β] (middle slot wrong).
+    log_probs = _flat_log_probs([1, 1, 1, 1, 1, 1])
+    _patch_pipeline_for_inventory_tokens(
+        monkeypatch,
+        log_probs=log_probs,
+        target_ids=[1, 2, 1],
+        transcription=_stub_transcription(),
+    )
+    audio = tmp_path / "ignored.wav"
+    audio.write_bytes(b"")
+
+    # The miss in question is (expected=v, produced=β), which has no override
+    # in the skeleton — so tip is None but the MissReference itself is real.
+    result = score(audio, "βvβ", lang="es")
+    assert [p.ok for p in result.phonemes] == [True, False, True]
+    miss = result.phonemes[1].miss_reference
+    assert miss is not None
+    assert miss.expected.token == "v"
+    assert miss.produced.token == "β"
+
+
+def test_score_dedups_miss_references_across_repeated_pairs(monkeypatch, tmp_path):
+    # Targets [β, v, β]; model produces [v, v, v] — two distinct misses
+    # but they share (expected, produced) keys: position 0 is (β, v) and
+    # position 2 is also (β, v); position 1 is correct.
+    log_probs = _flat_log_probs([2, 2, 2, 2, 2, 2])
+    _patch_pipeline_for_inventory_tokens(
+        monkeypatch,
+        log_probs=log_probs,
+        target_ids=[1, 2, 1],
+        transcription=_stub_transcription(),
+    )
+    audio = tmp_path / "ignored.wav"
+    audio.write_bytes(b"")
+
+    result = score(audio, "βvβ", lang="es")
+    # Both β-positions should have miss_reference populated (not deduped at
+    # the per-phoneme level)…
+    assert result.phonemes[0].miss_reference is not None
+    assert result.phonemes[2].miss_reference is not None
+    # …but the per-utterance summary list dedups by (expected, produced).
+    assert len(result.miss_references) == 1
+    assert result.miss_references[0].expected.token == "β"
+
+
+def test_score_miss_reference_is_none_when_token_not_in_inventory(monkeypatch, tmp_path):
+    # This is the existing _patch_pipeline (vocab has k/a/s/u — none in
+    # inventory). Misses get no coaching info; miss_references stays empty.
+    log_probs = _flat_log_probs([1, 1, 2, 2, 4, 4, 2, 2])
+    _patch_pipeline(
+        monkeypatch,
+        log_probs=log_probs,
+        target_ids=[1, 2, 3, 2],
+        transcription=_stub_transcription(),
+    )
+    audio = tmp_path / "ignored.wav"
+    audio.write_bytes(b"")
+
+    result = score(audio, "casa", lang="es")
+    assert result.miss_references == []
+    assert all(p.miss_reference is None for p in result.phonemes)

@@ -8,12 +8,13 @@ The CLI (`pronounce <audio> --reference ...`) and Gradio UI both call
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 import torch
 
 from .align import forced_align, reference_to_token_ids
+from .coaching import MissReference, lookup_miss
 from .model import DEFAULT_MODEL, load, resolve_device
 from .pipeline import Transcription, _run_model
 from .reference import resolve_locale, text_to_ipa
@@ -29,6 +30,7 @@ class ScoredPhoneme:
     end_s: float
     score: float  # mean per-frame log-prob of the expected token over the span
     ok: bool  # produced == expected
+    miss_reference: MissReference | None = None  # populated for misses; None for ok or out-of-inventory
 
 
 @dataclass
@@ -38,8 +40,12 @@ class ScoreResult:
     reference_ipa: str  # raw phonemizer output (pre-tokenization), for debugging
     transcription: Transcription  # the underlying free-transcribe result
     language: str  # canonical lang of the score (mirrors transcription.language)
-    dialect: str  # canonical dialect ("castilian", "latam", ...)
+    dialect: str  # canonical dialect code ("es-es", "es-419", "fr-fr")
     dropped_reference_count: int = 0  # tokens dropped during reference tokenization
+    miss_references: list[MissReference] = field(default_factory=list)
+    # Deduped by (expected, produced) preserving first occurrence; one entry
+    # per unique miss across the utterance. Empty if every phoneme is ok or
+    # if no miss has an inventory entry.
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -91,6 +97,8 @@ def score(
     correct = sum(1 for p in scored if p.ok)
     per = 1.0 - (correct / len(scored)) if scored else 0.0
 
+    miss_references = _attach_miss_references(scored, locale.lang)
+
     return ScoreResult(
         phonemes=scored,
         per=per,
@@ -99,7 +107,26 @@ def score(
         language=locale.lang,
         dialect=locale.dialect,
         dropped_reference_count=max(dropped, 0),
+        miss_references=miss_references,
     )
+
+
+def _attach_miss_references(scored: list[ScoredPhoneme], lang: str) -> list[MissReference]:
+    """Look up coaching info for each miss; mutate scored in place; return
+    a deduped per-utterance list keyed on (expected, produced).
+    """
+    seen: dict[tuple[str, str], MissReference] = {}
+    for p in scored:
+        if p.ok:
+            continue
+        ref = lookup_miss(lang, p.expected, p.produced)
+        if ref is None:
+            continue
+        p.miss_reference = ref
+        key = (p.expected, p.produced)
+        if key not in seen:
+            seen[key] = ref
+    return list(seen.values())
 
 
 def _score_span(
