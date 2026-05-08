@@ -15,8 +15,8 @@ import torch
 
 from .align import forced_align, reference_to_token_ids
 from .model import DEFAULT_MODEL, load, resolve_device
-from .pipeline import SUPPORTED_LANGUAGES, Transcription, _run_model
-from .reference import text_to_ipa
+from .pipeline import Transcription, _run_model
+from .reference import resolve_locale, text_to_ipa
 
 _BLANK_SURFACE = "∅"
 
@@ -37,6 +37,8 @@ class ScoreResult:
     per: float  # 1 - (correct / total)
     reference_ipa: str  # raw phonemizer output (pre-tokenization), for debugging
     transcription: Transcription  # the underlying free-transcribe result
+    language: str  # canonical lang of the score (mirrors transcription.language)
+    dialect: str  # canonical dialect ("castilian", "latam", ...)
     dropped_reference_count: int = 0  # tokens dropped during reference tokenization
 
     def to_dict(self) -> dict:
@@ -49,6 +51,7 @@ def score(
     audio_path: str | Path,
     reference_text: str,
     lang: str = "es",
+    dialect: str | None = None,
     device: str = "auto",
     model_id: str = DEFAULT_MODEL,
 ) -> ScoreResult:
@@ -58,15 +61,11 @@ def score(
     run model on audio → forced-align reference against log-probs →
     per-span argmax-vs-expected.
     """
-    if lang not in SUPPORTED_LANGUAGES:
-        raise ValueError(
-            f"Unsupported language {lang!r}; supported: {sorted(SUPPORTED_LANGUAGES)}. "
-            "See pronunciation_app_roadmap.md."
-        )
     if not reference_text.strip():
         raise ValueError("reference_text must be non-empty")
 
-    ref_ipa = text_to_ipa(reference_text, lang=lang)
+    locale = resolve_locale(lang, dialect)
+    ref_ipa = text_to_ipa(reference_text, lang=locale.lang, dialect=locale.dialect)
 
     dev = resolve_device(device)
     processor, _ = load(model_id, dev)  # LRU-cached; _run_model reuses the same load
@@ -79,7 +78,9 @@ def score(
             f"(phonemizer output: {ref_ipa!r})"
         )
 
-    transcription, log_probs, blank_id = _run_model(audio_path, lang, device, model_id)
+    transcription, log_probs, blank_id = _run_model(
+        audio_path, locale.lang, locale.dialect, device, model_id
+    )
     spans = forced_align(log_probs, target_ids, blank_id)
 
     id_to_token = {v: k for k, v in processor.tokenizer.get_vocab().items()}
@@ -95,6 +96,8 @@ def score(
         per=per,
         reference_ipa=ref_ipa,
         transcription=transcription,
+        language=locale.lang,
+        dialect=locale.dialect,
         dropped_reference_count=max(dropped, 0),
     )
 

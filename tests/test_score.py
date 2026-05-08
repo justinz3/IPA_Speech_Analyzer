@@ -87,7 +87,9 @@ class _StubProcessor:
 
 def _patch_pipeline(monkeypatch, *, log_probs, target_ids, transcription):
     """Wire up score()'s collaborators with deterministic returns."""
-    monkeypatch.setattr(score_module, "text_to_ipa", lambda text, lang="es": "kasa")
+    monkeypatch.setattr(
+        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "kasa"
+    )
     monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
     vocab = {"<pad>": 0, "k": 1, "a": 2, "s": 3, "u": 4}
     proc = _StubProcessor(vocab)
@@ -109,6 +111,7 @@ def _stub_transcription() -> Transcription:
         ipa="k a s a",
         raw_phonemes="k a s a",
         language="es",
+        dialect="castilian",
         model="stub",
         audio_seconds=0.16,
         model_load_seconds=0.0,

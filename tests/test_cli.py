@@ -20,6 +20,7 @@ def _fake_transcription() -> Transcription:
         ipa="o l a",
         raw_phonemes="  o   l   a  ",
         language="es",
+        dialect="castilian",
         model="facebook/wav2vec2-lv-60-espeak-cv-ft",
         audio_seconds=1.0,
         model_load_seconds=0.1,
@@ -46,6 +47,7 @@ def test_french_lang_is_accepted(sine_wav_16k: Path) -> None:
         ipa="b ɔ̃ ʒ u ʁ",
         raw_phonemes="b ɔ̃ ʒ u ʁ",
         language="fr",
+        dialect="parisian",
         model="facebook/wav2vec2-lv-60-espeak-cv-ft",
         audio_seconds=1.0,
         model_load_seconds=0.1,
@@ -119,6 +121,8 @@ def _fake_score_result(per: float = 0.25) -> ScoreResult:
         per=per,
         reference_ipa="kasa",
         transcription=_fake_transcription(),
+        language="es",
+        dialect="castilian",
     )
 
 
