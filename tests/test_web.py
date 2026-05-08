@@ -17,7 +17,7 @@ def test_build_app_constructs_without_error() -> None:
 def test_run_with_empty_audio_returns_helpful_message() -> None:
     from vocal_ipa.web import _run
 
-    ipa, raw, msg, scored = _run(None, "")
+    ipa, raw, msg, scored = _run(None, "", "es", None)
     assert ipa == ""
     assert raw == ""
     assert "audio" in msg.lower()
@@ -29,7 +29,7 @@ def test_run_with_reference_renders_scored_html(monkeypatch, tmp_path) -> None:
     from vocal_ipa.pipeline import Transcription
     from vocal_ipa.score import ScoredPhoneme, ScoreResult
 
-    def fake_score(audio_path, reference_text, lang="es"):
+    def fake_score(audio_path, reference_text, lang="es", dialect=None):
         return ScoreResult(
             phonemes=[
                 ScoredPhoneme(
@@ -71,10 +71,10 @@ def test_run_with_reference_renders_scored_html(monkeypatch, tmp_path) -> None:
     assert "1/2 phonemes wrong" in scored
 
 
-def _run_helper(audio_path, reference: str, lang: str = "es"):
+def _run_helper(audio_path, reference: str, lang: str = "es", dialect: str | None = None):
     from vocal_ipa.web import _run
 
-    return _run(str(audio_path), reference, lang)
+    return _run(str(audio_path), reference, lang, dialect)
 
 
 def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
@@ -85,8 +85,9 @@ def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
 
     captured = {}
 
-    def fake_score(audio_path, reference_text, lang="es"):
+    def fake_score(audio_path, reference_text, lang="es", dialect=None):
         captured["lang"] = lang
+        captured["dialect"] = dialect
         return ScoreResult(
             phonemes=[
                 ScoredPhoneme(
@@ -115,3 +116,59 @@ def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
     audio.write_bytes(b"")
     _run_helper(audio, reference="bonjour", lang="fr")
     assert captured["lang"] == "fr"
+    assert captured["dialect"] is None  # web sends None when "Default" picked
+
+
+def test_run_threads_dialect_into_score(monkeypatch, tmp_path) -> None:
+    """Selecting an explicit dialect must propagate to score()."""
+    from vocal_ipa import web as web_module
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+
+    captured = {}
+
+    def fake_score(audio_path, reference_text, lang="es", dialect=None):
+        captured["dialect"] = dialect
+        return ScoreResult(
+            phonemes=[
+                ScoredPhoneme(
+                    expected="m", produced="m", start_s=0.0, end_s=0.02, score=-0.1, ok=True
+                ),
+            ],
+            per=0.0,
+            reference_ipa="mansana",
+            transcription=Transcription(
+                ipa="m",
+                raw_phonemes="m",
+                language="es",
+                dialect="es-419",
+                model="stub",
+                audio_seconds=0.02,
+                model_load_seconds=0.0,
+                inference_seconds=0.0,
+            ),
+            language="es",
+            dialect="es-419",
+        )
+
+    monkeypatch.setattr(web_module, "score", fake_score)
+
+    audio = tmp_path / "fake.wav"
+    audio.write_bytes(b"")
+    _run_helper(audio, reference="manzana", lang="es", dialect="es-419")
+    assert captured["dialect"] == "es-419"
+
+
+def test_build_app_lays_out_lang_and_dialect_controls() -> None:
+    """The app must expose both Language and Dialect widgets."""
+    from vocal_ipa.web import build_app
+
+    app = build_app()
+    # Walk the components to find labels — Gradio Blocks expose .blocks dict.
+    labels = []
+    for component in app.blocks.values():
+        label = getattr(component, "label", None)
+        if isinstance(label, str):
+            labels.append(label)
+    assert "Language" in labels
+    assert "Dialect" in labels
