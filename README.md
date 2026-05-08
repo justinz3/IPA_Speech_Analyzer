@@ -12,7 +12,7 @@ short_description: Audio to IPA pronunciation feedback with per-phoneme scoring.
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 3 — Spanish and French, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 4 in progress — Spanish + French with dialect selection, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -81,13 +81,15 @@ Cached after that.
 ## Usage
 
 ```
-pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
-                  [--model HF_ID] [--raw] [--reference TEXT]
+pronounce <audio> [--lang es] [--dialect CODE] [--format text|json]
+                  [--device auto|cpu|cuda] [--model HF_ID] [--raw]
+                  [--reference TEXT]
 ```
 
 | Flag          | Default                                | Notes |
 |---------------|----------------------------------------|-------|
-| `--lang`      | `es`                                   | Language of the audio. Supports `es` (Spanish) and `fr` (French). |
+| `--lang`      | `es`                                   | Language or composite locale: `es`, `es-es`, `es-419`, `es-latam`, `fr`, `fr-fr`. |
+| `--dialect`   | (use `--lang` default)                 | Reference IPA dialect: codes (`es-es`, `es-419`, `fr-fr`) or aliases (`castilian`, `latam`, `parisian`). See **Dialects** below. |
 | `--format`    | `text`                                 | `text` is one IPA line (free transcribe) or a per-phoneme table (scoring). `json` includes timing/score fields. |
 | `--device`    | `auto`                                 | `auto` picks CUDA if available else CPU. |
 | `--model`     | `facebook/wav2vec2-lv-60-espeak-cv-ft` | Override at your own risk. |
@@ -95,6 +97,30 @@ pronounce <audio> [--lang es] [--format text|json] [--device auto|cpu|cuda]
 | `--reference` | unset                                  | When set, score audio against this sentence (forced alignment + per-phoneme errors). Cannot combine with `--raw`. |
 
 `pronounce --help` prints the full surface.
+
+### Dialects
+
+The reference IPA depends on which dialect you target. The most concrete
+case: in Castilian Spanish (`es-es`), `manzana` and `cinco` use `/θ/` for
+`z` and soft `c`; in Latin American Spanish (`es-419`) they use `/s/`. If
+you say "manSana" but the reference is Castilian, every `z` will get
+flagged. Set `--dialect` to match your target accent.
+
+| Code      | Alias       | Espeak code | Notes |
+|-----------|-------------|-------------|-------|
+| `es-es`   | `castilian` | `es`        | Default for `--lang es`. /θ/ on `z` and soft `c`. |
+| `es-419`  | `latam`     | `es-419`    | Latin American Spanish. /s/ instead of /θ/. |
+| `fr-fr`   | `parisian`  | `fr-fr`     | Default for `--lang fr`. The only French dialect espeak distinguishes at the IPA level. |
+
+Composite codes on `--lang` work too: `pronounce ... --lang es-419 --reference manzana`
+is the same as `pronounce ... --lang es --dialect latam`.
+
+**Why no Quebec / Belgian / Mexican entries?** Probing espeak-ng directly
+shows the IPA output is identical across `fr-fr`, `fr-be`, `fr-ch`, `fr-ca`
+(only the synthesized speech timbre differs, not the phonemic rules), and
+`es-mx` produces the same IPA as `es-419`. Real Quebec/Belgian dialect
+handling needs a different reference source than espeak; tracked as future
+work.
 
 ## How it works
 
@@ -222,8 +248,8 @@ Full plan: [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md).
 - **Phase 1:** Spanish-only audio → IPA CLI. ✓
 - **Phase 1.5:** Gradio web UI with mic recording. ✓
 - **Phase 2:** Forced alignment + per-phoneme scoring (Spanish, phoneme identity only — stress not scored). ✓
-- **Phase 3 (here):** Add French. Same scoring; no new ML — phonemizer's `fr-fr` and the multilingual model handle it.
-- **Phase 4:** Curated correction lookup (phoneme → articulatory diagram + reference video).
+- **Phase 3:** Add French. Same scoring; no new ML — phonemizer's `fr-fr` and the multilingual model handle it. ✓
+- **Phase 4 (in progress):** Dialect selection (es-es / es-419 / fr-fr) + curated coaching lookup (per-phoneme reference media + override tips for common error pairs).
 
 ## Development
 

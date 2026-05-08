@@ -40,10 +40,11 @@ phonetics.
 - **`θ → s` (or `ts`) for `z` and soft `c`** (`manzana`, `cinco`).
   Phonemizer defaults to Castilian Spanish (espeak `es` / `es-es`), which
   uses `/θ/` (English "th" in "thin"). Latin American Spanish uses `/s/`.
-  If your target is Latin American, the reference will mark your audio
-  "wrong" on every `z` and soft `c`. **Phase 4 should expose dialect
-  selection** — same pattern would apply for English regional accents
-  if/when English enters the pipeline.
+  **Fixed in Phase 4:** pass `--dialect latam` (alias) or `--dialect es-419`
+  (canonical) to switch the reference to LatAm. The composite form
+  `--lang es-419` is equivalent. The same pattern would apply for English
+  regional accents if/when English enters the pipeline; the dialect
+  machinery is reusable. Dropdown is wired up in the Gradio UI too.
 
 ## Reference orthography
 
