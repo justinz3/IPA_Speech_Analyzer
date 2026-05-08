@@ -1,0 +1,50 @@
+# Per-phoneme reference inventory for the coaching layer.
+#
+# Each entry is keyed on the IPA token the model emits / phonemizer outputs.
+# Fields:
+#   name    — the canonical IPA name (e.g., "voiced bilabial fricative")
+#   image   — relative path under data/phonemes/ to a sagittal articulator
+#             diagram (PNG/SVG). Sourced from Wikimedia Commons; null until
+#             the curation commit fills these in.
+#   audio   — relative path under data/phonemes/ to an OGG/WAV reference
+#             pronunciation. Same source. null until curated.
+#   video   — optional URL to a tutorial video. null in v1.
+#   notes   — optional language-specific prose. Keyed by language code.
+#
+# Inventory is populated incrementally:
+#   - This commit (4b-5): a starter set covering the entries the override
+#     library needs for tests to pass.
+#   - 4b-7: full sweep of every IPA token observed across the es+fr fixtures.
+#   - 4b-11: image and audio fields populated from Wikimedia Commons.
+
+β:
+  name: voiced bilabial fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    es: Realization of /b/ and /v/ between vowels in Spanish. Lips touch lightly without contact between lower lip and upper teeth.
+
+v:
+  name: voiced labiodental fricative
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: English `v` in `vine`. Lower lip touches upper teeth.
+
+y:
+  name: close front rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    fr: Heard in `tu`, `lune`, `huit`. No English equivalent — round the lips as for /u/ but place the tongue as for /i/.
+
+i:
+  name: close front unrounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: English `ee` in `see`. Tongue high and front, lips spread.

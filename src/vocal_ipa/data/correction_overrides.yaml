@@ -1,0 +1,24 @@
+# Sparse hand-written tips for common (expected, produced) error pairs.
+# When no override matches, the UI still shows expected vs produced
+# reference media — the tip is purely additive prose.
+#
+# Populated incrementally:
+#   - This commit (4b-5): one es entry + one fr entry to validate the schema.
+#   - 4b-8: full set lifted from spanish_failure_modes.md / french_failure_modes.md.
+
+- lang: es
+  expected: β
+  produced: v
+  title: Don't use English [v]
+  tip: |
+    Lips touch lightly without contact between lower lip and upper teeth.
+    Same articulation as a Spanish `b` between vowels — bilabial, not
+    labiodental.
+
+- lang: fr
+  expected: y
+  produced: i
+  title: Round the lips for /y/
+  tip: |
+    Hold the lips in a strict whistle/kiss shape, then say "ee". The lip
+    shape carries the rounding while the tongue stays in the /i/ position.
