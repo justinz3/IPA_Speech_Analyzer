@@ -4,12 +4,13 @@ System requirement: `espeak-ng` binary on PATH (`sudo apt install espeak-ng`).
 The python `phonemizer` package wraps the binary; without it, calls raise
 RuntimeError at first use (not at import time).
 
-Locale model: a (lang, dialect) pair. `lang` is the project's canonical
-ISO-639-1 code ("es", "fr"); `dialect` is a project-canonical short name
-("castilian", "latam", "parisian", "quebec", ...). Internally these resolve
-to an espeak language code, since espeak's codes are inconsistent — bare
-"es" works for Spanish but bare "fr" doesn't, and dialect codes vary in
-shape ("es-419", "es-mx", "fr-ca").
+Locale model: a (lang, dialect) pair. `lang` is the canonical ISO-639-1
+code ("es", "fr"); `dialect` is a canonical *locale code* ("es-es",
+"es-419", "fr-fr") — codes are the canonical identifiers, with human
+names like "castilian" / "latam" / "parisian" accepted as aliases.
+Internally each (lang, dialect) maps to an espeak code, which mostly
+matches the dialect code but isn't required to (espeak's codes are
+inconsistent — bare "es" works but bare "fr" doesn't).
 """
 
 from __future__ import annotations
@@ -26,22 +27,32 @@ class Locale:
     espeak: str     # espeak language code: "es", "es-419", "fr-fr", "fr-ca", ...
 
 
-# Canonical (lang, dialect) -> espeak code.
+# Canonical (lang, dialect) -> espeak code. Dialects are *codes*
+# ("es-es", "es-419", "fr-fr"), not human names — see _DIALECT_ALIASES
+# below for human-name → code resolution.
 #
 # Dialect support is reference-source-limited: espeak-ng's IPA output is
 # *identical* across French regional voices (fr-fr, fr-be, fr-ch, fr-ca) —
 # only the synthesized speech timbre differs, not the phonemic rules. And
 # `es-mx` produces the same IPA as `es-419`. So the only dialect distinction
-# that actually changes reference IPA is Spanish Castilian (/θ/ on z, soft c)
-# vs Latin American (/s/ instead). Real Quebec/Belgian dialect handling
-# would need a different reference source than espeak.
+# that actually changes reference IPA is Spanish Castilian (es-es, /θ/ on
+# z, soft c) vs Latin American (es-419, /s/ instead). Real Quebec/Belgian
+# dialect handling would need a different reference source than espeak.
 _DIALECT_MAP: dict[tuple[str, str], str] = {
-    ("es", "castilian"): "es",
-    ("es", "latam"):     "es-419",
-    ("fr", "parisian"):  "fr-fr",
+    ("es", "es-es"):  "es",
+    ("es", "es-419"): "es-419",
+    ("fr", "fr-fr"):  "fr-fr",
 }
 
-DEFAULT_DIALECT: dict[str, str] = {"es": "castilian", "fr": "parisian"}
+DEFAULT_DIALECT: dict[str, str] = {"es": "es-es", "fr": "fr-fr"}
+
+# Human-friendly aliases that resolve to canonical dialect codes.
+_DIALECT_ALIASES: dict[str, str] = {
+    "castilian": "es-es",
+    "latam":     "es-419",
+    "es-latam":  "es-419",
+    "parisian":  "fr-fr",
+}
 
 # Codes accepted on `lang`. Bare codes ("es", "fr") are unspecified-dialect
 # and let an explicit `dialect` arg override silently. Composite codes
@@ -50,12 +61,12 @@ DEFAULT_DIALECT: dict[str, str] = {"es": "castilian", "fr": "parisian"}
 _BARE_LANGS = frozenset({"es", "fr"})
 
 _LANG_ALIASES: dict[str, tuple[str, str]] = {
-    "es":       ("es", "castilian"),
-    "es-es":    ("es", "castilian"),
-    "es-419":   ("es", "latam"),
-    "es-latam": ("es", "latam"),
-    "fr":       ("fr", "parisian"),
-    "fr-fr":    ("fr", "parisian"),
+    "es":       ("es", "es-es"),
+    "es-es":    ("es", "es-es"),
+    "es-419":   ("es", "es-419"),
+    "es-latam": ("es", "es-419"),
+    "fr":       ("fr", "fr-fr"),
+    "fr-fr":    ("fr", "fr-fr"),
 }
 
 
@@ -68,9 +79,11 @@ def resolve_locale(lang: str, dialect: str | None = None) -> Locale:
     """Single normalization point for (lang, dialect) inputs.
 
     - `lang` may be a canonical code ("es", "fr") or any alias from
-      _LANG_ALIASES (e.g., "es-419", "fr-ca").
-    - `dialect`, if given, must be a canonical short name and match the lang.
-    - If `dialect` is None, uses the language's default (via the alias).
+      _LANG_ALIASES (e.g., "es-419", "es-latam").
+    - `dialect`, if given, may be a canonical code ("es-419", "fr-fr") or
+      a human alias from _DIALECT_ALIASES ("castilian", "latam"). Both
+      forms normalize to the same canonical code.
+    - If `dialect` is None, uses the language's default (via the lang alias).
     - Composite lang aliases that disagree with an explicit dialect raise.
     """
     if lang not in _LANG_ALIASES:
@@ -84,18 +97,21 @@ def resolve_locale(lang: str, dialect: str | None = None) -> Locale:
     if dialect is None:
         chosen = alias_dialect
     else:
-        if (canonical_lang, dialect) not in _DIALECT_MAP:
-            valid = sorted(d for (lc, d) in _DIALECT_MAP if lc == canonical_lang)
+        # Normalize human-name aliases to canonical codes before validating.
+        normalized = _DIALECT_ALIASES.get(dialect, dialect)
+        if (canonical_lang, normalized) not in _DIALECT_MAP:
+            valid_codes = sorted(d for (lc, d) in _DIALECT_MAP if lc == canonical_lang)
+            valid_aliases = sorted(a for a, c in _DIALECT_ALIASES.items() if c in valid_codes)
             raise ValueError(
                 f"Unsupported dialect {dialect!r} for language {canonical_lang!r}; "
-                f"valid dialects: {valid}."
+                f"valid codes: {valid_codes}; aliases: {valid_aliases}."
             )
-        if lang not in _BARE_LANGS and dialect != alias_dialect:
+        if lang not in _BARE_LANGS and normalized != alias_dialect:
             raise ValueError(
                 f"Conflicting language code and dialect: lang={lang!r} implies "
                 f"dialect={alias_dialect!r}, but dialect={dialect!r} was given."
             )
-        chosen = dialect
+        chosen = normalized
 
     return Locale(
         lang=canonical_lang,

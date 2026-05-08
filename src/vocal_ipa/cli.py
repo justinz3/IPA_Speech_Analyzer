@@ -11,6 +11,7 @@ import typer
 
 from .model import DEFAULT_MODEL
 from .pipeline import transcribe
+from .reference import resolve_locale
 from .score import ScoreResult, score
 
 app = typer.Typer(
@@ -21,8 +22,19 @@ app = typer.Typer(
 
 
 class Lang(StrEnum):
+    """Language code accepted on `--lang`.
+
+    Bare codes (es, fr) use the language's default dialect. Composite codes
+    (es-es, es-419, es-latam, fr-fr) pin a dialect that must agree with
+    `--dialect` if both are given.
+    """
+
     es = "es"
+    es_es = "es-es"
+    es_419 = "es-419"
+    es_latam = "es-latam"
     fr = "fr"
+    fr_fr = "fr-fr"
 
 
 class Fmt(StrEnum):
@@ -49,7 +61,19 @@ def main(
     audio: Path = typer.Argument(
         ..., exists=True, readable=True, help="Path to a WAV/FLAC/OGG audio file."
     ),
-    lang: Lang = typer.Option(Lang.es, "--lang", help="Language code (es, fr)."),
+    lang: Lang = typer.Option(
+        Lang.es,
+        "--lang",
+        help="Language or composite locale code (es, es-es, es-419, es-latam, fr, fr-fr).",
+    ),
+    dialect: str = typer.Option(
+        None,
+        "--dialect",
+        help=(
+            "Dialect override; codes (es-es, es-419, fr-fr) or aliases "
+            "(castilian, latam, parisian). Optional; defaults match --lang."
+        ),
+    ),
     fmt: Fmt = typer.Option(Fmt.text, "--format", help="Output format."),
     device: Device = typer.Option(Device.auto, "--device", help="Inference device."),
     model: str = typer.Option(DEFAULT_MODEL, "--model", help="Hugging Face model id."),
@@ -71,6 +95,11 @@ def main(
             "--raw cannot combine with --reference (raw is for free transcription)"
         )
 
+    try:
+        locale = resolve_locale(lang.value, dialect)
+    except ValueError as e:
+        raise typer.BadParameter(str(e)) from e
+
     if sys.stderr.isatty() and not _model_is_cached(model):
         typer.echo(
             f"Loading {model} (~1GB on first run; cached to ~/.cache/huggingface/)...",
@@ -78,14 +107,23 @@ def main(
         )
 
     if reference is None:
-        result = transcribe(audio, lang=lang.value, device=device.value, model_id=model)
+        result = transcribe(
+            audio, lang=locale.lang, dialect=locale.dialect, device=device.value, model_id=model
+        )
         if fmt is Fmt.text:
             typer.echo(result.raw_phonemes if raw else result.ipa)
         else:
             typer.echo(json.dumps(result.to_dict(include_raw=raw), ensure_ascii=False))
         return
 
-    score_result = score(audio, reference, lang=lang.value, device=device.value, model_id=model)
+    score_result = score(
+        audio,
+        reference,
+        lang=locale.lang,
+        dialect=locale.dialect,
+        device=device.value,
+        model_id=model,
+    )
     if fmt is Fmt.text:
         typer.echo(_render_score_table(score_result))
     else:
@@ -93,7 +131,8 @@ def main(
 
 
 def _render_score_table(result: ScoreResult) -> str:
-    lines = [f"{'expected':<10}{'produced':<10}{'start':<8}{'end':<8}{'ok'}"]
+    lines = [f"language: {result.language} ({result.dialect})", ""]
+    lines.append(f"{'expected':<10}{'produced':<10}{'start':<8}{'end':<8}{'ok'}")
     for p in result.phonemes:
         mark = "✓" if p.ok else "✗"
         lines.append(f"{p.expected:<10}{p.produced:<10}{p.start_s:<8.2f}{p.end_s:<8.2f}{mark}")

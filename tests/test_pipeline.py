@@ -14,7 +14,7 @@ def _trans(**overrides) -> Transcription:
         ipa="o l a",
         raw_phonemes="  o  l  a  ",
         language="es",
-        dialect="castilian",
+        dialect="es-es",
         model="facebook/wav2vec2-lv-60-espeak-cv-ft",
         audio_seconds=1.0,
         model_load_seconds=0.1,

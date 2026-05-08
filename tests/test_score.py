@@ -111,7 +111,7 @@ def _stub_transcription() -> Transcription:
         ipa="k a s a",
         raw_phonemes="k a s a",
         language="es",
-        dialect="castilian",
+        dialect="es-es",
         model="stub",
         audio_seconds=0.16,
         model_load_seconds=0.0,

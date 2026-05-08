@@ -45,14 +45,14 @@ def test_run_with_reference_renders_scored_html(monkeypatch, tmp_path) -> None:
                 ipa="k o",
                 raw_phonemes="k o",
                 language="es",
-                dialect="castilian",
+                dialect="es-es",
                 model="stub",
                 audio_seconds=0.1,
                 model_load_seconds=0.0,
                 inference_seconds=0.0,
             ),
             language="es",
-            dialect="castilian",
+            dialect="es-es",
         )
 
     monkeypatch.setattr(web_module, "score", fake_score)
@@ -99,14 +99,14 @@ def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
                 ipa="b",
                 raw_phonemes="b",
                 language="fr",
-                dialect="parisian",
+                dialect="fr-fr",
                 model="stub",
                 audio_seconds=0.02,
                 model_load_seconds=0.0,
                 inference_seconds=0.0,
             ),
             language="fr",
-            dialect="parisian",
+            dialect="fr-fr",
         )
 
     monkeypatch.setattr(web_module, "score", fake_score)

@@ -20,7 +20,7 @@ def _fake_transcription() -> Transcription:
         ipa="o l a",
         raw_phonemes="  o   l   a  ",
         language="es",
-        dialect="castilian",
+        dialect="es-es",
         model="facebook/wav2vec2-lv-60-espeak-cv-ft",
         audio_seconds=1.0,
         model_load_seconds=0.1,
@@ -47,7 +47,7 @@ def test_french_lang_is_accepted(sine_wav_16k: Path) -> None:
         ipa="b ɔ̃ ʒ u ʁ",
         raw_phonemes="b ɔ̃ ʒ u ʁ",
         language="fr",
-        dialect="parisian",
+        dialect="fr-fr",
         model="facebook/wav2vec2-lv-60-espeak-cv-ft",
         audio_seconds=1.0,
         model_load_seconds=0.1,
@@ -122,7 +122,7 @@ def _fake_score_result(per: float = 0.25) -> ScoreResult:
         reference_ipa="kasa",
         transcription=_fake_transcription(),
         language="es",
-        dialect="castilian",
+        dialect="es-es",
     )
 
 
@@ -160,3 +160,69 @@ def test_reference_with_unsupported_lang_exits_nonzero(sine_wav_16k: Path) -> No
     # Lang enum restricts to {es, fr}; ja is not in the enum, so typer rejects.
     result = runner.invoke(app, [str(sine_wav_16k), "--reference", "今日は", "--lang", "ja"])
     assert result.exit_code != 0
+
+
+# -- dialect plumbing ---------------------------------------------------------
+
+
+def test_lang_es_419_threads_canonical_dialect_code_to_transcribe(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return _fake_transcription()
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "es-419"])
+    assert result.exit_code == 0
+    assert captured["lang"] == "es"
+    assert captured["dialect"] == "es-419"
+
+
+def test_explicit_dialect_alias_resolves_to_canonical_code(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["dialect"] = dialect
+        return _fake_transcription()
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "es", "--dialect", "latam"])
+    assert result.exit_code == 0
+    # 'latam' alias must resolve to the canonical 'es-419' code internally.
+    assert captured["dialect"] == "es-419"
+
+
+def test_explicit_dialect_canonical_code_passes_through(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["dialect"] = dialect
+        return _fake_transcription()
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "es", "--dialect", "es-419"])
+    assert result.exit_code == 0
+    assert captured["dialect"] == "es-419"
+
+
+def test_conflicting_lang_and_dialect_exits_nonzero(sine_wav_16k: Path) -> None:
+    result = runner.invoke(
+        app, [str(sine_wav_16k), "--lang", "es-419", "--dialect", "castilian"]
+    )
+    assert result.exit_code != 0
+    combined = (result.stderr or "") + (result.stdout or "")
+    assert "Conflicting" in combined or "conflict" in combined.lower()
+
+
+def test_score_table_shows_resolved_dialect(sine_wav_16k: Path) -> None:
+    sr = _fake_score_result()
+    sr.language = "es"
+    sr.dialect = "es-419"
+    with patch("vocal_ipa.cli.score", return_value=sr):
+        result = runner.invoke(
+            app, [str(sine_wav_16k), "--reference", "manzana", "--lang", "es-419"]
+        )
+    assert result.exit_code == 0
+    assert "language: es (es-419)" in result.stdout
