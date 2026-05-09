@@ -856,3 +856,110 @@ yɛ5:
   video: null
   notes:
     cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+
+# === Japanese (Phase 5b) ===
+
+aː:
+  name: 'open central long vowel'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Long /a/ — Japanese moraic vowel doubling (e.g. お母さん o-ka-a-san). Pyopenjtalk emits 'a a' which we collapse to 'aː'."
+
+iː:
+  name: 'close front long vowel'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Long /i/ — moraic vowel doubling (e.g. 良い yo-i not lengthened, but おにいさん o-ni-i-san is)."
+
+uː:
+  name: 'close back long vowel'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Long /u/ — common in loanwords and certain native words (e.g. 風船 fu-u-sen)."
+
+kʲ:
+  name: 'voiceless palatalized velar plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese ky- onset (e.g. きゃ きゅ きょ). Velar /k/ with simultaneous palatalization."
+
+pʲ:
+  name: 'voiceless palatalized bilabial plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese py- onset (e.g. ぴゃ ぴゅ ぴょ)."
+
+bʲ:
+  name: 'voiced palatalized bilabial plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese by- onset (e.g. びゃ びゅ びょ)."
+
+dʑ:
+  name: 'voiced alveolo-palatal affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese j- onset (e.g. じ じゃ じゅ じょ). Realized as [ʑ] intervocalically."
+
+ç:
+  name: 'voiceless palatal fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese hy- onset (e.g. ひ ひゃ ひゅ ひょ). Allophone of /h/ before /i/ and /j/."
+
+ɸ:
+  name: 'voiceless bilabial fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese f- onset (e.g. ふ ふぁ ふぃ ふぇ). Bilabial, not labiodental like English /f/."
+
+mʲ:
+  name: 'voiced palatalized bilabial nasal'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese my- onset (e.g. みゃ みゅ みょ)."
+
+rʲ:
+  name: 'voiced palatalized alveolar approximant'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese ry- onset (e.g. りゃ りゅ りょ). Vocab uses rʲ; phonetically closer to ɾʲ but ɾʲ isn't a model token."
+
+ɴ:
+  name: 'voiced uvular nasal'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese moraic nasal (-ん, the special 'N' phoneme). Realized as [m n ŋ ɴ] depending on context; ɴ is the canonical citation form."
+
+ʔ:
+  name: 'glottal stop'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Japanese geminate marker (small っ — pyopenjtalk emits 'cl'). The ʔ token is the closest closure event in the model vocab; phonetically closer to consonant length than a true glottal stop."

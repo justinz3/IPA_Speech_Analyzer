@@ -54,6 +54,19 @@ def test_load_phonemes_contains_mandarin_inventory() -> None:
     assert "cmn" in inv["ts."].notes
 
 
+def test_load_phonemes_contains_japanese_inventory() -> None:
+    inv = load_phonemes()
+    # Phase 5b adds Japanese segmental tokens (after pyopenjtalk → IPA mapping
+    # and consecutive-same-vowel collapse).
+    for token in ("kʲ", "pʲ", "bʲ", "mʲ", "rʲ"):
+        assert token in inv, f"missing Japanese palatalized: {token!r}"
+    for token in ("dʑ", "ɕ", "ç", "ɸ", "ɴ", "ʔ"):
+        assert token in inv, f"missing Japanese consonant: {token!r}"
+    for token in ("aː", "iː", "uː"):
+        assert token in inv, f"missing Japanese long vowel: {token!r}"
+    assert "ja" in inv["ɴ"].notes
+
+
 def test_load_overrides_returns_typed_list() -> None:
     overrides = load_overrides()
     for entry in overrides:
