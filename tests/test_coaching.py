@@ -42,6 +42,18 @@ def test_load_phonemes_contains_skeleton_entries() -> None:
     assert "rounded" in inv["y"].name
 
 
+def test_load_phonemes_contains_mandarin_inventory() -> None:
+    inv = load_phonemes()
+    # Phase 5a adds Mandarin segmental tokens. Sample a few across categories
+    # so a missed YAML edit fails fast.
+    for token in ("ts.", "ts.h", "tɕh", "ɕ", "ʐ", "χ", "ŋ"):
+        assert token in inv, f"missing Mandarin consonant: {token!r}"
+    for token in ("ɑ1", "ɑ2", "ɑ5", "iɛ1", "i.5", "onɡ5", "ərɜ"):
+        assert token in inv, f"missing Mandarin vowel/tone token: {token!r}"
+    # Notes must include Mandarin commentary.
+    assert "cmn" in inv["ts."].notes
+
+
 def test_load_overrides_returns_typed_list() -> None:
     overrides = load_overrides()
     for entry in overrides:

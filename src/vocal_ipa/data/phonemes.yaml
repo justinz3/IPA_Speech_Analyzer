@@ -448,3 +448,403 @@ r:
   video: null
   notes:
     es: "Spanish `ll` in conservative dialects. Most modern speakers use /ʝ/ or /j/ instead (yeísmo)."
+
+
+# === Mandarin (Phase 5a) ===
+# espeak's cmn-latn-pinyin voice convention. Tones are baked into vowel
+# tokens (digit suffix or vowel-quality shift); the mapping is not 1:1
+# with pinyin tone numbers (espeak's '5' covers tones 1+4, etc.).
+# Phase 6 will add proper per-syllable pitch-contour scoring.
+
+
+kh:
+  name: 'voiceless aspirated velar plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'k' initial (kāi 开). Strong burst of air."
+
+ph:
+  name: 'voiceless aspirated bilabial plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'p' initial (pà 怕)."
+
+th:
+  name: 'voiceless aspirated alveolar plosive'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 't' initial (tā 他)."
+
+'s.':
+  name: 'voiceless retroflex sibilant fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'sh' initial. Tongue tip curled slightly back."
+
+ts:
+  name: 'voiceless alveolar affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'z' initial (zài 在)."
+
+tsh:
+  name: 'voiceless aspirated alveolar affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'c' initial (cài 菜)."
+
+'ts.':
+  name: 'voiceless retroflex affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'zh' initial. Retroflex 'sh' plus a stop release."
+
+'ts.h':
+  name: 'voiceless aspirated retroflex affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'ch' initial."
+
+tɕ:
+  name: 'voiceless alveolo-palatal affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'j' initial. Tongue blade against alveolar+palate."
+
+tɕh:
+  name: 'voiceless aspirated alveolo-palatal affricate'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'q' initial."
+
+ɕ:
+  name: 'voiceless alveolo-palatal fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'x' initial. Softer than English 'sh' with palate contact."
+
+ʐ:
+  name: 'voiced retroflex fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'r' initial. Often realized as approximant ɻ in casual speech."
+
+χ:
+  name: 'voiceless uvular fricative'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'h' initial — espeak's cmn-latn-pinyin voice emits the uvular variant."
+
+ŋ:
+  name: 'voiced velar nasal'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Pinyin 'ng' coda (zhōng 中). Mandarin syllables often end in -ng."
+
+ʲ:
+  name: 'palatalization marker'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Off-glide /y/ after vowels (tian → tʲɛn). Marks palatal coloring of the preceding consonant or following vowel.'
+
+a5:
+  name: 'open central unrounded vowel (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ai5:
+  name: 'Mandarin /ai/ falling diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ei5:
+  name: 'Mandarin /ei/ falling diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+'i.5':
+  name: 'apical retroflex vowel (after zh/ch/sh/r initials) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+i2:
+  name: 'close front unrounded vowel (espeak tone marker 2)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+i5:
+  name: 'close front unrounded vowel (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+iou5:
+  name: 'Mandarin /iou/ triphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+iɑ5:
+  name: 'Mandarin /iɑ/ rising diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+iɛ1:
+  name: 'Mandarin /iɛ/ rising diphthong (espeak tone marker 1)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+iɛ5:
+  name: 'Mandarin /iɛ/ rising diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+iɜ:
+  name: 'close front unrounded vowel (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+i̪5:
+  name: 'apical dental vowel (after z/c/s initials) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+o2:
+  name: 'close-mid back rounded vowel (espeak tone marker 2)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+o5:
+  name: 'close-mid back rounded vowel (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+onɡ5:
+  name: "Mandarin /oŋ/ with espeak's script-g coda (espeak tone marker 5)"
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ou5:
+  name: 'Mandarin /ou/ falling diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+oɜ:
+  name: 'close-mid back rounded vowel (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+u5:
+  name: 'close back rounded vowel (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+uoɜ:
+  name: 'Mandarin /uo/ rising diphthong (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+uə5:
+  name: 'Mandarin /uə/ rising diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+y5:
+  name: 'close front rounded vowel (Mandarin ü) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+yu5:
+  name: 'Mandarin /yu/ glide nucleus (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+yæ5:
+  name: 'Mandarin /yæ/ rising diphthong (üan) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+yə5:
+  name: 'Mandarin /yə/ rising diphthong (üe) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+yɛ5:
+  name: 'Mandarin /yɛ/ rising diphthong (üe alternate) (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑ1:
+  name: 'open back unrounded vowel (espeak tone marker 1)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑ2:
+  name: 'open back unrounded vowel (espeak tone marker 2)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑ5:
+  name: 'open back unrounded vowel (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑu2:
+  name: 'Mandarin /ɑu/ falling diphthong (espeak tone marker 2)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑu5:
+  name: 'Mandarin /ɑu/ falling diphthong (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ɑɜ:
+  name: 'open back unrounded vowel (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ə5:
+  name: 'mid-central schwa (espeak tone marker 5)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ərɜ:
+  name: 'Mandarin erhua /ər/ rhotic vowel (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+əɜ:
+  name: 'mid-central schwa (espeak rising-tone marker (ɜ))'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
