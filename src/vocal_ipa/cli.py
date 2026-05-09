@@ -16,7 +16,7 @@ from .score import ScoreResult, score
 
 app = typer.Typer(
     add_completion=False,
-    help="Audio -> IPA pronunciation transcription. Spanish, French, and Mandarin.",
+    help="Audio -> IPA pronunciation transcription. Spanish, French, Mandarin, Japanese.",
     no_args_is_help=True,
 )
 
@@ -24,10 +24,10 @@ app = typer.Typer(
 class Lang(StrEnum):
     """Language code accepted on `--lang`.
 
-    Bare codes (es, fr, cmn) use the language's default dialect. Composite
-    codes (es-es, es-419, es-latam, fr-fr, cmn-cn) pin a dialect that must
-    agree with `--dialect` if both are given. `zh` is a common alias for
-    `cmn` (ISO 639-1 macro code).
+    Bare codes (es, fr, cmn, ja) use the language's default dialect.
+    Composite codes (es-es, es-419, es-latam, fr-fr, cmn-cn, ja-jp) pin a
+    dialect that must agree with `--dialect` if both are given. `zh` is a
+    common alias for `cmn` (ISO 639-1 macro code).
     """
 
     es = "es"
@@ -39,6 +39,8 @@ class Lang(StrEnum):
     cmn = "cmn"
     cmn_cn = "cmn-cn"
     zh = "zh"
+    ja = "ja"
+    ja_jp = "ja-jp"
 
 
 class Fmt(StrEnum):
@@ -70,7 +72,7 @@ def main(
         "--lang",
         help=(
             "Language or composite locale code "
-            "(es, es-es, es-419, es-latam, fr, fr-fr, cmn, cmn-cn, zh)."
+            "(es, es-es, es-419, es-latam, fr, fr-fr, cmn, cmn-cn, zh, ja, ja-jp)."
         ),
     ),
     dialect: str = typer.Option(

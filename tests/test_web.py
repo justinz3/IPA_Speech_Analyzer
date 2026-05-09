@@ -173,6 +173,56 @@ def test_dialect_choices_includes_cmn() -> None:
     assert any(value is None for _label, value in cmn_choices)
 
 
+def test_dialect_choices_includes_ja() -> None:
+    from vocal_ipa.web import _DIALECT_CHOICES
+
+    assert "ja" in _DIALECT_CHOICES
+    ja_choices = _DIALECT_CHOICES["ja"]
+    assert len(ja_choices) >= 1
+    assert any(value is None for _label, value in ja_choices)
+
+
+def test_run_threads_ja_into_score(monkeypatch, tmp_path) -> None:
+    """Selecting Japanese in the radio must propagate to score()."""
+    from vocal_ipa import web as web_module
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+
+    captured = {}
+
+    def fake_score(audio_path, reference_text, lang="es", dialect=None):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return ScoreResult(
+            phonemes=[
+                ScoredPhoneme(
+                    expected="k", produced="k", start_s=0.0, end_s=0.02, score=-0.1, ok=True
+                ),
+            ],
+            per=0.0,
+            reference_ipa="k o ɴ n i tɕ i w a",
+            transcription=Transcription(
+                ipa="k",
+                raw_phonemes="k",
+                language="ja",
+                dialect="ja-jp",
+                model="stub",
+                audio_seconds=0.02,
+                model_load_seconds=0.0,
+                inference_seconds=0.0,
+            ),
+            language="ja",
+            dialect="ja-jp",
+        )
+
+    monkeypatch.setattr(web_module, "score", fake_score)
+    audio = tmp_path / "fake.wav"
+    audio.write_bytes(b"")
+    _run_helper(audio, reference="こんにちは", lang="ja")
+    assert captured["lang"] == "ja"
+    assert captured["dialect"] is None
+
+
 def test_run_threads_dialect_into_score(monkeypatch, tmp_path) -> None:
     """Selecting an explicit dialect must propagate to score()."""
     from vocal_ipa import web as web_module

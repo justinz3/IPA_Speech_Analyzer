@@ -31,9 +31,9 @@ a file). Leave **Reference text** empty for free transcription, or paste
 the sentence you meant to read to get per-phoneme scoring against the
 reference IPA.
 
-*Spanish, French, and Mandarin (Hanzi or pinyin input). The model loads
-on first use (~1 GB download), then subsequent runs take well under a
-second.*
+*Spanish, French, Mandarin (Hanzi or pinyin), and Japanese (Kanji + kana).
+The model loads on first use (~1 GB download), then subsequent runs take
+well under a second.*
 """
 
 _SCORED_STYLES = """
@@ -89,6 +89,10 @@ _DIALECT_CHOICES: dict[str, list[tuple[str, str | None]]] = {
     "cmn": [
         ("Default (cmn-cn Mandarin)", None),
         ("cmn-cn (Mandarin)", "cmn-cn"),
+    ],
+    "ja": [
+        ("Default (ja-jp)", None),
+        ("ja-jp", "ja-jp"),
     ],
 }
 
@@ -238,7 +242,7 @@ def build_app() -> gr.Blocks:
     with gr.Blocks(title="vocal-ipa-trainer") as app:
         gr.Markdown(DESCRIPTION)
         with gr.Row():
-            lang = gr.Radio(choices=["es", "fr", "cmn"], value="es", label="Language")
+            lang = gr.Radio(choices=["es", "fr", "cmn", "ja"], value="es", label="Language")
             dialect = gr.Dropdown(
                 choices=_DIALECT_CHOICES["es"],
                 value=None,

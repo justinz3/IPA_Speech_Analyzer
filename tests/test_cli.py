@@ -38,7 +38,8 @@ def test_help_shows_usage() -> None:
 
 
 def test_unsupported_language_exits_nonzero(sine_wav_16k: Path) -> None:
-    result = runner.invoke(app, [str(sine_wav_16k), "--lang", "ja"])
+    # 'ko' (Korean) isn't yet wired up — used as the stable unsupported probe.
+    result = runner.invoke(app, [str(sine_wav_16k), "--lang", "ko"])
     assert result.exit_code != 0
 
 
@@ -157,8 +158,8 @@ def test_reference_with_raw_is_rejected(sine_wav_16k: Path) -> None:
 
 
 def test_reference_with_unsupported_lang_exits_nonzero(sine_wav_16k: Path) -> None:
-    # Lang enum restricts to {es, fr}; ja is not in the enum, so typer rejects.
-    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "今日は", "--lang", "ja"])
+    # 'ko' isn't in the Lang enum; typer rejects before hitting the resolver.
+    result = runner.invoke(app, [str(sine_wav_16k), "--reference", "안녕", "--lang", "ko"])
     assert result.exit_code != 0
 
 
@@ -326,3 +327,47 @@ def test_cmn_cn_composite_is_accepted(sine_wav_16k: Path) -> None:
         result = runner.invoke(app, [str(sine_wav_16k), "--lang", "cmn-cn"])
     assert result.exit_code == 0
     assert captured["dialect"] == "cmn-cn"
+
+
+# -- Japanese (Phase 5b) ------------------------------------------------------
+
+
+def test_ja_lang_is_accepted(sine_wav_16k: Path) -> None:
+    fake = Transcription(
+        ipa="k o ɴ n i tɕ i w a",
+        raw_phonemes="k o ɴ n i tɕ i w a",
+        language="ja",
+        dialect="ja-jp",
+        model="facebook/wav2vec2-lv-60-espeak-cv-ft",
+        audio_seconds=1.0,
+        model_load_seconds=0.1,
+        inference_seconds=0.05,
+    )
+    with patch("vocal_ipa.cli.transcribe", return_value=fake):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "ja"])
+    assert result.exit_code == 0
+    assert "tɕ" in result.stdout
+
+
+def test_ja_jp_composite_threads_dialect(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return Transcription(
+            ipa="",
+            raw_phonemes="",
+            language="ja",
+            dialect="ja-jp",
+            model="",
+            audio_seconds=0.0,
+            model_load_seconds=0.0,
+            inference_seconds=0.0,
+        )
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "ja-jp"])
+    assert result.exit_code == 0
+    assert captured["lang"] == "ja"
+    assert captured["dialect"] == "ja-jp"
