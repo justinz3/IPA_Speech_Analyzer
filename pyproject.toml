@@ -30,6 +30,7 @@ dependencies = [
     "phonemizer>=3.2,<4.0",
     "jiwer>=3.0,<4.0",
     "pyyaml>=6.0,<7.0",
+    "pypinyin>=0.50,<1.0",
 ]
 
 [project.optional-dependencies]

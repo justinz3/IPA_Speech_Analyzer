@@ -62,6 +62,7 @@ def test_resolve_locale_composite_and_dialect_conflicting_raises():
 
 
 def test_resolve_locale_unsupported_language_raises():
+    # 'ja' (Japanese) is reserved for Phase 5b; not yet wired up.
     with pytest.raises(ValueError, match="Unsupported language"):
         resolve_locale("ja")
 
@@ -123,3 +124,69 @@ def test_unknown_language_raises_unsupported():
     # phonemizer is touched.
     with pytest.raises(ValueError, match="Unsupported language"):
         text_to_ipa("hello", lang="xx-xx")
+
+
+# -- Mandarin (Phase 5a) ------------------------------------------------------
+
+
+def test_mandarin_resolve_locale_cmn():
+    loc = resolve_locale("cmn")
+    assert loc == Locale(lang="cmn", dialect="cmn-cn", espeak="cmn-latn-pinyin")
+
+
+def test_mandarin_resolve_locale_zh_alias():
+    # ISO 639-1 macro code 'zh' is accepted as an alias for cmn.
+    loc = resolve_locale("zh")
+    assert loc.lang == "cmn"
+    assert loc.dialect == "cmn-cn"
+
+
+def test_mandarin_hanzi_input_produces_ipa():
+    # 你好 → routes through pypinyin → numeric pinyin → espeak cmn-latn-pinyin.
+    out = text_to_ipa("你好", lang="cmn")
+    # Espeak Mandarin emits the close-front vowel (with tone digit) for 'ni'
+    # and a uvular fricative + diphthong+tone for 'hao'. The exact tone
+    # digits are espeak's internal encoding (not pinyin tone numbers).
+    assert "i" in out
+    assert "χ" in out
+
+
+def test_mandarin_diacritic_input_matches_hanzi():
+    # The three input forms — Hanzi, diacritic pinyin, numeric pinyin —
+    # must converge on identical IPA for the same utterance. This is the
+    # invariant that makes pinyin support useful in the first place.
+    via_hanzi = text_to_ipa("你好", lang="cmn")
+    via_diacritic = text_to_ipa("nǐ hǎo", lang="cmn")
+    via_numeric = text_to_ipa("ni3 hao3", lang="cmn")
+    assert via_hanzi == via_diacritic == via_numeric
+
+
+def test_mandarin_zh_alias_routes_to_same_path():
+    via_cmn = text_to_ipa("ni3 hao3", lang="cmn")
+    via_zh = text_to_ipa("ni3 hao3", lang="zh")
+    assert via_cmn == via_zh
+
+
+def test_mandarin_zhongguo_uses_retroflex_initial():
+    # 中国 should produce espeak's retroflex affricate `ts.` (zh initial)
+    # plus the velar stop `k` (g initial).
+    out = text_to_ipa("中国", lang="cmn")
+    assert "ts." in out
+    assert "k" in out
+
+
+def test_mandarin_neutral_tone_via_pypinyin_with_five():
+    # pypinyin is configured with neutral_tone_with_five=True so all
+    # syllables get an explicit tone digit (matches the parser's output).
+    # 妈妈 — first syllable has tone 1, second is dictionary tone 1 too;
+    # use a sentence where the parser-vs-pypinyin tone defaulting matters.
+    out_hanzi = text_to_ipa("妈妈", lang="cmn")
+    out_pinyin = text_to_ipa("ma1 ma1", lang="cmn")
+    assert out_hanzi == out_pinyin
+
+
+def test_spanish_path_unchanged_by_mandarin_dispatch():
+    # Make sure the cmn dispatch in text_to_ipa() doesn't accidentally
+    # affect non-cmn locales.
+    assert text_to_ipa("hola", lang="es") == "ola"
+    assert "θ" in text_to_ipa("manzana", lang="es")
