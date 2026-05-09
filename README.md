@@ -5,14 +5,14 @@ sdk_version: 5.50.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish and French.
+short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish, French, Mandarin, Japanese.
 ---
 
 # vocal-ipa-trainer
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 4 — Spanish + French with dialect selection and coaching tips, experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 5 — Spanish, French, Mandarin, and Japanese, segmental scoring, experimental. Tone/pitch-accent scoring lands in Phase 6. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -106,7 +106,7 @@ pronounce <audio> [--lang es] [--dialect CODE] [--format text|json]
 
 | Flag          | Default                                | Notes |
 |---------------|----------------------------------------|-------|
-| `--lang`      | `es`                                   | Language or composite locale: `es`, `es-es`, `es-419`, `es-latam`, `fr`, `fr-fr`. |
+| `--lang`      | `es`                                   | Language or composite locale: `es`, `es-es`, `es-419`, `es-latam`, `fr`, `fr-fr`, `cmn`, `cmn-cn`, `zh`, `ja`, `ja-jp`. |
 | `--dialect`   | (use `--lang` default)                 | Reference IPA dialect: codes (`es-es`, `es-419`, `fr-fr`) or aliases (`castilian`, `latam`, `parisian`). See **Dialects** below. |
 | `--format`    | `text`                                 | `text` is one IPA line (free transcribe) or a per-phoneme table (scoring). `json` includes timing/score fields. |
 | `--device`    | `auto`                                 | `auto` picks CUDA if available else CPU. |
@@ -115,6 +115,15 @@ pronounce <audio> [--lang es] [--dialect CODE] [--format text|json]
 | `--reference` | unset                                  | When set, score audio against this sentence (forced alignment + per-phoneme errors). Cannot combine with `--raw`. |
 
 `pronounce --help` prints the full surface.
+
+### Languages
+
+| Code | Aliases | Reference IPA source | Notes |
+|------|---------|----------------------|-------|
+| `es` | `es-es`, `es-419`, `es-latam` | espeak-ng | Two dialects: Castilian (`es-es`) and Latin American (`es-419`). |
+| `fr` | `fr-fr` | espeak-ng | One dialect at the IPA level (`fr-fr`). |
+| `cmn` | `cmn-cn`, `zh` | espeak `cmn-latn-pinyin` via pypinyin | Accepts Hanzi (e.g., `你好`) or pinyin (diacritic `nǐ hǎo` or numeric `ni3 hao3`). Tone digits embedded in vowel tokens (`ɑ1`, `iɛ2`); tones register as wrong-token misses in the segmental scorer. Full pitch-contour tone scoring lands in Phase 6. |
+| `ja` | `ja-jp` | pyopenjtalk | Accepts any mix of Kanji/hiragana/katakana. Consecutive same-vowel pairs collapsed to Vː (long vowel). **Caveat:** the wav2vec2 model emits English-like phonemes for Japanese audio due to degraded training labels (espeak-ja was broken). PER thresholds are loose; a Japanese-finetuned checkpoint would improve accuracy. |
 
 ### Dialects
 
@@ -293,6 +302,8 @@ LibriVox-derived fixture set or accepting model output drift):
 uv sync --extra fixtures
 uv run python scripts/fetch_fixtures.py --language es        # default 5 Spanish clips from MLS
 uv run python scripts/fetch_fixtures.py --language fr -n 10  # 10 French clips
+uv run python scripts/fetch_fixtures.py --language cmn -n 5  # 5 Mandarin clips (ST-CMDS)
+uv run python scripts/fetch_fixtures.py --language ja -n 5   # 5 Japanese clips (JSUT)
 uv run python scripts/regen_goldens.py         # frozen IPA snapshots (free transcribe)
 uv run python scripts/regen_score_goldens.py   # frozen per-phoneme score snapshots
 ```

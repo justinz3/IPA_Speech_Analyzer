@@ -77,15 +77,31 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - **Coaching lookup**: per-phoneme reference media (image/audio/video) is the foundation, with hand-written override tips for common error pairs as an additive layer. ~52 phoneme entries cover the es+fr inventory; 13 override tips lifted from the failure-modes docs (β/v, ɾ/r, x/h, tʃ/dʒ for es; y/i, ø/eː, ʁ/∅, t→tʃ for fr).
 - **Phoneme media is deferred.** The plumbing is wired (CLI prints image/audio paths, Gradio renders `<img>`/`<audio>` via `allowed_paths`), but no PNG/OGG files ship in v1. Curation from Wikimedia Commons (CC-BY-SA / public domain) is a follow-up content commit — no engineering blocker.
 
-### Phase 5 — Add another language
-- Mandarin (tonal scoring is a *new* ML problem — pitch contour extraction + DTW vs canonical tone shapes) or Japanese (pitch accent — also a pitch contour problem, simpler)
-- Pick by motivation
+### Phase 5 — Mandarin + Japanese (segmental only) ✓ (2026-05-09)
+- **Mandarin (5a):** Hanzi and pinyin input both accepted. Reference IPA via espeak's `cmn-latn-pinyin` voice (the default `cmn` voice is broken — falls back to English mid-utterance). Hanzi → pypinyin → numeric pinyin → espeak; diacritic/numeric pinyin → parser → espeak. Tone digits baked into vowel tokens (`ɑ1`, `iɛ2`, `ɑ5` etc.) so tone errors register as wrong-vowel-token misses in the segmental scorer.
+- **Japanese (5b):** Reference IPA via pyopenjtalk (espeak's `ja` voice is also broken). Arbitrary Kanji/hiragana/katakana input supported; pyopenjtalk's romaji phoneme set mapped to IPA via a 35-entry table; consecutive same-vowel pairs collapsed to Vː. **Caveat:** the wav2vec2 model emits English-like phonemes (aɪ, e̞) for Japanese audio because espeak-ja was broken during training — PER thresholds are loose (0.85). A Japanese-finetuned wav2vec2 checkpoint would fix this.
+- CLI and Gradio UI extended to `[es, fr, cmn, ja]`. Phoneme inventory extended to 117 entries.
+- 5 Mandarin fixtures (ST-CMDS, may overlap with model fine-tune set) + 5 Japanese fixtures (JSUT basic5000, no leakage).
 
-### Phase 6 — Optional polish
+### Phase 6 — Prosody subsystems (pitch, intensity, stress, intonation)
+- **Architecture:** language-agnostic extractors per physical dimension (pitch via `librosa.pyin`, intensity via numpy RMS) + small per-language adapters (unit segmenter, reference loader) + language-independent scorer styles (contour-shape, peak-location, phrase-slope).
+- **Mandarin tones:** DTW or simpler shape features over syllable nuclei. Fixes the v1 floor where tones 1+4 collapse and tone 3 is partially absent.
+- **Japanese pitch accent:** high/low per mora + downstep location from accent dictionary.
+- **Spanish stress:** re-thread `ˈ`/`ˌ` tokens through the pipeline + peak detection on pitch + intensity + duration.
+- **French intonation:** utterance-end pitch slope vs declarative/interrogative tag from punctuation.
+- `text_to_ipa()` promoted to return `(ipa, metadata)` at this phase; Phase 5 keeps the `str` return until the prosody path actually needs it.
+
+### Phase 7 — IPA encyclopedia + phoneme media curation
+- Game-style tooltips on every IPA token rendered (score table, miss cards, free-transcription output): hover/tap → name + 1-line description + link to encyclopedia entry. Currently the page shows raw tokens (β, ʁ, y, ɛ̃) that are opaque to anyone who doesn't already know IPA.
+- Dedicated reference page (Gradio tab or route) showing the full inventory grouped by manner/place (consonants) and height/backness (vowels). Reuses `coaching.load_phonemes()` — no parallel data source.
+- Phoneme media curation from Wikimedia Commons (CC-BY-SA / public domain): PNG diagrams + OGG audio per phoneme, populating the existing null `image`/`audio` fields in `phonemes.yaml`. The plumbing already serves these via Gradio's `allowed_paths`; this commit just adds the files and `LICENSES.md` attribution.
+- Mostly content + frontend polish; little engineering risk. Inventory grows alongside Phase 5's added language(s).
+
+### Phase 8 — Optional polish
 - Web UI / containerize / deploy
 - IaC (CDK) tier only if still motivated and resume-shaped value still feels missing
 
-### Phase 7 — Read-aloud companion (exploratory, "borderline another project")
+### Phase 9 — Read-aloud companion (exploratory, "borderline another project")
 Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets pronunciation feedback as they go. Phonetic scoring is solved by Phase 2–3; the *new* work is **position tracking** — knowing where in the OCR'd text the reader currently is so divergences can be flagged in context.
 - Cheap version (today, no code): OCR a page elsewhere, paste into the Reference field, record, score. Already works.
 - v1: in-app OCR (Apple Vision / Google Vision / Tesseract) → reference text → batched scoring. One page at a time.
@@ -93,7 +109,7 @@ Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets p
 - **Manga is its own research project.** Chinese/Japanese manga reads non-linearly (panel order, speech bubbles, vertical / RTL text); sequential position tracking won't work without upstream panel+bubble detection. Standard L→R book pages are the v1 target; manga is explicitly out of scope until v3+.
 - **Watch for scope creep.** This is borderline its own project — the only reason it lives here is that it consumes the phonetic scorer's output. Don't let v2 work pull focus from Phase 3 (French) or Phase 4 (curated corrections), which unlock the project's core value.
 
-Portfolio value is unlocked by end of Phase 4. Phases 5–7 are bonus.
+Portfolio value is unlocked by end of Phase 4. Phases 5–9 are bonus.
 
 ## First concrete tasks (Phase 1)
 
