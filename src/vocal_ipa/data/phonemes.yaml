@@ -848,3 +848,11 @@ yɛ5:
   video: null
   notes:
     cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'
+
+ə1:
+  name: 'mid-central schwa (espeak tone marker 1)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: 'Pinyin syllable nucleus (espeak emits this for the cmn-latn-pinyin voice).'

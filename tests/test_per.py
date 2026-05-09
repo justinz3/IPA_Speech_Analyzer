@@ -24,9 +24,18 @@ from vocal_ipa.reference import text_to_ipa
 FIXTURES = Path(__file__).parent / "data" / "fixtures"
 MANIFEST = FIXTURES / "manifest.json"
 
-# Loose threshold: espeak references and the model's espeak-trained output
+# Loose thresholds: espeak references and the model's espeak-trained output
 # disagree more than you'd think due to dialect coverage and allophone choices.
-PER_THRESHOLD = 0.35
+# Per-language because Mandarin's PER baseline is much higher than es/fr —
+# espeak's cmn-latn-pinyin tone digits don't 1:1 match the model's tone-bearing
+# vowel tokens (tones 1+4 collapse onto `5`, tone 3 emits as vowel-quality
+# shift instead of a digit), which inflates segmental PER. Phase 6's prosody
+# work should tighten this once tone scoring moves out of the segmental path.
+PER_THRESHOLDS = {
+    "es": 0.35,
+    "fr": 0.35,
+    "cmn": 0.70,
+}
 
 
 def _fixture_params():
@@ -50,9 +59,10 @@ def test_per_under_threshold(entry: dict) -> None:
     hypothesis = transcribe(audio, lang=lang).ipa
 
     rate = phoneme_error_rate(hypothesis, reference)
-    assert rate < PER_THRESHOLD, (
+    threshold = PER_THRESHOLDS[lang]
+    assert rate < threshold, (
         f"\n  clip:       {clip_id} ({lang})"
-        f"\n  PER:        {rate:.3f} (threshold {PER_THRESHOLD})"
+        f"\n  PER:        {rate:.3f} (threshold {threshold})"
         f"\n  reference:  {reference!r}"
         f"\n  hypothesis: {hypothesis!r}"
     )

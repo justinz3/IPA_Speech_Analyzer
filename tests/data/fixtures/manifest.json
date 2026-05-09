@@ -178,5 +178,65 @@
     "config": "french",
     "split": "test",
     "license": "CC-BY 4.0 (LibriVox public-domain audio)"
+  },
+  {
+    "id": "cmn_001",
+    "audio": "cmn_001.flac",
+    "transcript": "cmn_001.txt",
+    "speaker_id": "",
+    "duration_seconds": 4.64,
+    "language": "cmn",
+    "source_dataset": "urarik/free_st_chinese_mandarin_corpus",
+    "config": "",
+    "split": "test",
+    "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
+  },
+  {
+    "id": "cmn_002",
+    "audio": "cmn_002.flac",
+    "transcript": "cmn_002.txt",
+    "speaker_id": "",
+    "duration_seconds": 4.2,
+    "language": "cmn",
+    "source_dataset": "urarik/free_st_chinese_mandarin_corpus",
+    "config": "",
+    "split": "test",
+    "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
+  },
+  {
+    "id": "cmn_003",
+    "audio": "cmn_003.flac",
+    "transcript": "cmn_003.txt",
+    "speaker_id": "",
+    "duration_seconds": 3.89,
+    "language": "cmn",
+    "source_dataset": "urarik/free_st_chinese_mandarin_corpus",
+    "config": "",
+    "split": "test",
+    "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
+  },
+  {
+    "id": "cmn_004",
+    "audio": "cmn_004.flac",
+    "transcript": "cmn_004.txt",
+    "speaker_id": "",
+    "duration_seconds": 4.3,
+    "language": "cmn",
+    "source_dataset": "urarik/free_st_chinese_mandarin_corpus",
+    "config": "",
+    "split": "test",
+    "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
+  },
+  {
+    "id": "cmn_005",
+    "audio": "cmn_005.flac",
+    "transcript": "cmn_005.txt",
+    "speaker_id": "",
+    "duration_seconds": 6.02,
+    "language": "cmn",
+    "source_dataset": "urarik/free_st_chinese_mandarin_corpus",
+    "config": "",
+    "split": "test",
+    "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
   }
 ]

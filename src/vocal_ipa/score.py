@@ -30,7 +30,9 @@ class ScoredPhoneme:
     end_s: float
     score: float  # mean per-frame log-prob of the expected token over the span
     ok: bool  # produced == expected
-    miss_reference: MissReference | None = None  # populated for misses; None for ok or out-of-inventory
+    miss_reference: MissReference | None = (
+        None  # populated for misses; None for ok or out-of-inventory
+    )
 
 
 @dataclass

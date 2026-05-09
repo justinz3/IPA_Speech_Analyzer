@@ -87,9 +87,7 @@ class _StubProcessor:
 
 def _patch_pipeline(monkeypatch, *, log_probs, target_ids, transcription):
     """Wire up score()'s collaborators with deterministic returns."""
-    monkeypatch.setattr(
-        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "kasa"
-    )
+    monkeypatch.setattr(score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "kasa")
     monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
     vocab = {"<pad>": 0, "k": 1, "a": 2, "s": 3, "u": 4}
     proc = _StubProcessor(vocab)
@@ -195,9 +193,7 @@ def test_scored_phoneme_is_dataclass():
 def _patch_pipeline_for_inventory_tokens(monkeypatch, *, log_probs, target_ids, transcription):
     """Variant of _patch_pipeline with a vocab that overlaps the coaching
     inventory (β, v, y, i) — so lookup_miss finds entries."""
-    monkeypatch.setattr(
-        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "βvβ"
-    )
+    monkeypatch.setattr(score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "βvβ")
     monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
     vocab = {"<pad>": 0, "β": 1, "v": 2, "y": 3, "i": 4}
     proc = _StubProcessor(vocab)
@@ -264,9 +260,7 @@ def test_score_miss_reference_is_none_when_token_not_in_inventory(monkeypatch, t
     # Use synthetic non-IPA tokens (Q, R, S) that are guaranteed not to be
     # in the real phonemes.yaml inventory. Misses get no coaching info;
     # miss_references stays empty — graceful degradation, no runtime error.
-    monkeypatch.setattr(
-        score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "QRQ"
-    )
+    monkeypatch.setattr(score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "QRQ")
     monkeypatch.setattr(score_module, "resolve_device", lambda dev: "cpu")
     vocab = {"<pad>": 0, "Q": 1, "R": 2, "S": 3}
     proc = _StubProcessor(vocab)

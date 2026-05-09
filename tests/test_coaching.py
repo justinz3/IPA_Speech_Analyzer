@@ -110,10 +110,11 @@ def test_lookup_miss_french_override_works() -> None:
 # -- inventory coverage ------------------------------------------------------
 
 
-def test_phoneme_inventory_covers_observed_es_fr_tokens() -> None:
+def test_phoneme_inventory_covers_observed_fixture_tokens() -> None:
     """Every IPA token observed across the fixture transcribe goldens must
     have a Phoneme entry. Catches inventory gaps at test time before they
-    become silent runtime nulls."""
+    become silent runtime nulls. Covers every language present in the
+    manifest (es, fr, cmn as of Phase 5a)."""
     import json
     from pathlib import Path
 
