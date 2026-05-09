@@ -50,9 +50,18 @@ _DIALECT_MAP: dict[tuple[str, str], str] = {
     # Mandarin uses espeak's pinyin-input voice; the default `cmn` voice
     # falls back to English IPA mid-utterance and is unusable.
     ("cmn", "cmn-cn"): "cmn-latn-pinyin",
+    # Japanese bypasses espeak entirely (espeak's `ja` voice falls back
+    # to English mid-utterance); the value is a label only — text_to_ipa
+    # routes through pyopenjtalk before the espeak field is consulted.
+    ("ja", "ja-jp"): "ja",
 }
 
-DEFAULT_DIALECT: dict[str, str] = {"es": "es-es", "fr": "fr-fr", "cmn": "cmn-cn"}
+DEFAULT_DIALECT: dict[str, str] = {
+    "es": "es-es",
+    "fr": "fr-fr",
+    "cmn": "cmn-cn",
+    "ja": "ja-jp",
+}
 
 # Human-friendly aliases that resolve to canonical dialect codes.
 _DIALECT_ALIASES: dict[str, str] = {
@@ -66,7 +75,7 @@ _DIALECT_ALIASES: dict[str, str] = {
 # and let an explicit `dialect` arg override silently. Composite codes
 # ("es-419", "es-es", ...) pin a dialect; passing a conflicting `dialect`
 # arg alongside one is an error.
-_BARE_LANGS = frozenset({"es", "fr", "cmn"})
+_BARE_LANGS = frozenset({"es", "fr", "cmn", "ja"})
 
 _LANG_ALIASES: dict[str, tuple[str, str]] = {
     "es": ("es", "es-es"),
@@ -78,6 +87,8 @@ _LANG_ALIASES: dict[str, tuple[str, str]] = {
     "cmn": ("cmn", "cmn-cn"),
     "cmn-cn": ("cmn", "cmn-cn"),
     "zh": ("cmn", "cmn-cn"),  # ISO 639-1 macro code, common alias
+    "ja": ("ja", "ja-jp"),
+    "ja-jp": ("ja", "ja-jp"),
 }
 
 
@@ -138,13 +149,16 @@ def text_to_ipa(text: str, lang: str = "es", dialect: str | None = None) -> str:
     is itself an approximation (espeak rules are imperfect, dialect varies),
     so use it as a soft oracle for PER, not absolute ground truth.
 
-    Mandarin (lang="cmn"/"zh") routes through a separate path that converts
-    Hanzi to numeric pinyin via pypinyin (or normalizes pinyin input) and
-    then feeds espeak's `cmn-latn-pinyin` voice — see _mandarin_text_to_ipa.
+    Mandarin (lang="cmn"/"zh") routes through espeak's `cmn-latn-pinyin`
+    voice via pypinyin or the diacritic-pinyin parser. Japanese (lang="ja")
+    routes through pyopenjtalk + a per-phoneme IPA map (espeak's `ja` voice
+    is broken — falls back to English IPA mid-utterance).
     """
     locale = resolve_locale(lang, dialect)
     if locale.lang == "cmn":
         return _mandarin_text_to_ipa(text, locale.espeak)
+    if locale.lang == "ja":
+        return _japanese_text_to_ipa(text)
     out = phonemize(
         text,
         language=locale.espeak,
@@ -193,3 +207,88 @@ def _mandarin_text_to_ipa(text: str, espeak_voice: str) -> str:
         with_stress=False,
     )
     return " ".join(out.split())
+
+
+# pyopenjtalk emits its own romaji-style phoneme set; we map each phoneme to
+# the closest IPA token available in the wav2vec2 model vocab. Some surface
+# distinctions are dropped: gʲ collapses to ɡ (no gʲ in vocab), devoiced
+# vowels (capital I/U) collapse to plain forms, and the geminate marker `cl`
+# is replaced by the glottal stop ʔ (best available in vocab; not phonetically
+# accurate but at least represents a closure event the model can recognize).
+_PYOPENJTALK_TO_IPA: dict[str, str] = {
+    # Vowels
+    "a": "a",
+    "i": "i",
+    "u": "u",
+    "e": "e",
+    "o": "o",
+    "I": "i",
+    "U": "u",  # devoiced — collapse to plain (not in vocab)
+    # Stops
+    "k": "k",
+    "ky": "kʲ",
+    "g": "ɡ",
+    "gy": "ɡ",  # vocab has no gʲ, drop palatalization
+    "p": "p",
+    "py": "pʲ",
+    "b": "b",
+    "by": "bʲ",
+    "t": "t",
+    "d": "d",
+    # Affricates
+    "ts": "ts",
+    "ch": "tɕ",
+    "j": "dʑ",
+    # Fricatives
+    "s": "s",
+    "sh": "ɕ",
+    "z": "z",
+    "h": "h",
+    "hy": "ç",
+    "f": "ɸ",
+    # Nasals
+    "n": "n",
+    "ny": "ɲ",
+    "m": "m",
+    "my": "mʲ",
+    # Liquids — Japanese r is alveolar tap; rʲ (palatalized) is in vocab,
+    # ɾʲ is not, so palatalized "ry" maps to rʲ for vocab compatibility.
+    "r": "ɾ",
+    "ry": "rʲ",
+    # Glides
+    "w": "w",
+    "y": "j",
+    # Special
+    "N": "ɴ",  # moraic nasal (-ん)
+    "cl": "ʔ",  # geminate marker (best vocab approximation)
+    "pau": "",  # pause — drop entirely
+}
+
+# Vowels eligible for length-marker collapse (consecutive same vowels →
+# Vː tokens that the model emits as single units).
+_LENGTH_BASE_VOWELS = frozenset({"a", "i", "u", "e", "o"})
+
+
+def _japanese_text_to_ipa(text: str) -> str:
+    """Kanji/kana text → IPA via pyopenjtalk + per-phoneme map.
+
+    pyopenjtalk handles all three Japanese scripts internally and emits
+    space-separated phonemes in its own romaji-style notation. We map each
+    phoneme to a model-vocab IPA token, then collapse consecutive same
+    vowels into a single Vː token (which the wav2vec2 vocab represents as a
+    single entry — `aː`, `iː`, `uː`, `eː`, `oː` are all in vocab).
+    """
+    import pyopenjtalk
+
+    raw_phonemes = pyopenjtalk.g2p(text).split()
+    ipa_tokens: list[str] = []
+    for phoneme in raw_phonemes:
+        ipa = _PYOPENJTALK_TO_IPA.get(phoneme)
+        if ipa is None or ipa == "":
+            continue
+        # Collapse consecutive same-vowel pairs into Vː (e.g. "o o" → "oː").
+        if ipa in _LENGTH_BASE_VOWELS and ipa_tokens and ipa_tokens[-1] == ipa:
+            ipa_tokens[-1] = f"{ipa}ː"
+            continue
+        ipa_tokens.append(ipa)
+    return " ".join(ipa_tokens)

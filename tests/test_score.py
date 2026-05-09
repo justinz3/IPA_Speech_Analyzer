@@ -21,7 +21,7 @@ def test_score_rejects_unsupported_lang(tmp_path):
     audio = tmp_path / "fake.wav"
     audio.write_bytes(b"")
     with pytest.raises(ValueError, match="Unsupported language"):
-        score(audio, "irrelevant", lang="ja")
+        score(audio, "irrelevant", lang="ko")
 
 
 def test_score_rejects_empty_reference(tmp_path):

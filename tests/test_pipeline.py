@@ -26,7 +26,7 @@ def _trans(**overrides) -> Transcription:
 
 def test_transcribe_rejects_unsupported_language(sine_wav_16k: Path) -> None:
     with pytest.raises(ValueError, match="Unsupported language"):
-        transcribe(sine_wav_16k, lang="ja")
+        transcribe(sine_wav_16k, lang="ko")
 
 
 def test_to_dict_excludes_raw_by_default() -> None:

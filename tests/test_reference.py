@@ -62,9 +62,10 @@ def test_resolve_locale_composite_and_dialect_conflicting_raises():
 
 
 def test_resolve_locale_unsupported_language_raises():
-    # 'ja' (Japanese) is reserved for Phase 5b; not yet wired up.
+    # 'ko' (Korean) is not yet wired up; use it as a stable
+    # "definitely-unsupported" probe.
     with pytest.raises(ValueError, match="Unsupported language"):
-        resolve_locale("ja")
+        resolve_locale("ko")
 
 
 def test_resolve_locale_unsupported_dialect_raises():
@@ -190,3 +191,75 @@ def test_spanish_path_unchanged_by_mandarin_dispatch():
     # affect non-cmn locales.
     assert text_to_ipa("hola", lang="es") == "ola"
     assert "θ" in text_to_ipa("manzana", lang="es")
+
+
+# -- Japanese (Phase 5b) -----------------------------------------------------
+
+
+def test_japanese_resolve_locale_ja():
+    loc = resolve_locale("ja")
+    assert loc == Locale(lang="ja", dialect="ja-jp", espeak="ja")
+
+
+def test_japanese_resolve_locale_jajp_alias():
+    loc = resolve_locale("ja-jp")
+    assert loc.lang == "ja"
+    assert loc.dialect == "ja-jp"
+
+
+def test_japanese_hiragana_input_produces_ipa():
+    # こんにちは = "konnichiwa". pyopenjtalk emits 'k o N n i ch i w a';
+    # our IPA map produces 'k o ɴ n i tɕ i w a'.
+    out = text_to_ipa("こんにちは", lang="ja")
+    assert "k" in out
+    assert "ɴ" in out  # the moraic nasal mapped from pyopenjtalk's 'N'
+    assert "tɕ" in out  # 'ch' → tɕ in our map
+    assert "w" in out
+
+
+def test_japanese_kanji_input_produces_ipa():
+    # 東京 = "Tōkyō". pyopenjtalk: 't o o ky o o' → IPA 't oː kʲ oː' after
+    # consecutive-same-vowel collapse.
+    out = text_to_ipa("東京", lang="ja")
+    assert "kʲ" in out
+    assert "oː" in out
+
+
+def test_japanese_katakana_input_produces_ipa():
+    # ありがとう (with mixed kanji/kana). Cover ɾ + ɡ tokens.
+    out = text_to_ipa("ありがとう", lang="ja")
+    assert "ɾ" in out  # 'r' → ɾ (alveolar tap)
+    assert "ɡ" in out  # 'g' → ɡ (script g matches model vocab)
+
+
+def test_japanese_long_vowel_collapsed_to_length_marker():
+    # "おかあさん" (okāsan, mom) — has long /aː/. pyopenjtalk emits
+    # 'o k a a s a N'; we collapse 'a a' → 'aː'.
+    out = text_to_ipa("おかあさん", lang="ja")
+    assert "aː" in out
+    assert "ɴ" in out
+
+
+def test_japanese_no_separate_a_a_after_collapse():
+    # The collapse means we should never see two adjacent same vowels in
+    # the final output (modulo accidental boundary between separate words).
+    out = text_to_ipa("おかあさん", lang="ja")
+    tokens = out.split()
+    for i in range(len(tokens) - 1):
+        assert not (tokens[i] in {"a", "i", "u", "e", "o"} and tokens[i] == tokens[i + 1]), (
+            f"consecutive same vowels not collapsed: {tokens[i : i + 2]}"
+        )
+
+
+def test_japanese_path_does_not_call_phonemize(monkeypatch):
+    # Japanese must skip espeak/phonemizer entirely (espeak ja is broken).
+    # Patch phonemize to raise so any accidental call would surface as a
+    # test failure.
+    from vocal_ipa import reference as reference_module
+
+    def boom(*args, **kwargs):
+        raise AssertionError("phonemize() must not be called for lang='ja'")
+
+    monkeypatch.setattr(reference_module, "phonemize", boom)
+    out = text_to_ipa("こんにちは", lang="ja")
+    assert out  # non-empty, didn't blow up
