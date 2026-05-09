@@ -86,3 +86,5 @@ ignore = [
 "src/vocal_ipa/reference.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_align.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_reference.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/test_cli.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/test_web.py" = ["RUF001", "RUF002", "RUF003"]

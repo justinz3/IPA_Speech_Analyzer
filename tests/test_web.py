@@ -119,6 +119,60 @@ def test_run_threads_lang_into_score(monkeypatch, tmp_path) -> None:
     assert captured["dialect"] is None  # web sends None when "Default" picked
 
 
+def test_run_threads_cmn_into_score(monkeypatch, tmp_path) -> None:
+    """Selecting Mandarin in the radio must propagate to score()."""
+    from vocal_ipa import web as web_module
+    from vocal_ipa.pipeline import Transcription
+    from vocal_ipa.score import ScoredPhoneme, ScoreResult
+
+    captured = {}
+
+    def fake_score(audio_path, reference_text, lang="es", dialect=None):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return ScoreResult(
+            phonemes=[
+                ScoredPhoneme(
+                    expected="n", produced="n", start_s=0.0, end_s=0.02, score=-0.1, ok=True
+                ),
+            ],
+            per=0.0,
+            reference_ipa="ni2 χɑu2",
+            transcription=Transcription(
+                ipa="n",
+                raw_phonemes="n",
+                language="cmn",
+                dialect="cmn-cn",
+                model="stub",
+                audio_seconds=0.02,
+                model_load_seconds=0.0,
+                inference_seconds=0.0,
+            ),
+            language="cmn",
+            dialect="cmn-cn",
+        )
+
+    monkeypatch.setattr(web_module, "score", fake_score)
+
+    audio = tmp_path / "fake.wav"
+    audio.write_bytes(b"")
+    _run_helper(audio, reference="你好", lang="cmn")
+    assert captured["lang"] == "cmn"
+    assert captured["dialect"] is None
+
+
+def test_dialect_choices_includes_cmn() -> None:
+    """The web UI's dialect map must offer at least one cmn entry so the
+    dropdown isn't empty when Mandarin is selected."""
+    from vocal_ipa.web import _DIALECT_CHOICES
+
+    assert "cmn" in _DIALECT_CHOICES
+    cmn_choices = _DIALECT_CHOICES["cmn"]
+    assert len(cmn_choices) >= 1
+    # Default option (None value) is always present.
+    assert any(value is None for _label, value in cmn_choices)
+
+
 def test_run_threads_dialect_into_score(monkeypatch, tmp_path) -> None:
     """Selecting an explicit dialect must propagate to score()."""
     from vocal_ipa import web as web_module
@@ -193,13 +247,21 @@ def test_render_scored_html_includes_miss_cards_when_present() -> None:
     )
     result = ScoreResult(
         phonemes=[
-            ScoredPhoneme(expected="β", produced="v", start_s=0.0, end_s=0.04, score=-1.5, ok=False),
+            ScoredPhoneme(
+                expected="β", produced="v", start_s=0.0, end_s=0.04, score=-1.5, ok=False
+            ),
         ],
         per=1.0,
         reference_ipa="β",
         transcription=Transcription(
-            ipa="v", raw_phonemes="v", language="es", dialect="es-es",
-            model="stub", audio_seconds=0.04, model_load_seconds=0.0, inference_seconds=0.0,
+            ipa="v",
+            raw_phonemes="v",
+            language="es",
+            dialect="es-es",
+            model="stub",
+            audio_seconds=0.04,
+            model_load_seconds=0.0,
+            inference_seconds=0.0,
         ),
         language="es",
         dialect="es-es",
@@ -234,8 +296,14 @@ def test_render_scored_html_omits_misses_block_when_empty() -> None:
         per=0.0,
         reference_ipa="a",
         transcription=Transcription(
-            ipa="a", raw_phonemes="a", language="es", dialect="es-es",
-            model="stub", audio_seconds=0.04, model_load_seconds=0.0, inference_seconds=0.0,
+            ipa="a",
+            raw_phonemes="a",
+            language="es",
+            dialect="es-es",
+            model="stub",
+            audio_seconds=0.04,
+            model_load_seconds=0.0,
+            inference_seconds=0.0,
         ),
         language="es",
         dialect="es-es",

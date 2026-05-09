@@ -208,9 +208,7 @@ def test_explicit_dialect_canonical_code_passes_through(sine_wav_16k: Path) -> N
 
 
 def test_conflicting_lang_and_dialect_exits_nonzero(sine_wav_16k: Path) -> None:
-    result = runner.invoke(
-        app, [str(sine_wav_16k), "--lang", "es-419", "--dialect", "castilian"]
-    )
+    result = runner.invoke(app, [str(sine_wav_16k), "--lang", "es-419", "--dialect", "castilian"])
     assert result.exit_code != 0
     combined = (result.stderr or "") + (result.stdout or "")
     assert "Conflicting" in combined or "conflict" in combined.lower()
@@ -261,3 +259,70 @@ def test_score_table_shows_resolved_dialect(sine_wav_16k: Path) -> None:
         )
     assert result.exit_code == 0
     assert "language: es (es-419)" in result.stdout
+
+
+# -- Mandarin (Phase 5a) ------------------------------------------------------
+
+
+def test_cmn_lang_is_accepted(sine_wav_16k: Path) -> None:
+    fake = Transcription(
+        ipa="ni2 χɑu2",
+        raw_phonemes="ni2 χɑu2",
+        language="cmn",
+        dialect="cmn-cn",
+        model="facebook/wav2vec2-lv-60-espeak-cv-ft",
+        audio_seconds=1.0,
+        model_load_seconds=0.1,
+        inference_seconds=0.05,
+    )
+    with patch("vocal_ipa.cli.transcribe", return_value=fake):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "cmn"])
+    assert result.exit_code == 0
+    assert result.stdout.strip() == "ni2 χɑu2"
+
+
+def test_zh_alias_threads_canonical_cmn_to_transcribe(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return Transcription(
+            ipa="",
+            raw_phonemes="",
+            language="cmn",
+            dialect="cmn-cn",
+            model="",
+            audio_seconds=0.0,
+            model_load_seconds=0.0,
+            inference_seconds=0.0,
+        )
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "zh"])
+    assert result.exit_code == 0
+    assert captured["lang"] == "cmn"
+    assert captured["dialect"] == "cmn-cn"
+
+
+def test_cmn_cn_composite_is_accepted(sine_wav_16k: Path) -> None:
+    captured = {}
+
+    def fake_transcribe(audio_path, lang="es", dialect=None, device="auto", model_id=""):
+        captured["lang"] = lang
+        captured["dialect"] = dialect
+        return Transcription(
+            ipa="",
+            raw_phonemes="",
+            language="cmn",
+            dialect="cmn-cn",
+            model="",
+            audio_seconds=0.0,
+            model_load_seconds=0.0,
+            inference_seconds=0.0,
+        )
+
+    with patch("vocal_ipa.cli.transcribe", side_effect=fake_transcribe):
+        result = runner.invoke(app, [str(sine_wav_16k), "--lang", "cmn-cn"])
+    assert result.exit_code == 0
+    assert captured["dialect"] == "cmn-cn"

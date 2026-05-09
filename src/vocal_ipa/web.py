@@ -31,8 +31,9 @@ a file). Leave **Reference text** empty for free transcription, or paste
 the sentence you meant to read to get per-phoneme scoring against the
 reference IPA.
 
-*Spanish and French. The model loads on first use (~1 GB download), then
-subsequent runs take well under a second.*
+*Spanish, French, and Mandarin (Hanzi or pinyin input). The model loads
+on first use (~1 GB download), then subsequent runs take well under a
+second.*
 """
 
 _SCORED_STYLES = """
@@ -73,7 +74,8 @@ _DATA_DIR = files("vocal_ipa") / "data"
 # Per-language dialect options as (label, value) tuples for gr.Dropdown.
 # `None` = use the language's default. Spanish has a real dialect axis;
 # French currently only has fr-fr at the IPA level (regional voices share
-# rules in espeak), so the dropdown shows just the default for fr.
+# rules in espeak), so the dropdown shows just the default for fr. Mandarin
+# uses the cmn-latn-pinyin voice; the cmn-cn dialect is the only option.
 _DIALECT_CHOICES: dict[str, list[tuple[str, str | None]]] = {
     "es": [
         ("Default (es-es Castilian)", None),
@@ -83,6 +85,10 @@ _DIALECT_CHOICES: dict[str, list[tuple[str, str | None]]] = {
     "fr": [
         ("Default (fr-fr Parisian)", None),
         ("fr-fr (Parisian)", "fr-fr"),
+    ],
+    "cmn": [
+        ("Default (cmn-cn Mandarin)", None),
+        ("cmn-cn (Mandarin)", "cmn-cn"),
     ],
 }
 
@@ -150,7 +156,7 @@ def _render_scored_html(result: ScoreResult) -> str:
     )
     locale_line = (
         f'<div class="scored-locale">language: {escape(result.language)} '
-        f'({escape(result.dialect)})</div>'
+        f"({escape(result.dialect)})</div>"
     )
     summary = (
         f'<div class="scored-summary">PER {result.per:.3f} ({wrong}/{total} phonemes wrong)</div>'
@@ -158,7 +164,9 @@ def _render_scored_html(result: ScoreResult) -> str:
     misses_html = _render_misses_html(result.miss_references)
     body = (
         locale_line
-        + '<div class="scored-line">' + "".join(spans) + "</div>"
+        + '<div class="scored-line">'
+        + "".join(spans)
+        + "</div>"
         + summary
         + table
         + misses_html
@@ -172,10 +180,7 @@ def _render_misses_html(miss_refs: list[MissReference]) -> str:
     cards = []
     for ref in miss_refs:
         cards.append(_render_miss_card(ref))
-    return (
-        f'<div class="misses-heading">Misses ({len(miss_refs)} unique):</div>'
-        + "".join(cards)
-    )
+    return f'<div class="misses-heading">Misses ({len(miss_refs)} unique):</div>' + "".join(cards)
 
 
 def _render_miss_card(ref: MissReference) -> str:
@@ -186,8 +191,8 @@ def _render_miss_card(ref: MissReference) -> str:
     if ref.tip is not None:
         parts.append(
             '<div class="miss-tip">'
-            f'<strong>{escape(ref.tip.title)}</strong>'
-            f'<p>{escape(ref.tip.tip.rstrip())}</p>'
+            f"<strong>{escape(ref.tip.title)}</strong>"
+            f"<p>{escape(ref.tip.tip.rstrip())}</p>"
             "</div>"
         )
     parts.append("</div>")
@@ -233,7 +238,7 @@ def build_app() -> gr.Blocks:
     with gr.Blocks(title="vocal-ipa-trainer") as app:
         gr.Markdown(DESCRIPTION)
         with gr.Row():
-            lang = gr.Radio(choices=["es", "fr"], value="es", label="Language")
+            lang = gr.Radio(choices=["es", "fr", "cmn"], value="es", label="Language")
             dialect = gr.Dropdown(
                 choices=_DIALECT_CHOICES["es"],
                 value=None,
