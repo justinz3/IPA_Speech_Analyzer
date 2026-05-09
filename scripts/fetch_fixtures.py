@@ -88,6 +88,19 @@ _LANG_SOURCES: dict[str, LangSource] = {
         min_seconds=3.0,
         max_seconds=10.0,
     ),
+    "ja": LangSource(
+        # JSUT basic5000 — single female speaker, studio-quality 48 kHz.
+        # CC-BY-SA 4.0. Not in the wav2vec2 fine-tune mix, so PER numbers
+        # are not artificially low.
+        dataset="japanese-asr/ja_asr.jsut_basic5000",
+        config=None,
+        split="test",
+        transcript_field="transcription",
+        license_note="JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality.",
+        prefix="ja",
+        min_seconds=3.0,
+        max_seconds=10.0,
+    ),
 }
 
 

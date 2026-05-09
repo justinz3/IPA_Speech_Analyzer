@@ -963,3 +963,24 @@ rʲ:
   video: null
   notes:
     ja: "Japanese geminate marker (small っ — pyopenjtalk emits 'cl'). The ʔ token is the closest closure event in the model vocab; phonetically closer to consonant length than a true glottal stop."
+
+# Model-output tokens for Japanese: wav2vec2-lv-60-espeak-cv-ft emits these
+# English-like tokens when transcribing Japanese audio because espeak's ja
+# voice was broken during training, producing degraded (English-like) labels.
+# They appear in ja golden files and must be in the inventory to avoid null
+# lookups at runtime.
+aɪ:
+  name: 'near-open front unrounded diphthong'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "English diphthong /aɪ/ emitted by the wav2vec2 model for some Japanese vowel sequences. Artifact of degraded espeak-ja training labels; not a native Japanese phoneme."
+
+e̞:
+  name: 'mid front unrounded vowel (lowered)'
+  image: null
+  audio: null
+  video: null
+  notes:
+    ja: "Lowered /e/ emitted by the wav2vec2 model for Japanese /e/ sounds. The ̞ diacritic indicates lowering toward [ɛ]. Artifact of English-influenced training labels."

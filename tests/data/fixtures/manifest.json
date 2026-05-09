@@ -238,5 +238,65 @@
     "config": "",
     "split": "test",
     "license": "OpenSLR-38 ST-CMDS (CC-0 / public domain). May overlap with model fine-tune set."
+  },
+  {
+    "id": "ja_001",
+    "audio": "ja_001.flac",
+    "transcript": "ja_001.txt",
+    "speaker_id": "",
+    "duration_seconds": 3.19,
+    "language": "ja",
+    "source_dataset": "japanese-asr/ja_asr.jsut_basic5000",
+    "config": "",
+    "split": "test",
+    "license": "JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality."
+  },
+  {
+    "id": "ja_002",
+    "audio": "ja_002.flac",
+    "transcript": "ja_002.txt",
+    "speaker_id": "",
+    "duration_seconds": 4.9,
+    "language": "ja",
+    "source_dataset": "japanese-asr/ja_asr.jsut_basic5000",
+    "config": "",
+    "split": "test",
+    "license": "JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality."
+  },
+  {
+    "id": "ja_003",
+    "audio": "ja_003.flac",
+    "transcript": "ja_003.txt",
+    "speaker_id": "",
+    "duration_seconds": 3.82,
+    "language": "ja",
+    "source_dataset": "japanese-asr/ja_asr.jsut_basic5000",
+    "config": "",
+    "split": "test",
+    "license": "JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality."
+  },
+  {
+    "id": "ja_004",
+    "audio": "ja_004.flac",
+    "transcript": "ja_004.txt",
+    "speaker_id": "",
+    "duration_seconds": 3.18,
+    "language": "ja",
+    "source_dataset": "japanese-asr/ja_asr.jsut_basic5000",
+    "config": "",
+    "split": "test",
+    "license": "JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality."
+  },
+  {
+    "id": "ja_005",
+    "audio": "ja_005.flac",
+    "transcript": "ja_005.txt",
+    "speaker_id": "",
+    "duration_seconds": 3.69,
+    "language": "ja",
+    "source_dataset": "japanese-asr/ja_asr.jsut_basic5000",
+    "config": "",
+    "split": "test",
+    "license": "JSUT basic5000 (CC-BY-SA 4.0). Single speaker, studio-quality."
   }
 ]

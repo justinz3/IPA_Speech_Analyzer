@@ -30,6 +30,10 @@ SELF_CONSISTENCY_PER_THRESHOLDS = {
     "es": 0.30,
     "fr": 0.30,
     "cmn": 0.65,
+    # Japanese is very loose — see test_per.py for the model-vs-reference
+    # mismatch explanation. JSUT fixtures land 0.44-0.82; threshold gives
+    # a small margin above the worst observed fixture.
+    "ja": 0.85,
 }
 CROSS_PAIR_PER_FLOOR = 0.50
 
