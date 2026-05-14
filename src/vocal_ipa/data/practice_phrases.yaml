@@ -1,0 +1,360 @@
+# Practice phrases for the vocal-ipa-trainer phrase library.
+#
+# Fields:
+#   lang      — canonical language code (en, es, fr, cmn, ja)
+#   category  — pangram | beginner | targeted | tongue-twister
+#   text      — the phrase itself
+#   targets   — IPA tokens this phrase exercises (empty list for beginner)
+#   note      — short description shown in the Phrases tab
+
+# ── English ──────────────────────────────────────────────────────────────────
+
+- lang: en
+  category: beginner
+  text: "Hello, how are you?"
+  targets: []
+  note: "Basic greeting"
+
+- lang: en
+  category: beginner
+  text: "My name is ..."
+  targets: []
+  note: "Introduce yourself"
+
+- lang: en
+  category: beginner
+  text: "The weather is nice today"
+  targets: []
+  note: "Common small-talk phrase"
+
+- lang: en
+  category: pangram
+  text: "The quick brown fox jumps over the lazy dog"
+  targets: [θ, ð, ɹ, ʌ, ɔɪ]
+  note: "Classic pangram — covers most English consonants"
+
+- lang: en
+  category: pangram
+  text: "Pack my box with five dozen liquor jugs"
+  targets: [p, b, f, v, dʒ, ʌ, ɪ]
+  note: "Short pangram — useful for vowel variety"
+
+- lang: en
+  category: targeted
+  text: "This thing is worth thinking through thoroughly"
+  targets: [θ, ð]
+  note: "θ / ð contrast — voiceless vs voiced TH"
+
+- lang: en
+  category: targeted
+  text: "The father breathes through his teeth"
+  targets: [θ, ð]
+  note: "Both TH sounds in a natural sentence"
+
+- lang: en
+  category: targeted
+  text: "Bird, word, learn, turn, nurse, her"
+  targets: [ɜː, ɚ]
+  note: "NURSE vowel — no equivalent in Spanish or French"
+
+- lang: en
+  category: targeted
+  text: "Kit, bit, sit, fish, rich, bridge"
+  targets: [ɪ]
+  note: "KIT vowel — short relaxed /ɪ/, not tense /iː/"
+
+- lang: en
+  category: targeted
+  text: "Butter, letter, better, water, city"
+  targets: [ɾ, ɚ]
+  note: "American English flap — intervocalic /t/ becomes /ɾ/"
+
+- lang: en
+  category: targeted
+  text: "I found a brown owl downtown"
+  targets: [aʊ]
+  note: "MOUTH diphthong — glides from /a/ to /ʊ/"
+
+- lang: en
+  category: tongue-twister
+  text: "She sells seashells by the seashore"
+  targets: [ʃ, s, iː, ɛ]
+  note: "ʃ vs s contrast"
+
+- lang: en
+  category: tongue-twister
+  text: "Peter Piper picked a peck of pickled peppers"
+  targets: [p, ɪ, ɛ]
+  note: "Bilabial /p/ repetition"
+
+- lang: en
+  category: tongue-twister
+  text: "How much wood would a woodchuck chuck if a woodchuck could chuck wood"
+  targets: [ʊ, tʃ, w]
+  note: "FOOT vowel and /tʃ/ affricate"
+
+# ── Spanish ──────────────────────────────────────────────────────────────────
+
+- lang: es
+  category: beginner
+  text: "Buenos días, ¿cómo estás?"
+  targets: []
+  note: "Morning greeting"
+
+- lang: es
+  category: beginner
+  text: "Me llamo ..."
+  targets: []
+  note: "Introduce yourself"
+
+- lang: es
+  category: beginner
+  text: "Hablar bien es un arte"
+  targets: []
+  note: "Simple declarative — good test sentence"
+
+- lang: es
+  category: pangram
+  text: "El veloz murciélago hindú comía feliz cardillo y kiwi"
+  targets: [β, ð, ɾ, r, x]
+  note: "Spanish pangram covering most consonants"
+
+- lang: es
+  category: pangram
+  text: "Quiero que Quique Quintana queme ese queso"
+  targets: [k, e, i]
+  note: "Consonant cluster variety"
+
+- lang: es
+  category: targeted
+  text: "Pero el perro de Pedro tiene miedo"
+  targets: [ɾ, r]
+  note: "ɾ (tap) vs r (trill) — pero vs perro"
+
+- lang: es
+  category: targeted
+  text: "Vino el lobo, vino el ave, vino el buey"
+  targets: [β]
+  note: "Intervocalic /b/→[β] bilabial fricative"
+
+- lang: es
+  category: targeted
+  text: "Nada de nada, todo de todo"
+  targets: [ð]
+  note: "Intervocalic /d/→[ð] dental fricative"
+
+- lang: es
+  category: targeted
+  text: "La mañana está fría, el agua está helada"
+  targets: [ɣ, ŋ]
+  note: "Intervocalic /g/→[ɣ] and velar nasal"
+
+- lang: es
+  category: targeted
+  text: "Cinco cigarros, seis zapatos"
+  targets: [θ, s]
+  note: "Castilian θ in z/c — use es-419 for Latin American s"
+
+- lang: es
+  category: tongue-twister
+  text: "Tres tristes tigres tragaban trigo en un trigal"
+  targets: [r, ɾ]
+  note: "Classic Spanish tongue-twister — trill vs tap"
+
+- lang: es
+  category: tongue-twister
+  text: "El cielo está enladrillado, ¿quién lo desenladrillará?"
+  targets: [r, l, ð]
+  note: "Liquid consonant repetition"
+
+- lang: es
+  category: tongue-twister
+  text: "Pablito clavó un clavito, un clavito clavó Pablito"
+  targets: [β, l]
+  note: "Bilabial and lateral repetition"
+
+# ── French ───────────────────────────────────────────────────────────────────
+
+- lang: fr
+  category: beginner
+  text: "Bonjour, comment allez-vous ?"
+  targets: []
+  note: "Formal greeting"
+
+- lang: fr
+  category: beginner
+  text: "Je m'appelle ..."
+  targets: []
+  note: "Introduce yourself"
+
+- lang: fr
+  category: beginner
+  text: "Il fait beau aujourd'hui"
+  targets: []
+  note: "Talking about the weather"
+
+- lang: fr
+  category: pangram
+  text: "Portez ce vieux whisky au juge blond qui fume"
+  targets: [y, ø, œ, ʁ, ɥ]
+  note: "French pangram — covers front rounded vowels and uvular r"
+
+- lang: fr
+  category: pangram
+  text: "Voix ambiguë d'un cœur qui au zénith jubile"
+  targets: [œ, ø, y, ɥ, ɑ̃]
+  note: "Compact French pangram"
+
+- lang: fr
+  category: targeted
+  text: "Tu as vu la lune sur la rue?"
+  targets: [y]
+  note: "Close front rounded /y/ — like /i/ with rounded lips"
+
+- lang: fr
+  category: targeted
+  text: "Je veux du feu, un peu de bleu"
+  targets: [ø]
+  note: "Close-mid front rounded /ø/ — say é with rounded lips"
+
+- lang: fr
+  category: targeted
+  text: "Un brun porteur de fleurs"
+  targets: [œ, œ̃]
+  note: "Open-mid front rounded /œ/ and nasal /œ̃/"
+
+- lang: fr
+  category: targeted
+  text: "Le vin blanc est dans le grand bain"
+  targets: [ɛ̃, ɑ̃]
+  note: "Nasal vowels — /ɛ̃/ in vin, /ɑ̃/ in blanc and grand"
+
+- lang: fr
+  category: targeted
+  text: "Bonjour, il fait bon, allons au salon"
+  targets: [ɔ̃]
+  note: "Nasal /ɔ̃/ — common in on, bon, non"
+
+- lang: fr
+  category: targeted
+  text: "Les amis arrivent avec leurs affaires"
+  targets: [z]
+  note: "Liaison — les/arrivent, avec/leurs, leurs/affaires"
+
+- lang: fr
+  category: tongue-twister
+  text: "Un chasseur sachant chasser sait chasser sans son chien"
+  targets: [ʃ, s]
+  note: "ʃ vs s contrast — classic French tongue-twister"
+
+- lang: fr
+  category: tongue-twister
+  text: "Seize chaises sèches dans six salles"
+  targets: [s, ʃ, ɛ]
+  note: "Sibilant contrast and open-mid /ɛ/"
+
+- lang: fr
+  category: tongue-twister
+  text: "Cinq gros rats grillent dans la grosse graisse grasse"
+  targets: [ʁ, ɡ, s]
+  note: "Uvular /ʁ/ repetition"
+
+# ── Mandarin ─────────────────────────────────────────────────────────────────
+
+- lang: cmn
+  category: beginner
+  text: "你好，你好吗？"
+  targets: []
+  note: "Hello, how are you? — nǐ hǎo, nǐ hǎo ma?"
+
+- lang: cmn
+  category: beginner
+  text: "谢谢你"
+  targets: []
+  note: "Thank you — xiè xiè nǐ"
+
+- lang: cmn
+  category: beginner
+  text: "我喜欢学习中文"
+  targets: []
+  note: "I like studying Chinese — wǒ xǐ huān xué xí zhōng wén"
+
+- lang: cmn
+  category: targeted
+  text: "妈麻马骂"
+  targets: [ɑ1, ɑ2, ɑ3, ɑ4]
+  note: "Four tones on mā/má/mǎ/mà — the classic tone demonstration"
+
+- lang: cmn
+  category: targeted
+  text: "天天吃糖，牙齿变坏"
+  targets: [ɑ1, ɑ4]
+  note: "Tone 1 (flat) vs tone 4 (falling) in natural context"
+
+- lang: cmn
+  category: targeted
+  text: "你好，你也好"
+  targets: [i3, ɑu3]
+  note: "Tone 3 sandhi — two consecutive 3rd tones, first becomes 2nd"
+
+- lang: cmn
+  category: targeted
+  text: "我买苹果，你也买苹果"
+  targets: [ɑu3, iŋ2]
+  note: "Tone 3 sandhi and tone 2 rising"
+
+- lang: cmn
+  category: targeted
+  text: "书包，吃饭，看书，打球"
+  targets: [u1, ɑ4]
+  note: "Tone 1 and tone 4 contrast in common nouns"
+
+- lang: cmn
+  category: targeted
+  text: "北京烤鸭很好吃"
+  targets: [eɪ3, iŋ1, ɑu3]
+  note: "Mixed tones in a familiar phrase — Peking duck is delicious"
+
+- lang: cmn
+  category: tongue-twister
+  text: "四是四，十是十，十四是十四，四十是四十"
+  targets: [s, ʂ]
+  note: "s vs sh — four is four, ten is ten"
+
+- lang: cmn
+  category: tongue-twister
+  text: "吃葡萄不吐葡萄皮，不吃葡萄倒吐葡萄皮"
+  targets: [p, t, ɑ2]
+  note: "Classic Mandarin tongue-twister — grape skin"
+
+# ── Japanese ─────────────────────────────────────────────────────────────────
+
+- lang: ja
+  category: beginner
+  text: "こんにちは"
+  targets: []
+  note: "Hello — konnichiwa"
+
+- lang: ja
+  category: beginner
+  text: "ありがとうございます"
+  targets: []
+  note: "Thank you — arigatou gozaimasu"
+
+- lang: ja
+  category: beginner
+  text: "はじめまして、よろしくおねがいします"
+  targets: []
+  note: "Nice to meet you — hajimemashite, yoroshiku onegaishimasu"
+
+- lang: ja
+  category: tongue-twister
+  text: "となりのにわとりはよくにわとりがなく"
+  targets: []
+  note: "The neighbor's chicken clucks well — niwa/niwatori n/w contrast"
+
+- lang: ja
+  category: tongue-twister
+  text: "なまむぎなまごめなまたまご"
+  targets: []
+  note: "Raw wheat, raw rice, raw egg — classic Japanese tongue-twister"
