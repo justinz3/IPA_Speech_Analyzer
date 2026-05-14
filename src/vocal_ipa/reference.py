@@ -47,6 +47,8 @@ _DIALECT_MAP: dict[tuple[str, str], str] = {
     ("es", "es-es"): "es",
     ("es", "es-419"): "es-419",
     ("fr", "fr-fr"): "fr-fr",
+    ("en", "en-us"): "en-us",
+    ("en", "en-gb"): "en-gb",
     # Mandarin uses espeak's pinyin-input voice; the default `cmn` voice
     # falls back to English IPA mid-utterance and is unusable.
     ("cmn", "cmn-cn"): "cmn-latn-pinyin",
@@ -59,6 +61,7 @@ _DIALECT_MAP: dict[tuple[str, str], str] = {
 DEFAULT_DIALECT: dict[str, str] = {
     "es": "es-es",
     "fr": "fr-fr",
+    "en": "en-us",
     "cmn": "cmn-cn",
     "ja": "ja-jp",
 }
@@ -75,7 +78,7 @@ _DIALECT_ALIASES: dict[str, str] = {
 # and let an explicit `dialect` arg override silently. Composite codes
 # ("es-419", "es-es", ...) pin a dialect; passing a conflicting `dialect`
 # arg alongside one is an error.
-_BARE_LANGS = frozenset({"es", "fr", "cmn", "ja"})
+_BARE_LANGS = frozenset({"es", "fr", "en", "cmn", "ja"})
 
 _LANG_ALIASES: dict[str, tuple[str, str]] = {
     "es": ("es", "es-es"),
@@ -84,6 +87,9 @@ _LANG_ALIASES: dict[str, tuple[str, str]] = {
     "es-latam": ("es", "es-419"),
     "fr": ("fr", "fr-fr"),
     "fr-fr": ("fr", "fr-fr"),
+    "en": ("en", "en-us"),
+    "en-us": ("en", "en-us"),
+    "en-gb": ("en", "en-gb"),
     "cmn": ("cmn", "cmn-cn"),
     "cmn-cn": ("cmn", "cmn-cn"),
     "zh": ("cmn", "cmn-cn"),  # ISO 639-1 macro code, common alias

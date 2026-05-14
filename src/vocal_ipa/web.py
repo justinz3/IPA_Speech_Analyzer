@@ -104,6 +104,11 @@ _DATA_DIR = files("vocal_ipa") / "data"
 # rules in espeak), so the dropdown shows just the default for fr. Mandarin
 # uses the cmn-latn-pinyin voice; the cmn-cn dialect is the only option.
 _DIALECT_CHOICES: dict[str, list[tuple[str, str | None]]] = {
+    "en": [
+        ("Default (en-us American)", None),
+        ("en-us (American)", "en-us"),
+        ("en-gb (British RP)", "en-gb"),
+    ],
     "es": [
         ("Default (es-es Castilian)", None),
         ("es-es (Castilian)", "es-es"),
@@ -367,17 +372,17 @@ def build_app() -> gr.Blocks:
             with gr.Tab("Scorer"):
                 with gr.Row():
                     lang = gr.Radio(
-                        choices=["es", "fr", "cmn", "ja"], value="es", label="Language"
+                        choices=["en", "es", "fr", "cmn", "ja"], value="en", label="Language"
                     )
                     dialect = gr.Dropdown(
-                        choices=_DIALECT_CHOICES["es"],
+                        choices=_DIALECT_CHOICES["en"],
                         value=None,
                         label="Dialect",
                         allow_custom_value=False,
                     )
                 reference = gr.Textbox(
                     label="Reference text (optional)",
-                    placeholder="que pase un buen día",
+                    placeholder="the quick brown fox",
                     lines=1,
                 )
                 audio = gr.Audio(
