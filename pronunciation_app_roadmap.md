@@ -83,7 +83,7 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - CLI and Gradio UI extended to `[es, fr, cmn, ja]`. Phoneme inventory extended to 117 entries.
 - 5 Mandarin fixtures (ST-CMDS, may overlap with model fine-tune set) + 5 Japanese fixtures (JSUT basic5000, no leakage).
 
-### Phase 6 — Prosody subsystems (pitch, intensity, stress, intonation)
+### Phase 6 — Prosody subsystems (pitch, intensity, stress, intonation) ✓ (2026-05-13)
 - **Architecture:** language-agnostic extractors per physical dimension (pitch via `librosa.pyin`, intensity via numpy RMS) + small per-language adapters (unit segmenter, reference loader) + language-independent scorer styles (contour-shape, peak-location, phrase-slope).
 - **Mandarin tones:** DTW or simpler shape features over syllable nuclei. Fixes the v1 floor where tones 1+4 collapse and tone 3 is partially absent.
 - **Japanese pitch accent:** high/low per mora + downstep location from accent dictionary.

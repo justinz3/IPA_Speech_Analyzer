@@ -12,7 +12,7 @@ short_description: Audio to IPA pronunciation feedback with per-phoneme scoring.
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 5 — Spanish, French, Mandarin, and Japanese, segmental scoring, experimental. Tone/pitch-accent scoring lands in Phase 6. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 6 — Spanish, French, Mandarin, and Japanese. Segmental per-phoneme scoring + prosody scoring (stress, tone contours, intonation). Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -149,6 +149,31 @@ shows the IPA output is identical across `fr-fr`, `fr-be`, `fr-ch`, `fr-ca`
 handling needs a different reference source than espeak; tracked as future
 work.
 
+### Prosody scoring
+
+When `--reference` is used, a parallel prosody scoring path runs alongside the
+segmental scorer. It operates directly on the raw audio signal (pitch via
+`librosa.pyin`, intensity via numpy RMS) and is completely independent of the
+wav2vec2 model.
+
+| Language | What is scored | Signal used |
+|----------|---------------|-------------|
+| `es` | Lexical stress — is the stressed syllable louder than the mean? | RMS intensity per vowel span |
+| `fr` | Utterance intonation — rising (interrogative `?`) or falling (declarative) | Pitch slope of utterance tail |
+| `cmn` | Tone contour per syllable — flat, rising, dip, or falling | Pitch contour shape over vowel span |
+| `ja` | F0 mean per vowel (no pass/fail yet — accent ground truth pending) | Pitch over vowel span |
+
+The prosody column appears next to each phoneme in the score table, and a
+`Prosody: N%` summary line appears below the PER line.
+
+**Shaky-baseline caveat for Mandarin and Japanese:** prosody span timings come
+from the forced-alignment step, which itself depends on the wav2vec2 segmental
+model. That model is degraded for Mandarin (palatal/retroflex confusion,
+ü-vowel collapse) and near-unusable for Japanese (English-like output from
+broken training labels). Prosody *values* are real, but the span boundaries may
+be slightly mis-positioned. For Spanish and French the segmental model is
+reliable and prosody results are trustworthy.
+
 ## How it works
 
 1. Decode your audio to float32 mono via `soundfile`; resample to 16 kHz with
@@ -255,7 +280,8 @@ encodes tones differently from standard pinyin numbering:
   the digit `2` (e.g., `yɛ2`) — not tone 2. Tone 2 produces a vowel
   quality shift without a digit. This means two syllables differing only
   by tone 1 vs tone 4 look identical in the reference, and tone 3 looks
-  like tone 2. Full pitch-contour scoring (Phase 6) will resolve this.
+  like tone 2. Phase 6's prosody scorer uses these espeak digits directly
+  to score pitch contour shape, so it inherits the same encoding quirks.
 - **Palatal/retroflex confusion** (`ɕ` vs `s.`, `tɕ` vs `ts.`). The
   palatal consonants (`x → ɕ`, `j/q → tɕ`) and the retroflex sibilants
   (`sh → s.`, `zh → ts.`) are acoustically close; the model frequently
