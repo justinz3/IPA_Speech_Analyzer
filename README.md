@@ -245,6 +245,66 @@ misses by attribution (your audio vs reference dialect vs model
 artifact) — useful when you're trying to figure out whether a "wrong"
 phoneme is something to drill or something to ignore.
 
+### Mandarin failure modes
+
+The reference IPA is generated via espeak's `cmn-latn-pinyin` voice, which
+encodes tones differently from standard pinyin numbering:
+
+- **Tone encoding is not 1:1 with pinyin numbers.** Tones 1 and 4 both
+  map to the digit `5` in the vowel token (e.g., `ɑ5`). Tone 3 maps to
+  the digit `2` (e.g., `yɛ2`) — not tone 2. Tone 2 produces a vowel
+  quality shift without a digit. This means two syllables differing only
+  by tone 1 vs tone 4 look identical in the reference, and tone 3 looks
+  like tone 2. Full pitch-contour scoring (Phase 6) will resolve this.
+- **Palatal/retroflex confusion** (`ɕ` vs `s.`, `tɕ` vs `ts.`). The
+  palatal consonants (`x → ɕ`, `j/q → tɕ`) and the retroflex sibilants
+  (`sh → s.`, `zh → ts.`) are acoustically close; the model frequently
+  substitutes one for the other. If your reference is `ɕ` and the model
+  produces `s.`, it's a model accuracy issue, not a pronunciation error.
+- **`ü`-vowel collapse to `i`.** Syllables with the `ü` medial — `xue`,
+  `jue`, `que`, `lü`, `nü` etc. — use the vowel sequence `yɛ`/`y` in
+  the reference. The model often produces `i` or `i.` instead, because
+  `ü` (close front rounded) is underrepresented in the multilingual
+  training distribution and sits close to `i` in acoustic space.
+- **Final nasals frequently dropped.** Coda `-n` and `-ng` (reference
+  tokens `n` and `ŋ`) are often produced as `∅`. If the last phoneme
+  of a syllable is missing, suspect coda nasal deletion before
+  suspecting your pronunciation.
+- **ST-CMDS fixture PER is optimistically low.** The Mandarin slow-test
+  fixtures come from ST-CMDS (OpenSLR-38), which may overlap with the
+  wav2vec2 fine-tune set. Real-world Mandarin PER on unseen audio will
+  be higher than the fixture numbers suggest.
+
+### Japanese failure modes
+
+The reference IPA is generated via pyopenjtalk (espeak's `ja` voice is
+broken — it falls back to English IPA mid-utterance). The wav2vec2 model
+also has degraded Japanese accuracy because espeak-ja was broken when the
+model's training labels were generated.
+
+- **Model emits English-like phonemes.** The training labels for Japanese
+  audio were produced by a broken espeak-ja, so they contain English-like
+  IPA tokens (`aɪ`, `e̞`, `tʃ`, `ə`). The model learned these distorted
+  labels, so it emits English-adjacent phonemes even on clean Japanese
+  speech. PER thresholds are set to 0.85 to absorb this; treat Japanese
+  scoring as approximate.
+- **`u` → `i` substitution** (and `u` → `ɯ`-adjacent errors). Japanese
+  `u` is phonetically an unrounded back vowel `ɯ`, but we map it to `u`
+  in the reference (the only back-close token in the model vocab).
+  The model frequently produces `i` instead — especially in devoiced
+  contexts (e.g., after unvoiced consonants like `k`, `s`, `t`) or after
+  the palatal glide `j` (e.g., `ゆ → j u` often registers as `j i`).
+  If you see `u → i` in the score table, it is almost always a model
+  artifact, not a pronunciation error.
+- **Pitch accent is not scored.** Japanese minimal pairs distinguished
+  only by pitch accent (e.g., 橋 vs 箸, both `h a sh i`) score
+  identically. Accent scoring lands in Phase 6.
+- **Kanji shared with Chinese (e.g., 雪) reads as Japanese.** pyopenjtalk
+  applies Japanese readings, so 雪 → `yuki` (ゆき), not `xuě`. If you
+  paste Hanzi into `--lang ja`, you get the Japanese on'yomi/kun'yomi
+  reading, which may not match your intention. Use `--lang cmn` for
+  Mandarin input.
+
 ## Hosted demo (Hugging Face Spaces)
 
 Deploy `pronounce-web` as a free hosted demo on [Hugging Face Spaces](https://huggingface.co/spaces):
