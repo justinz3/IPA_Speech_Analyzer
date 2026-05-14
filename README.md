@@ -12,7 +12,7 @@ short_description: Audio to IPA pronunciation feedback with per-phoneme scoring.
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 8 — English, Spanish, French, Mandarin, and Japanese. Segmental scoring, prosody scoring, IPA tooltips, phoneme library tab, and audio/SVG media in the web UI. Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 9 — English, Spanish, French, Mandarin, and Japanese. Segmental scoring, prosody scoring, IPA tooltips, phoneme library, and 57 curated practice phrases (pangrams, tongue-twisters, targeted, beginner) in the web UI. Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 

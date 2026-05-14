@@ -105,7 +105,13 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - **Web UI**: Language radio defaults to `en`; dialect shows en-us / en-gb.
 - **Motivation**: Share with family/friends for L1 accent sanity-checking before Phase 9 (deploy).
 
-### Phase 9 — Deploy (hosting for family/friends)
+### Phase 9 — Practice Phrase Generator ✓ (2026-05-14)
+- **57 curated phrases** across en/es/fr/cmn/ja in four categories: beginner, pangram, targeted (phoneme/tone-specific), and tongue-twister. Japanese gets beginner + tongue-twisters only (model too degraded for reliable targeted feedback).
+- **Scorer tab**: reference field pre-fills with a default phrase on load and on language change. 🎲 random button. "Browse →" link to the Phrases tab.
+- **Phrases tab**: accordion per language, categories as subsections, each phrase is a clickable card that loads the text and switches back to the Scorer.
+- `Phrase` dataclass + `load_phrases()` in `coaching.py`, following the same `@functools.cache` + YAML pattern as `load_phonemes()`.
+
+### Phase 10 — Deploy (hosting for family/friends)
 - Hosted web app so family/friends can open in a browser without installing anything.
 - Deploy target TBD: Hugging Face Spaces (free, zero ops, fits ML projects) vs Fly.io/Railway (more control, small cost).
 - IaC (CDK) tier only if still motivated and resume-shaped value still feels missing.
@@ -118,7 +124,7 @@ Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets p
 - **Manga is its own research project.** Chinese/Japanese manga reads non-linearly (panel order, speech bubbles, vertical / RTL text); sequential position tracking won't work without upstream panel+bubble detection. Standard L→R book pages are the v1 target; manga is explicitly out of scope until v3+.
 - **Watch for scope creep.** This is borderline its own project — the only reason it lives here is that it consumes the phonetic scorer's output. Don't let v2 work pull focus from Phase 3 (French) or Phase 4 (curated corrections), which unlock the project's core value.
 
-Portfolio value is unlocked by end of Phase 4. Phases 5–10 are bonus.
+Portfolio value is unlocked by end of Phase 4. Phases 5–11 are bonus.
 
 ## First concrete tasks (Phase 1)
 
