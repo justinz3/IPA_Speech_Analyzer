@@ -14,6 +14,7 @@ the segmental PER calculation.
 
 from __future__ import annotations
 
+import traceback
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -129,7 +130,15 @@ def score(
     per = 1.0 - (correct / len(scored)) if scored else 0.0
 
     miss_references = _attach_miss_references(scored, locale.lang)
-    prosody_score = _attach_prosody(scored, is_stressed, samples, locale.lang, reference_text)
+    try:
+        prosody_score = _attach_prosody(scored, is_stressed, samples, locale.lang, reference_text)
+    except Exception:
+        warnings.warn(
+            "Prosody scoring failed (segmental scoring unaffected):\n"
+            + traceback.format_exc(),
+            stacklevel=2,
+        )
+        prosody_score = None
 
     return ScoreResult(
         phonemes=scored,
