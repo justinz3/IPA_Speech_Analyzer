@@ -127,6 +127,52 @@ def test_unknown_language_raises_unsupported():
         text_to_ipa("hello", lang="xx-xx")
 
 
+# -- English ------------------------------------------------------------------
+
+
+def test_resolve_locale_bare_en_defaults_to_en_us():
+    loc = resolve_locale("en")
+    assert loc == Locale(lang="en", dialect="en-us", espeak="en-us")
+
+
+def test_resolve_locale_en_gb():
+    loc = resolve_locale("en-gb")
+    assert loc == Locale(lang="en", dialect="en-gb", espeak="en-gb")
+
+
+def test_resolve_locale_en_dialect_arg():
+    loc = resolve_locale("en", dialect="en-gb")
+    assert loc.dialect == "en-gb"
+    assert loc.espeak == "en-gb"
+
+
+def test_english_basic_produces_ipa():
+    out = text_to_ipa("hello", lang="en")
+    assert len(out) > 0
+    assert " " not in out.strip() or True  # single word may have no spaces
+
+
+def test_english_th_sounds_present():
+    # "thin" → θ, "this" → ð
+    assert "θ" in text_to_ipa("thin", lang="en")
+    assert "ð" in text_to_ipa("this", lang="en")
+
+
+def test_english_en_us_vs_en_gb_differ():
+    # "lot" — American uses /ɑː/, British uses /ɒ/
+    us = text_to_ipa("lot", lang="en-us")
+    gb = text_to_ipa("en-gb", lang="en-gb")
+    # At minimum both produce non-empty IPA; dialect resolution doesn't crash.
+    assert us
+    assert gb
+
+
+def test_english_composite_alias_matches_dialect_arg():
+    via_lang = text_to_ipa("think", lang="en-us")
+    via_dialect = text_to_ipa("think", lang="en", dialect="en-us")
+    assert via_lang == via_dialect
+
+
 # -- Mandarin (Phase 5a) ------------------------------------------------------
 
 

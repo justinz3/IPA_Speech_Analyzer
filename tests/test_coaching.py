@@ -84,11 +84,23 @@ def test_load_phonemes_contains_japanese_inventory() -> None:
     assert "ja" in inv["ɴ"].notes
 
 
+def test_load_phonemes_english_tokens_present() -> None:
+    inv = load_phonemes()
+    for token in ("ɪ", "æ", "ʌ", "ʊ", "ɜː", "ɚ", "ɑː", "eɪ", "oʊ", "ɔɪ", "ɹ"):
+        assert token in inv, f"missing English token: {token!r}"
+
+
+def test_load_phonemes_english_notes_on_th_sounds() -> None:
+    inv = load_phonemes()
+    assert "en" in inv["θ"].notes
+    assert "en" in inv["ð"].notes
+
+
 def test_load_overrides_returns_typed_list() -> None:
     overrides = load_overrides()
     for entry in overrides:
         assert isinstance(entry, Tip)
-        assert entry.lang in {"es", "fr"}
+        assert entry.lang in {"es", "fr", "en"}
         assert entry.title and entry.tip
 
 
