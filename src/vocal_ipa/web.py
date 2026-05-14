@@ -19,7 +19,7 @@ from importlib.resources import files
 
 import gradio as gr
 
-from .coaching import MissReference, load_phonemes
+from .coaching import MissReference, load_phonemes, load_phrases
 from .pipeline import transcribe
 from .score import ScoreResult, score
 
@@ -360,15 +360,70 @@ def _render_library_html() -> str:
     return "".join(parts)
 
 
-def _on_lang_change(new_lang: str) -> gr.Dropdown:
-    """Refresh the dialect dropdown's choices when the language radio changes."""
-    return gr.Dropdown(choices=_DIALECT_CHOICES[new_lang], value=None)
+def _phrase_targets_str(targets: tuple[str, ...]) -> str:
+    return " · ".join(targets) if targets else ""
+
+
+def _build_phrases_tab(tabs: gr.Tabs, reference: gr.Textbox) -> None:
+    """Render the Phrases tab as Gradio Button cards grouped by language and category."""
+    all_phrases = load_phrases()
+    lang_names = {"en": "English", "es": "Spanish", "fr": "French", "cmn": "Mandarin", "ja": "Japanese"}
+    for lang_code in ("en", "es", "fr", "cmn", "ja"):
+        phrases = all_phrases.get(lang_code, [])
+        if not phrases:
+            continue
+        with gr.Accordion(lang_names.get(lang_code, lang_code), open=(lang_code == "en")):
+            by_cat: dict[str, list] = {}
+            for ph in phrases:
+                by_cat.setdefault(ph.category, []).append(ph)
+            for cat in _CATEGORY_ORDER:
+                cat_phrases = by_cat.get(cat, [])
+                if not cat_phrases:
+                    continue
+                gr.Markdown(f"**{_CATEGORY_LABELS.get(cat, cat)}**")
+                for ph in cat_phrases:
+                    label = ph.text
+                    if ph.note:
+                        label += f"  —  {ph.note}"
+                    if ph.targets:
+                        label += f"  [{_phrase_targets_str(ph.targets)}]"
+                    text = ph.text
+                    gr.Button(label, size="sm").click(
+                        lambda _tabs, t=text: (t, gr.Tabs(selected=0)),
+                        inputs=[tabs],
+                        outputs=[reference, tabs],
+                    )
+
+
+_CATEGORY_LABELS = {
+    "beginner": "Beginner",
+    "pangram": "Pangrams",
+    "targeted": "Targeted",
+    "tongue-twister": "Tongue-twisters",
+}
+_CATEGORY_ORDER = ["beginner", "pangram", "targeted", "tongue-twister"]
+
+
+def _default_phrase(lang: str) -> str:
+    phrases = load_phrases().get(lang, [])
+    return phrases[0].text if phrases else ""
+
+
+def _on_lang_change(new_lang: str) -> tuple[gr.Dropdown, str]:
+    """Refresh dialect dropdown and pre-fill reference with a default phrase."""
+    return gr.Dropdown(choices=_DIALECT_CHOICES[new_lang], value=None), _default_phrase(new_lang)
+
+
+def _random_phrase(lang: str) -> str:
+    import random
+    phrases = load_phrases().get(lang, [])
+    return random.choice(phrases).text if phrases else ""
 
 
 def build_app() -> gr.Blocks:
     with gr.Blocks(title="vocal-ipa-trainer") as app:
         gr.Markdown(DESCRIPTION)
-        with gr.Tabs():
+        with gr.Tabs() as tabs:
             with gr.Tab("Scorer"):
                 with gr.Row():
                     lang = gr.Radio(
@@ -380,11 +435,15 @@ def build_app() -> gr.Blocks:
                         label="Dialect",
                         allow_custom_value=False,
                     )
-                reference = gr.Textbox(
-                    label="Reference text (optional)",
-                    placeholder="the quick brown fox",
-                    lines=1,
-                )
+                with gr.Row():
+                    reference = gr.Textbox(
+                        label="Reference text (optional)",
+                        value=_default_phrase("en"),
+                        lines=1,
+                        scale=8,
+                    )
+                    random_btn = gr.Button("🎲", scale=1, min_width=48)
+                    browse_btn = gr.Button("Browse →", scale=1, min_width=80)
                 audio = gr.Audio(
                     sources=["microphone", "upload"], type="filepath", label="Audio"
                 )
@@ -393,7 +452,9 @@ def build_app() -> gr.Blocks:
                 ipa = gr.Textbox(label="IPA", lines=2, show_copy_button=True)
                 raw = gr.Textbox(label="Raw model output", lines=2, show_copy_button=True)
                 timing = gr.Markdown()
-                lang.change(_on_lang_change, inputs=[lang], outputs=[dialect])
+                lang.change(_on_lang_change, inputs=[lang], outputs=[dialect, reference])
+                random_btn.click(_random_phrase, inputs=[lang], outputs=[reference])
+                browse_btn.click(lambda: gr.Tabs(selected=2), outputs=[tabs])
                 btn.click(
                     _run,
                     inputs=[audio, reference, lang, dialect],
@@ -401,6 +462,8 @@ def build_app() -> gr.Blocks:
                 )
             with gr.Tab("Phoneme Library"):
                 gr.HTML(_render_library_html())
+            with gr.Tab("Phrases"):
+                _build_phrases_tab(tabs, reference)
     return app
 
 
