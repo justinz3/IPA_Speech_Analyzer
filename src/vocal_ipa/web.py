@@ -138,33 +138,45 @@ def _format_timing(*, audio_s: float, load_s: float, inference_s: float) -> str:
 def _render_scored_html(result: ScoreResult) -> str:
     wrong = sum(1 for p in result.phonemes if not p.ok)
     total = len(result.phonemes)
+    has_prosody = any(p.prosody is not None for p in result.phonemes)
     spans = []
     rows = []
     for p in result.phonemes:
         cls = "ok" if p.ok else "miss"
         title = "ok" if p.ok else f"produced: {p.produced}"
+        if p.prosody is not None:
+            title += f" | {p.prosody.label}"
         spans.append(
             f'<span class="phoneme {cls}" '
             f'data-start="{p.start_s:.2f}" data-end="{p.end_s:.2f}" '
             f'title="{escape(title)}">{escape(p.expected)}</span>'
         )
-        rows.append(
+        row = (
             f"<tr><td>{escape(p.expected)}</td><td>{escape(p.produced)}</td>"
             f"<td>{p.start_s:.2f}</td><td>{p.end_s:.2f}</td>"
-            f"<td>{'✓' if p.ok else '✗'}</td></tr>"
+            f"<td>{'✓' if p.ok else '✗'}</td>"
         )
+        if has_prosody:
+            prosody_str = escape(p.prosody.label) if p.prosody is not None else ""
+            row += f"<td>{prosody_str}</td>"
+        row += "</tr>"
+        rows.append(row)
+
+    header_cells = "<th>expected</th><th>produced</th><th>start</th><th>end</th><th>ok</th>"
+    if has_prosody:
+        header_cells += "<th>prosody</th>"
     table = (
-        '<table class="scored-table"><thead><tr>'
-        "<th>expected</th><th>produced</th><th>start</th><th>end</th><th>ok</th>"
+        f'<table class="scored-table"><thead><tr>{header_cells}'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
     )
     locale_line = (
         f'<div class="scored-locale">language: {escape(result.language)} '
         f"({escape(result.dialect)})</div>"
     )
-    summary = (
-        f'<div class="scored-summary">PER {result.per:.3f} ({wrong}/{total} phonemes wrong)</div>'
-    )
+    per_line = f"PER {result.per:.3f} ({wrong}/{total} phonemes wrong)"
+    if result.prosody_score is not None:
+        per_line += f" · Prosody {int(result.prosody_score * 100)}% correct"
+    summary = f'<div class="scored-summary">{per_line}</div>'
     misses_html = _render_misses_html(result.miss_references)
     body = (
         locale_line
