@@ -302,7 +302,7 @@ z:
 θ:
   name: voiceless dental fricative
   image: null
-  audio: null
+  audio: phonemes/theta_audio.ogg
   video: null
   notes:
     es: "Castilian Spanish `z` and soft `c` (`manzana`, `cinco`). Latin American Spanish uses /s/ instead — set --dialect es-419."
@@ -310,7 +310,7 @@ z:
 ð:
   name: voiced dental fricative
   image: null
-  audio: null
+  audio: phonemes/eth_audio.ogg
   video: null
   notes:
     es: "Realization of intervocalic /d/ in Spanish (`nada → naða`). English `th` in `this`."
@@ -318,7 +318,7 @@ z:
 ʃ:
   name: voiceless postalveolar fricative
   image: null
-  audio: null
+  audio: phonemes/esh_audio.ogg
   video: null
   notes:
     en: "English `sh` in `she`."
@@ -326,7 +326,7 @@ z:
 ʒ:
   name: voiced postalveolar fricative
   image: null
-  audio: null
+  audio: phonemes/ezh_audio.ogg
   video: null
   notes:
     fr: "French `j` in `je`, `jour`."
@@ -334,7 +334,7 @@ z:
 x:
   name: voiceless velar fricative
   image: null
-  audio: null
+  audio: phonemes/x_audio.ogg
   video: null
   notes:
     es: "Spanish `j` in `jardín`, `mujer`. Back-of-throat scrape, NOT English /h/."
@@ -350,7 +350,7 @@ h:
 ɣ:
   name: voiced velar fricative
   image: null
-  audio: null
+  audio: phonemes/gamma_audio.ogg
   video: null
   notes:
     es: "Realization of intervocalic /g/ in Spanish (`agua → aɣwa`)."
@@ -358,7 +358,7 @@ h:
 β:
   name: voiced bilabial fricative
   image: null
-  audio: null
+  audio: phonemes/beta_audio.ogg
   video: null
   notes:
     es: "Realization of /b/ and /v/ between vowels in Spanish. Lips touch lightly without contact between lower lip and upper teeth."
@@ -366,7 +366,7 @@ h:
 ʁ:
   name: voiced uvular fricative
   image: null
-  audio: null
+  audio: phonemes/uvular-r_audio.ogg
   video: null
   notes:
     fr: "French `r`. Back-of-throat zone, similar to German `ach` or Spanish /x/. Different articulation from English /r/."
@@ -376,7 +376,7 @@ h:
 tʃ:
   name: voiceless postalveolar affricate
   image: null
-  audio: null
+  audio: phonemes/tesh_audio.ogg
   video: null
   notes:
     es: "Spanish `ch` in `leche`, `mucho`. Stays voiceless even between vowels."
@@ -409,7 +409,7 @@ n:
 ɲ:
   name: voiced palatal nasal
   image: null
-  audio: null
+  audio: phonemes/palatal-n_audio.ogg
   video: null
   notes:
     es: "Spanish `ñ` in `niño`, `año`."
@@ -428,7 +428,7 @@ l:
 r:
   name: voiced alveolar trill
   image: null
-  audio: null
+  audio: phonemes/trill_audio.ogg
   video: null
   notes:
     es: "Spanish trilled `r` — multiple taps. Used for `rr` (`perro`) and word-initial `r` (`rosa`). Single intervocalic `r` is the tap /ɾ/, not /r/."
@@ -436,7 +436,7 @@ r:
 ɾ:
   name: voiced alveolar tap
   image: null
-  audio: null
+  audio: phonemes/tap_audio.ogg
   video: null
   notes:
     es: "Spanish single `r` (`pero`, `caro`). Same articulation as the `tt` in American English `butter`. NOT a trill."

@@ -41,6 +41,14 @@ def test_load_phonemes_vowels_have_audio() -> None:
         assert inv[token].audio is not None, f"missing audio for nasal vowel: {token!r}"
 
 
+def test_load_phonemes_override_consonants_have_audio() -> None:
+    inv = load_phonemes()
+    # Phase 7 (deferred): es+fr consonants that appear in correction_overrides.yaml.
+    # ɥ is excluded — no isolated phoneme recording exists on Wikimedia Commons.
+    for token in ("β", "ɾ", "r", "x", "θ", "ð", "ɣ", "ʁ", "ɲ", "ʃ", "ʒ", "tʃ"):
+        assert inv[token].audio is not None, f"missing audio for consonant: {token!r}"
+
+
 def test_load_phonemes_contains_skeleton_entries() -> None:
     inv = load_phonemes()
     # The 4b-5 skeleton must include β and y so the override schema has
