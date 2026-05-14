@@ -86,6 +86,8 @@ ignore = [
 # domain language so we suppress on files that handle IPA directly.
 "src/vocal_ipa/align.py" = ["RUF001", "RUF002", "RUF003"]
 "src/vocal_ipa/reference.py" = ["RUF001", "RUF002", "RUF003"]
+"src/vocal_ipa/score.py" = ["RUF001", "RUF002", "RUF003"]
+"src/vocal_ipa/prosody.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_align.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_reference.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_cli.py" = ["RUF001", "RUF002", "RUF003"]
