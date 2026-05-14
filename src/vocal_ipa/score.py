@@ -172,8 +172,8 @@ def _attach_prosody(
         return _prosody_cmn(scored, samples)
     if lang == "ja":
         return _prosody_ja(scored, samples)
-    if lang == "es":
-        return _prosody_es(scored, is_stressed, samples)
+    if lang in ("es", "en"):
+        return _prosody_stress(scored, is_stressed, samples)
     if lang == "fr":
         return _prosody_fr(scored, samples, reference_text)
     return None
@@ -231,12 +231,12 @@ def _prosody_ja(scored: list[ScoredPhoneme], samples: np.ndarray) -> float | Non
     return None  # no scalar without accent ground truth
 
 
-def _prosody_es(
+def _prosody_stress(
     scored: list[ScoredPhoneme],
     is_stressed: list[bool],
     samples: np.ndarray,
 ) -> float | None:
-    """Spanish: score lexical stress on vowel spans via RMS intensity."""
+    """Score lexical stress on vowel spans via RMS intensity (es + en)."""
     rms = extract_rms(samples)
     utterance_rms_mean = float(np.mean(rms)) if len(rms) > 0 else 1e-9
     results: list[bool] = []
