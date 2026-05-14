@@ -22,7 +22,7 @@
 
 a:
   name: open front unrounded vowel
-  image: null
+  image: phonemes/a_pos.svg
   audio: phonemes/a_audio.ogg
   video: null
   notes:
@@ -31,7 +31,7 @@ a:
 
 e:
   name: close-mid front unrounded vowel
-  image: null
+  image: phonemes/e_pos.svg
   audio: phonemes/e_audio.ogg
   video: null
   notes:
@@ -40,7 +40,7 @@ e:
 
 i:
   name: close front unrounded vowel
-  image: null
+  image: phonemes/i_pos.svg
   audio: phonemes/i_audio.ogg
   video: null
   notes:
@@ -48,7 +48,7 @@ i:
 
 o:
   name: close-mid back rounded vowel
-  image: null
+  image: phonemes/o_pos.svg
   audio: phonemes/o_audio.ogg
   video: null
   notes:
@@ -56,7 +56,7 @@ o:
 
 u:
   name: close back rounded vowel
-  image: null
+  image: phonemes/u_pos.svg
   audio: phonemes/u_audio.ogg
   video: null
   notes:
@@ -65,7 +65,7 @@ u:
 
 y:
   name: close front rounded vowel
-  image: null
+  image: phonemes/y_pos.svg
   audio: phonemes/y_audio.ogg
   video: null
   notes:
@@ -73,7 +73,7 @@ y:
 
 ø:
   name: close-mid front rounded vowel
-  image: null
+  image: phonemes/oe-mid_pos.svg
   audio: phonemes/oe-mid_audio.ogg
   video: null
   notes:
@@ -81,7 +81,7 @@ y:
 
 œ:
   name: open-mid front rounded vowel
-  image: null
+  image: phonemes/oe-open_pos.svg
   audio: phonemes/oe-open_audio.ogg
   video: null
   notes:
@@ -89,7 +89,7 @@ y:
 
 ɛ:
   name: open-mid front unrounded vowel
-  image: null
+  image: phonemes/eps_pos.svg
   audio: phonemes/eps_audio.ogg
   video: null
   notes:
@@ -97,7 +97,7 @@ y:
 
 ɔ:
   name: open-mid back rounded vowel
-  image: null
+  image: phonemes/open-o_pos.svg
   audio: phonemes/open-o_audio.ogg
   video: null
   notes:
@@ -105,7 +105,7 @@ y:
 
 ə:
   name: mid central vowel (schwa)
-  image: null
+  image: phonemes/schwa_pos.svg
   audio: phonemes/schwa_audio.ogg
   video: null
   notes:
@@ -134,7 +134,7 @@ oː:
 
 ɑ̃:
   name: open back nasal vowel
-  image: null
+  image: phonemes/alpha-nas_pos.svg
   audio: phonemes/alpha-nas_audio.ogg
   video: null
   notes:
@@ -142,7 +142,7 @@ oː:
 
 ɛ̃:
   name: open-mid front nasal vowel
-  image: null
+  image: phonemes/eps-nas_pos.svg
   audio: phonemes/eps-nas_audio.ogg
   video: null
   notes:
@@ -150,7 +150,7 @@ oː:
 
 ɔ̃:
   name: open-mid back nasal vowel
-  image: null
+  image: phonemes/open-o-nas_pos.svg
   audio: phonemes/open-o-nas_audio.ogg
   video: null
   notes:
@@ -158,7 +158,7 @@ oː:
 
 œ̃:
   name: open-mid front rounded nasal vowel
-  image: null
+  image: phonemes/oe-nas_pos.svg
   audio: phonemes/oe-nas_audio.ogg
   video: null
   notes:

@@ -369,6 +369,25 @@ def test_render_scored_html_omits_misses_block_when_empty() -> None:
     assert 'class="miss-card"' not in html
 
 
+def test_render_library_html_contains_vowel_cards() -> None:
+    from html import escape
+
+    from vocal_ipa.web import _render_library_html
+
+    html = _render_library_html()
+    # Core vowels should appear as ph-token entries.
+    for token in ("a", "e", "i", "u", "y", "ø", "ɛ", "ɔ̃"):
+        assert escape(token) in html or token in html, f"missing token {token!r} in library"
+    # Audio players and SVG images should appear for vowels.
+    assert "<audio" in html
+    assert "_pos.svg" in html
+    # IPA chart image at top.
+    assert "ipa_vowel_chart.png" in html
+    # Consonant section should also appear.
+    assert "β" in html
+    assert "ʁ" in html
+
+
 def test_render_miss_side_emits_image_when_phoneme_has_image() -> None:
     from vocal_ipa.coaching import MissReference, Phoneme
     from vocal_ipa.web import _render_miss_card

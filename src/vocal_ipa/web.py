@@ -291,6 +291,68 @@ def _media_url(rel_path: str | None) -> str | None:
     return f"/gradio_api/file={abs_path}"
 
 
+_LIBRARY_STYLES = """
+<style>
+.ph-chart { max-width: 420px; margin: 0.5em 0 1.5em; }
+.ph-chart img { max-width: 100%; height: auto; border-radius: 4px; }
+.ph-group-heading { font-size: 1.1em; font-weight: 700; margin: 1.4em 0 0.6em;
+                    border-bottom: 2px solid currentColor; padding-bottom: 0.2em; }
+.ph-grid { display: flex; flex-wrap: wrap; gap: 0.8em; }
+.ph-card { display: flex; flex-direction: column; align-items: center; padding: 0.8em;
+           border: 1px solid currentColor; border-radius: 8px; width: 175px; }
+.ph-token { font-size: 2.2em; font-family: serif; line-height: 1.2; }
+.ph-name { font-size: 0.76em; text-align: center; opacity: 0.7; margin-bottom: 0.4em; }
+.ph-card img { max-width: 120px; height: auto; margin: 0.3em 0; }
+.ph-card audio { width: 155px; margin: 0.3em 0; }
+.ph-notes { font-size: 0.73em; margin-top: 0.4em; width: 100%; }
+.ph-note { margin: 0.2em 0; }
+.ph-note-lang { font-weight: 700; }
+</style>
+"""
+
+_LIBRARY_GROUPS = [
+    ("Oral vowels", ["a", "e", "i", "o", "u", "y", "ø", "œ", "ɛ", "ɔ", "ə"]),
+    ("Nasal vowels", ["ɑ̃", "ɛ̃", "ɔ̃", "œ̃"]),
+    ("Consonants", ["β", "ɾ", "r", "x", "θ", "ð", "ɣ", "ʁ", "ɲ", "ʃ", "ʒ", "tʃ"]),
+]
+
+
+def _render_library_html() -> str:
+    inv = load_phonemes()
+    parts = [_LIBRARY_STYLES]
+    chart_url = _media_url("phonemes/ipa_vowel_chart.png")
+    if chart_url:
+        parts.append(
+            f'<div class="ph-chart"><img src="{chart_url}" alt="IPA vowel chart"></div>'
+        )
+    for group_name, tokens in _LIBRARY_GROUPS:
+        parts.append(f'<div class="ph-group-heading">{escape(group_name)}</div>')
+        parts.append('<div class="ph-grid">')
+        for token in tokens:
+            phoneme = inv.get(token)
+            if phoneme is None:
+                continue
+            parts.append('<div class="ph-card">')
+            parts.append(f'<div class="ph-token">{escape(token)}</div>')
+            parts.append(f'<div class="ph-name">{escape(phoneme.name)}</div>')
+            image_src = _media_url(phoneme.image)
+            if image_src:
+                parts.append(f'<img src="{image_src}" alt="{escape(phoneme.name)}">')
+            audio_src = _media_url(phoneme.audio)
+            if audio_src:
+                parts.append(f'<audio controls preload="none" src="{audio_src}"></audio>')
+            notes_html = [
+                f'<div class="ph-note"><span class="ph-note-lang">{lc}:</span> {escape(note)}</div>'
+                for lc in ("es", "fr")
+                if (note := phoneme.notes.get(lc, ""))
+            ]
+            if notes_html:
+                parts.append('<div class="ph-notes">' + "".join(notes_html) + "</div>")
+            parts.append("</div>")
+        parts.append("</div>")
+    return "".join(parts)
+
+
 def _on_lang_change(new_lang: str) -> gr.Dropdown:
     """Refresh the dialect dropdown's choices when the language radio changes."""
     return gr.Dropdown(choices=_DIALECT_CHOICES[new_lang], value=None)
@@ -299,31 +361,39 @@ def _on_lang_change(new_lang: str) -> gr.Dropdown:
 def build_app() -> gr.Blocks:
     with gr.Blocks(title="vocal-ipa-trainer") as app:
         gr.Markdown(DESCRIPTION)
-        with gr.Row():
-            lang = gr.Radio(choices=["es", "fr", "cmn", "ja"], value="es", label="Language")
-            dialect = gr.Dropdown(
-                choices=_DIALECT_CHOICES["es"],
-                value=None,
-                label="Dialect",
-                allow_custom_value=False,
-            )
-        reference = gr.Textbox(
-            label="Reference text (optional)",
-            placeholder="que pase un buen día",
-            lines=1,
-        )
-        audio = gr.Audio(sources=["microphone", "upload"], type="filepath", label="Audio")
-        btn = gr.Button("Transcribe / Score", variant="primary")
-        scored = gr.HTML(label="Scoring", visible=True)
-        ipa = gr.Textbox(label="IPA", lines=2, show_copy_button=True)
-        raw = gr.Textbox(label="Raw model output", lines=2, show_copy_button=True)
-        timing = gr.Markdown()
-        lang.change(_on_lang_change, inputs=[lang], outputs=[dialect])
-        btn.click(
-            _run,
-            inputs=[audio, reference, lang, dialect],
-            outputs=[ipa, raw, timing, scored],
-        )
+        with gr.Tabs():
+            with gr.Tab("Scorer"):
+                with gr.Row():
+                    lang = gr.Radio(
+                        choices=["es", "fr", "cmn", "ja"], value="es", label="Language"
+                    )
+                    dialect = gr.Dropdown(
+                        choices=_DIALECT_CHOICES["es"],
+                        value=None,
+                        label="Dialect",
+                        allow_custom_value=False,
+                    )
+                reference = gr.Textbox(
+                    label="Reference text (optional)",
+                    placeholder="que pase un buen día",
+                    lines=1,
+                )
+                audio = gr.Audio(
+                    sources=["microphone", "upload"], type="filepath", label="Audio"
+                )
+                btn = gr.Button("Transcribe / Score", variant="primary")
+                scored = gr.HTML(label="Scoring", visible=True)
+                ipa = gr.Textbox(label="IPA", lines=2, show_copy_button=True)
+                raw = gr.Textbox(label="Raw model output", lines=2, show_copy_button=True)
+                timing = gr.Markdown()
+                lang.change(_on_lang_change, inputs=[lang], outputs=[dialect])
+                btn.click(
+                    _run,
+                    inputs=[audio, reference, lang, dialect],
+                    outputs=[ipa, raw, timing, scored],
+                )
+            with gr.Tab("Phoneme Library"):
+                gr.HTML(_render_library_html())
     return app
 
 
