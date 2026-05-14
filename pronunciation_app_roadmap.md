@@ -90,6 +90,7 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - **Spanish stress:** re-thread `ˈ`/`ˌ` tokens through the pipeline + peak detection on pitch + intensity + duration.
 - **French intonation:** utterance-end pitch slope vs declarative/interrogative tag from punctuation.
 - `text_to_ipa()` promoted to return `(ipa, metadata)` at this phase; Phase 5 keeps the `str` return until the prosody path actually needs it.
+- **Prerequisite (not yet planned):** `wav2vec2-lv-60-espeak-cv-ft` has degraded accuracy for Mandarin and near-unusable accuracy for Japanese — both due to broken espeak voices during training label generation. Segmental scoring for cmn/ja in Phase 5 catches gross errors but misses subtle ones and produces false positives (model artifacts the user notices before the model does). Phase 6 prosody work on cmn/ja should be preceded by a model-swap to language-specific checkpoints (a Mandarin-finetuned wav2vec2 and a Japanese phoneme recognizer with correct labels). The pipeline change is a one-line model ID swap; the work is finding/evaluating the checkpoints.
 
 ### Phase 7 — IPA encyclopedia + phoneme media curation
 - Game-style tooltips on every IPA token rendered (score table, miss cards, free-transcription output): hover/tap → name + 1-line description + link to encyclopedia entry. Currently the page shows raw tokens (β, ʁ, y, ɛ̃) that are opaque to anyone who doesn't already know IPA.
