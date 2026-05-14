@@ -93,6 +93,7 @@ y:
   audio: phonemes/eps_audio.ogg
   video: null
   notes:
+    en: "English DRESS vowel — `e` in `bed`, `said`, `friend`."
     fr: "French `è` in `mère`, `plaît`. More open than /e/."
 
 ɔ:
@@ -305,6 +306,7 @@ z:
   audio: phonemes/theta_audio.ogg
   video: null
   notes:
+    en: "English `th` in `thin`, `think`, `through`. Tongue tip between teeth; NO puff of air."
     es: "Castilian Spanish `z` and soft `c` (`manzana`, `cinco`). Latin American Spanish uses /s/ instead — set --dialect es-419."
 
 ð:
@@ -313,7 +315,8 @@ z:
   audio: phonemes/eth_audio.ogg
   video: null
   notes:
-    es: "Realization of intervocalic /d/ in Spanish (`nada → naða`). English `th` in `this`."
+    en: "English `th` in `this`, `the`, `there`. Voiced version of /θ/ — tongue tip between teeth with vocal cords vibrating."
+    es: "Realization of intervocalic /d/ in Spanish (`nada → naða`)."
 
 ʃ:
   name: voiceless postalveolar fricative
@@ -329,6 +332,7 @@ z:
   audio: phonemes/ezh_audio.ogg
   video: null
   notes:
+    en: "English `s` in `vision`, `measure`, `pleasure`."
     fr: "French `j` in `je`, `jour`."
 
 x:
@@ -439,6 +443,7 @@ r:
   audio: phonemes/tap_audio.ogg
   video: null
   notes:
+    en: "American English flap — `tt`/`dd` in `butter`, `ladder`, `better`. Appears between vowels when the following vowel is unstressed."
     es: "Spanish single `r` (`pero`, `caro`). Same articulation as the `tt` in American English `butter`. NOT a trill."
 
 ʎ:
@@ -567,6 +572,7 @@ tɕh:
   audio: null
   video: null
   notes:
+    en: "English `ng` in `ring`, `sing`, `thing`. Also in `n` before /k/ and /g/ (`bank`, `angry`)."
     cmn: "Pinyin 'ng' coda (zhōng 中). Mandarin syllables often end in -ng."
 
 ʲ:
@@ -874,6 +880,7 @@ iː:
   audio: null
   video: null
   notes:
+    en: "English FLEECE vowel — `ee` in `see`, `feet`, `machine`."
     ja: "Long /i/ — moraic vowel doubling (e.g. 良い yo-i not lengthened, but おにいさん o-ni-i-san is)."
 
 uː:
@@ -882,6 +889,7 @@ uː:
   audio: null
   video: null
   notes:
+    en: "English GOOSE vowel — `oo` in `food`, `blue`, `through`."
     ja: "Long /u/ — common in loanwords and certain native words (e.g. 風船 fu-u-sen)."
 
 kʲ:
@@ -975,6 +983,7 @@ aɪ:
   audio: null
   video: null
   notes:
+    en: "English `I` in `price`, `time`, `high`. Glides from /a/ to /ɪ/."
     ja: "English diphthong /aɪ/ emitted by the wav2vec2 model for some Japanese vowel sequences. Artifact of degraded espeak-ja training labels; not a native Japanese phoneme."
 
 e̞:
@@ -984,3 +993,161 @@ e̞:
   video: null
   notes:
     ja: "Lowered /e/ emitted by the wav2vec2 model for Japanese /e/ sounds. The ̞ diacritic indicates lowering toward [ɛ]. Artifact of English-influenced training labels."
+
+# -- English: vowels and diphthongs not shared with es/fr --
+
+ɪ:
+  name: near-close near-front unrounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English KIT vowel — `i` in `bit`, `sit`, `fish`. Shorter and more relaxed than /iː/."
+
+æ:
+  name: near-open front unrounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English TRAP vowel — `a` in `cat`, `bad`, `hand`. Lower and more front than /ɛ/."
+
+ʌ:
+  name: open-mid back unrounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English STRUT vowel — `u` in `but`, `cup`, `love`."
+
+ʊ:
+  name: near-close near-back rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English FOOT vowel — `oo` in `book`, `put`, `could`. Shorter and more relaxed than /uː/."
+
+ɜː:
+  name: open-mid central unrounded vowel (long)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English NURSE vowel — `er` in `bird`, `word`, `learn`. No equivalent in Spanish or French."
+
+ɚ:
+  name: r-colored mid central vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English LETTER vowel — unstressed `er` in `butter`, `father`, `actor`. Non-rhotic accents (en-gb) use /ə/ here instead."
+
+ɑː:
+  name: open back unrounded vowel (long)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English LOT/PALM vowel — `a` in `father`, `spa`; also `o` in `hot`, `stop` (cot–caught merger)."
+
+eɪ:
+  name: close-mid front to near-close diphthong
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English FACE vowel — `a` in `day`, `say`, `they`. Glides from /e/ toward /ɪ/."
+
+oʊ:
+  name: close-mid back rounded diphthong
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English GOAT vowel — `o` in `go`, `home`, `stone`. British RP uses /əʊ/ instead."
+
+ɔɪ:
+  name: open-mid back to near-close front diphthong
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English CHOICE vowel — `oi` in `boy`, `coin`, `voice`."
+
+# -- English: rhotic vowel sequences (American English) --
+
+ɹ:
+  name: voiced alveolar approximant
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "English `r` in `red`, `right`, `very`. Tongue tip approaches (but doesn't touch) the alveolar ridge. Very different from Spanish trilled /r/ or French uvular /ʁ/."
+
+ɑːɹ:
+  name: open back unrounded vowel + rhotic (START)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English START vowel — `ar` in `car`, `far`, `star`."
+
+oːɹ:
+  name: close-mid back rounded vowel + rhotic (FORCE)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English FORCE vowel — `or` in `more`, `store`, `four`."
+
+ɔːɹ:
+  name: open-mid back rounded vowel + rhotic (NORTH)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English NORTH vowel — `or` in `for`, `born`, `short`. Merges with /oːɹ/ in many American accents."
+
+ɛɹ:
+  name: open-mid front unrounded vowel + rhotic (SQUARE)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English SQUARE vowel — `are` in `care`, `there`, `wear`."
+
+ɪɹ:
+  name: near-close near-front unrounded vowel + rhotic (NEAR)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English NEAR vowel — `ear` in `fear`, `beer`, `here`."
+
+ʊɹ:
+  name: near-close near-back rounded vowel + rhotic (CURE)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "American English CURE vowel — `ure` in `cure`, `pure`, `tour`. Many speakers merge this with /ɔːɹ/."
+
+# -- English: multi-character vocab tokens --
+
+ju:
+  name: palatal glide + close back rounded (/j/ + /uː/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "Vocab artifact — the model treats /juː/ as a unit in `music`, `cute`, `use`."
+
+əl:
+  name: schwa + lateral (/ə/ + /l/)
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "Vocab artifact — syllabic /l/ in `bottle`, `little`, `people`. The schwa is often reduced or absent."

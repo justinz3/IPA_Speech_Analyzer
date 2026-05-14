@@ -119,3 +119,43 @@
     Same pattern as /t/ → /tʃ/: English speakers slide /d/ into a `j`
     sound before front rounded vowels (`deux` → "joo"). Keep /d/ a
     clean stop.
+
+# -- English --
+
+- lang: en
+  expected: θ
+  produced: f
+  title: Use dental [θ], not labiodental [f]
+  tip: |
+    Put the tongue tip gently between (or just behind) the upper teeth.
+    English "th" in "thin", "think", "through" — tongue visible at the
+    teeth, no lip–tooth contact. /f/ is made with the lower lip against
+    the upper teeth.
+
+- lang: en
+  expected: θ
+  produced: t
+  title: Use dental [θ], not alveolar [t]
+  tip: |
+    English "th" in "thin" requires the tongue tip between the teeth.
+    /t/ is made with the tongue tip at the alveolar ridge (roof of mouth).
+    Extend the tongue forward until it touches the teeth.
+
+- lang: en
+  expected: ð
+  produced: d
+  title: Use voiced dental [ð], not [d]
+  tip: |
+    English "th" in "this", "the", "there". Same placement as /θ/ but
+    with vocal cords vibrating. /d/ is made at the alveolar ridge;
+    /ð/ needs the tongue tip between the teeth.
+
+- lang: en
+  expected: ɪ
+  produced: iː
+  title: KIT vowel is short and lax — not FLEECE
+  tip: |
+    English "i" in "bit", "sit" (/ɪ/) is shorter and more relaxed than
+    the "ee" in "see" (/iː/). Let the tongue drop slightly from full /iː/
+    height. Holding /iː/ too long in unstressed syllables is a common
+    non-native pattern.
