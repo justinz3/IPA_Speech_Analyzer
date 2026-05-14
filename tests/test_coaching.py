@@ -96,6 +96,43 @@ def test_load_phonemes_english_notes_on_th_sounds() -> None:
     assert "en" in inv["ð"].notes
 
 
+def test_load_phrases_returns_typed_dict() -> None:
+    from vocal_ipa.coaching import Phrase, load_phrases
+
+    phrases = load_phrases()
+    assert isinstance(phrases, dict)
+    for lang, plist in phrases.items():
+        assert isinstance(lang, str)
+        for p in plist:
+            assert isinstance(p, Phrase)
+            assert p.lang == lang
+            assert p.category in {"pangram", "beginner", "targeted", "tongue-twister"}
+            assert p.text
+
+
+def test_load_phrases_all_languages_present() -> None:
+    from vocal_ipa.coaching import load_phrases
+
+    phrases = load_phrases()
+    for lang in ("en", "es", "fr", "cmn", "ja"):
+        assert lang in phrases, f"missing phrases for {lang!r}"
+        assert len(phrases[lang]) >= 3
+
+
+def test_load_phrases_en_has_all_categories() -> None:
+    from vocal_ipa.coaching import load_phrases
+
+    cats = {p.category for p in load_phrases()["en"]}
+    assert cats == {"pangram", "beginner", "targeted", "tongue-twister"}
+
+
+def test_load_phrases_ja_has_no_targeted() -> None:
+    from vocal_ipa.coaching import load_phrases
+
+    cats = {p.category for p in load_phrases()["ja"]}
+    assert "targeted" not in cats
+
+
 def test_load_overrides_returns_typed_list() -> None:
     overrides = load_overrides()
     for entry in overrides:

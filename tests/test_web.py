@@ -281,6 +281,35 @@ def test_build_app_lays_out_lang_and_dialect_controls() -> None:
     assert "Dialect" in labels
 
 
+def test_on_lang_change_returns_default_phrase() -> None:
+    from vocal_ipa.web import _on_lang_change
+
+    _, phrase = _on_lang_change("es")
+    assert isinstance(phrase, str)
+    assert len(phrase) > 0
+
+
+def test_random_phrase_returns_string() -> None:
+    from vocal_ipa.web import _random_phrase
+
+    for lang in ("en", "es", "fr", "cmn", "ja"):
+        result = _random_phrase(lang)
+        assert isinstance(result, str)
+        assert len(result) > 0
+
+
+def test_build_app_has_phrases_tab() -> None:
+    from vocal_ipa.web import build_app
+
+    app = build_app()
+    tab_labels = [
+        getattr(c, "label", None)
+        for c in app.blocks.values()
+        if hasattr(c, "label")
+    ]
+    assert "Phrases" in tab_labels
+
+
 def test_render_scored_html_includes_miss_cards_when_present() -> None:
     from vocal_ipa.coaching import MissReference, Phoneme, Tip
     from vocal_ipa.pipeline import Transcription
