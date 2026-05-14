@@ -97,11 +97,20 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - **Vowel audio (es + fr):** 15 OGG files in `src/vocal_ipa/data/phonemes/` covering all pure and nasal vowels for Spanish and French (a e i o u ɛ ɔ ə œ ø y ɑ̃ ɛ̃ ɔ̃ œ̃). Sourced from Wikimedia Commons CC-BY-SA 3.0; attribution in `LICENSES.md`. Audio appears in miss-comparison cards when the expected or produced phoneme has a non-null `audio` field.
 - **Deferred:** vowel chart PNG diagrams (no suitable free images found at correct paths), consonant media, separate inventory browse page, cmn/ja media (pending model swap).
 
-### Phase 8 — Optional polish
-- Web UI / containerize / deploy
-- IaC (CDK) tier only if still motivated and resume-shaped value still feels missing
+### Phase 8 — English support ✓ (2026-05-14)
+- **English added** (`en`, `en-us`, `en-gb`) via standard espeak path — no special G2P routing needed (espeak English is reliable, unlike the broken cmn/ja voices).
+- **Stress prosody reused**: `_prosody_es()` renamed `_prosody_stress()` and shared with English — the RMS intensity scorer is language-agnostic.
+- **Phoneme inventory** extended to 136 entries: 19 new English-specific tokens (ɪ, æ, ʌ, ʊ, ɜː, ɚ, ɑː, eɪ, oʊ, ɔɪ, ɹ, ɑːɹ, oːɹ, ɔːɹ, ɛɹ, ɪɹ, ʊɹ, ju, əl) + `en:` notes on 38 shared tokens.
+- **Correction overrides**: 4 starter tips (θ/f, θ/t, ð/d, ɪ/iː).
+- **Web UI**: Language radio defaults to `en`; dialect shows en-us / en-gb.
+- **Motivation**: Share with family/friends for L1 accent sanity-checking before Phase 9 (deploy).
 
-### Phase 9 — Read-aloud companion (exploratory, "borderline another project")
+### Phase 9 — Deploy (hosting for family/friends)
+- Hosted web app so family/friends can open in a browser without installing anything.
+- Deploy target TBD: Hugging Face Spaces (free, zero ops, fits ML projects) vs Fly.io/Railway (more control, small cost).
+- IaC (CDK) tier only if still motivated and resume-shaped value still feels missing.
+
+### Phase 10 — Read-aloud companion (exploratory, "borderline another project")
 Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets pronunciation feedback as they go. Phonetic scoring is solved by Phase 2–3; the *new* work is **position tracking** — knowing where in the OCR'd text the reader currently is so divergences can be flagged in context.
 - Cheap version (today, no code): OCR a page elsewhere, paste into the Reference field, record, score. Already works.
 - v1: in-app OCR (Apple Vision / Google Vision / Tesseract) → reference text → batched scoring. One page at a time.
@@ -109,7 +118,7 @@ Hook the phonetic scorer to OCR'd pages so the user reads a real book and gets p
 - **Manga is its own research project.** Chinese/Japanese manga reads non-linearly (panel order, speech bubbles, vertical / RTL text); sequential position tracking won't work without upstream panel+bubble detection. Standard L→R book pages are the v1 target; manga is explicitly out of scope until v3+.
 - **Watch for scope creep.** This is borderline its own project — the only reason it lives here is that it consumes the phonetic scorer's output. Don't let v2 work pull focus from Phase 3 (French) or Phase 4 (curated corrections), which unlock the project's core value.
 
-Portfolio value is unlocked by end of Phase 4. Phases 5–9 are bonus.
+Portfolio value is unlocked by end of Phase 4. Phases 5–10 are bonus.
 
 ## First concrete tasks (Phase 1)
 

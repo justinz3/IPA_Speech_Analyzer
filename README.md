@@ -5,14 +5,14 @@ sdk_version: 5.50.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. Spanish, French, Mandarin, Japanese.
+short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. English, Spanish, French, Mandarin, Japanese.
 ---
 
 # vocal-ipa-trainer
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 7 — Spanish, French, Mandarin, and Japanese. Segmental scoring, prosody scoring, IPA tooltips, and vowel audio in the web UI. Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 8 — English, Spanish, French, Mandarin, and Japanese. Segmental scoring, prosody scoring, IPA tooltips, phoneme library tab, and audio/SVG media in the web UI. Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -106,7 +106,7 @@ pronounce <audio> [--lang es] [--dialect CODE] [--format text|json]
 
 | Flag          | Default                                | Notes |
 |---------------|----------------------------------------|-------|
-| `--lang`      | `es`                                   | Language or composite locale: `es`, `es-es`, `es-419`, `es-latam`, `fr`, `fr-fr`, `cmn`, `cmn-cn`, `zh`, `ja`, `ja-jp`. |
+| `--lang`      | `en`                                   | Language or composite locale: `en`, `en-us`, `en-gb`, `es`, `es-es`, `es-419`, `es-latam`, `fr`, `fr-fr`, `cmn`, `cmn-cn`, `zh`, `ja`, `ja-jp`. |
 | `--dialect`   | (use `--lang` default)                 | Reference IPA dialect: codes (`es-es`, `es-419`, `fr-fr`) or aliases (`castilian`, `latam`, `parisian`). See **Dialects** below. |
 | `--format`    | `text`                                 | `text` is one IPA line (free transcribe) or a per-phoneme table (scoring). `json` includes timing/score fields. |
 | `--device`    | `auto`                                 | `auto` picks CUDA if available else CPU. |
@@ -120,6 +120,7 @@ pronounce <audio> [--lang es] [--dialect CODE] [--format text|json]
 
 | Code | Aliases | Reference IPA source | Notes |
 |------|---------|----------------------|-------|
+| `en` | `en-us`, `en-gb` | espeak-ng | Two dialects: American (`en-us`, default) and British RP (`en-gb`). Stress scoring active. |
 | `es` | `es-es`, `es-419`, `es-latam` | espeak-ng | Two dialects: Castilian (`es-es`) and Latin American (`es-419`). |
 | `fr` | `fr-fr` | espeak-ng | One dialect at the IPA level (`fr-fr`). |
 | `cmn` | `cmn-cn`, `zh` | espeak `cmn-latn-pinyin` via pypinyin | Accepts Hanzi (e.g., `你好`) or pinyin (diacritic `nǐ hǎo` or numeric `ni3 hao3`). Tone digits embedded in vowel tokens (`ɑ1`, `iɛ2`); tones register as wrong-token misses in the segmental scorer. Full pitch-contour tone scoring lands in Phase 6. |
@@ -135,6 +136,8 @@ flagged. Set `--dialect` to match your target accent.
 
 | Code      | Alias       | Espeak code | Notes |
 |-----------|-------------|-------------|-------|
+| `en-us`   | —           | `en-us`     | Default for `--lang en`. General American. |
+| `en-gb`   | —           | `en-gb`     | British RP. Non-rhotic; /ɒ/ in `lot`, /ɑː/ in `bath`. |
 | `es-es`   | `castilian` | `es`        | Default for `--lang es`. /θ/ on `z` and soft `c`. |
 | `es-419`  | `latam`     | `es-419`    | Latin American Spanish. /s/ instead of /θ/. |
 | `fr-fr`   | `parisian`  | `fr-fr`     | Default for `--lang fr`. The only French dialect espeak distinguishes at the IPA level. |
