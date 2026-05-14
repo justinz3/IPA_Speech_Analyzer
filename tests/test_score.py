@@ -6,6 +6,7 @@ canned data; the real model is never loaded.
 
 from __future__ import annotations
 
+import numpy as np
 import pytest
 import torch
 
@@ -85,6 +86,11 @@ class _StubProcessor:
         self.tokenizer = _StubTokenizer(vocab)
 
 
+def _stub_samples() -> np.ndarray:
+    """Minimal silent audio array (0.1 s @ 16 kHz) for prosody scorer stub."""
+    return np.zeros(1600, dtype=np.float32)
+
+
 def _patch_pipeline(monkeypatch, *, log_probs, target_ids, transcription):
     """Wire up score()'s collaborators with deterministic returns."""
     monkeypatch.setattr(score_module, "text_to_ipa", lambda text, lang="es", dialect=None: "kasa")
@@ -100,7 +106,7 @@ def _patch_pipeline(monkeypatch, *, log_probs, target_ids, transcription):
     monkeypatch.setattr(
         score_module,
         "_run_model",
-        lambda *args, **kwargs: (transcription, log_probs, 0),
+        lambda *args, **kwargs: (transcription, log_probs, 0, _stub_samples()),
     )
 
 
@@ -206,7 +212,7 @@ def _patch_pipeline_for_inventory_tokens(monkeypatch, *, log_probs, target_ids, 
     monkeypatch.setattr(
         score_module,
         "_run_model",
-        lambda *args, **kwargs: (transcription, log_probs, 0),
+        lambda *args, **kwargs: (transcription, log_probs, 0, _stub_samples()),
     )
 
 
@@ -275,7 +281,7 @@ def test_score_miss_reference_is_none_when_token_not_in_inventory(monkeypatch, t
     monkeypatch.setattr(
         score_module,
         "_run_model",
-        lambda *args, **kwargs: (_stub_transcription(), log_probs, 0),
+        lambda *args, **kwargs: (_stub_transcription(), log_probs, 0, _stub_samples()),
     )
     audio = tmp_path / "ignored.wav"
     audio.write_bytes(b"")

@@ -6,6 +6,7 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import numpy as np
 import torch
 
 from .audio import TARGET_SR, ensure_16k, load_audio
@@ -38,7 +39,7 @@ def transcribe(
     device: str = "auto",
     model_id: str = DEFAULT_MODEL,
 ) -> Transcription:
-    transcription, _, _ = _run_model(audio_path, lang, dialect, device, model_id)
+    transcription, _, _, _ = _run_model(audio_path, lang, dialect, device, model_id)
     return transcription
 
 
@@ -48,11 +49,12 @@ def _run_model(
     dialect: str | None = None,
     device: str = "auto",
     model_id: str = DEFAULT_MODEL,
-) -> tuple[Transcription, torch.Tensor, int]:
-    """Run the model once; return Transcription plus CTC log-probs and blank id.
+) -> tuple[Transcription, torch.Tensor, int, np.ndarray]:
+    """Run the model once; return Transcription, CTC log-probs, blank id, and samples.
 
-    transcribe() discards the extras; score() (Phase 2) uses them for forced
-    alignment, so both paths share a single forward pass.
+    transcribe() discards the extras. score() uses log-probs for forced
+    alignment and samples for prosody feature extraction — both paths share
+    a single audio load and forward pass.
     """
     locale = resolve_locale(lang, dialect)
 
@@ -86,7 +88,7 @@ def _run_model(
         model_load_seconds=model_load_seconds,
         inference_seconds=inference_seconds,
     )
-    return transcription, log_probs, processor.tokenizer.pad_token_id
+    return transcription, log_probs, processor.tokenizer.pad_token_id, samples
 
 
 def postprocess(raw: str) -> str:

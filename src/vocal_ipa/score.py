@@ -78,7 +78,7 @@ def score(
     dev = resolve_device(device)
     processor, _ = load(model_id, dev)  # LRU-cached; _run_model reuses the same load
 
-    target_ids, surface_kept = reference_to_token_ids(ref_ipa, processor)
+    target_ids, surface_kept, is_stressed = reference_to_token_ids(ref_ipa, processor)
     dropped = _count_input_chars(ref_ipa) - sum(len(t) for t in surface_kept)
     if not target_ids:
         raise ValueError(
@@ -86,7 +86,7 @@ def score(
             f"(phonemizer output: {ref_ipa!r})"
         )
 
-    transcription, log_probs, blank_id = _run_model(
+    transcription, log_probs, blank_id, samples = _run_model(
         audio_path, locale.lang, locale.dialect, device, model_id
     )
     spans = forced_align(log_probs, target_ids, blank_id)
