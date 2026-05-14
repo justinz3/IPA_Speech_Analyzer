@@ -23,7 +23,7 @@
 a:
   name: open front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/a_audio.ogg
   video: null
   notes:
     es: "Spanish `a` — pure, no glide. Position constant from start to end."
@@ -32,7 +32,7 @@ a:
 e:
   name: close-mid front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/e_audio.ogg
   video: null
   notes:
     es: "Spanish `e` — same height as French `é`; no glide."
@@ -41,7 +41,7 @@ e:
 i:
   name: close front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/i_audio.ogg
   video: null
   notes:
     en: "English `ee` in `see`. Tongue high and front, lips spread."
@@ -49,7 +49,7 @@ i:
 o:
   name: close-mid back rounded vowel
   image: null
-  audio: null
+  audio: phonemes/o_audio.ogg
   video: null
   notes:
     es: "Spanish `o` — pure, no glide to /ʊ/ as in English."
@@ -57,7 +57,7 @@ o:
 u:
   name: close back rounded vowel
   image: null
-  audio: null
+  audio: phonemes/u_audio.ogg
   video: null
   notes:
     es: "Spanish `u` — pure, no glide."
@@ -66,7 +66,7 @@ u:
 y:
   name: close front rounded vowel
   image: null
-  audio: null
+  audio: phonemes/y_audio.ogg
   video: null
   notes:
     fr: "French `u` in `tu`, `lune`, `huit`. No English equivalent — round the lips as for /u/ but place the tongue as for /i/."
@@ -74,7 +74,7 @@ y:
 ø:
   name: close-mid front rounded vowel
   image: null
-  audio: null
+  audio: phonemes/oe-mid_audio.ogg
   video: null
   notes:
     fr: "French `eu` in `peu`, `bleues`. Front rounded — say `é` with rounded lips."
@@ -82,7 +82,7 @@ y:
 œ:
   name: open-mid front rounded vowel
   image: null
-  audio: null
+  audio: phonemes/oe-open_audio.ogg
   video: null
   notes:
     fr: "French `œu` in `fleurs`, `peur`. More open than /ø/."
@@ -90,7 +90,7 @@ y:
 ɛ:
   name: open-mid front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/eps_audio.ogg
   video: null
   notes:
     fr: "French `è` in `mère`, `plaît`. More open than /e/."
@@ -98,7 +98,7 @@ y:
 ɔ:
   name: open-mid back rounded vowel
   image: null
-  audio: null
+  audio: phonemes/open-o_audio.ogg
   video: null
   notes:
     fr: "French `o` in `homme`, `bord`. More open than /o/."
@@ -106,7 +106,7 @@ y:
 ə:
   name: mid central vowel (schwa)
   image: null
-  audio: null
+  audio: phonemes/schwa_audio.ogg
   video: null
   notes:
     fr: "French `e` in `je`, `petit`. Often dropped in casual speech but kept in formal."
@@ -135,7 +135,7 @@ oː:
 ɑ̃:
   name: open back nasal vowel
   image: null
-  audio: null
+  audio: phonemes/alpha-nas_audio.ogg
   video: null
   notes:
     fr: "French `an`/`en` in `grand`, `comment`. Nasalize while pronouncing the vowel."
@@ -143,7 +143,7 @@ oː:
 ɛ̃:
   name: open-mid front nasal vowel
   image: null
-  audio: null
+  audio: phonemes/eps-nas_audio.ogg
   video: null
   notes:
     fr: "French `in`/`ain` in `vin`, `pain`. No English analogue."
@@ -151,7 +151,7 @@ oː:
 ɔ̃:
   name: open-mid back nasal vowel
   image: null
-  audio: null
+  audio: phonemes/open-o-nas_audio.ogg
   video: null
   notes:
     fr: "French `on` in `bon`, `bonjour`."
@@ -159,7 +159,7 @@ oː:
 œ̃:
   name: open-mid front rounded nasal vowel
   image: null
-  audio: null
+  audio: phonemes/oe-nas_audio.ogg
   video: null
   notes:
     fr: "French `un` in `un`, `parfum`. Many Parisian speakers merge /œ̃/ with /ɛ̃/; phonemizer keeps them distinct."

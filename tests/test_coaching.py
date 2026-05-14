@@ -32,6 +32,15 @@ def test_load_phonemes_returns_typed_dict() -> None:
         assert isinstance(phoneme.notes, dict)
 
 
+def test_load_phonemes_vowels_have_audio() -> None:
+    inv = load_phonemes()
+    # Phase 7 curates audio for all es+fr vowels.
+    for token in ("a", "e", "i", "o", "u", "y", "ø", "œ", "ɛ", "ɔ", "ə"):
+        assert inv[token].audio is not None, f"missing audio for vowel: {token!r}"
+    for token in ("ɑ̃", "ɛ̃", "ɔ̃", "œ̃"):
+        assert inv[token].audio is not None, f"missing audio for nasal vowel: {token!r}"
+
+
 def test_load_phonemes_contains_skeleton_entries() -> None:
     inv = load_phonemes()
     # The 4b-5 skeleton must include β and y so the override schema has
