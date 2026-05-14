@@ -32,6 +32,7 @@ dependencies = [
     "pyyaml>=6.0,<7.0",
     "pypinyin>=0.50,<1.0",
     "pyopenjtalk>=0.3,<1.0",
+    "librosa>=0.10,<2.0",
 ]
 
 [project.optional-dependencies]
