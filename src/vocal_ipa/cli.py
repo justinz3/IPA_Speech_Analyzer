@@ -140,15 +140,29 @@ def main(
 
 
 def _render_score_table(result: ScoreResult) -> str:
+    has_prosody = any(p.prosody is not None for p in result.phonemes)
     lines = [f"language: {result.language} ({result.dialect})", ""]
-    lines.append(f"{'expected':<10}{'produced':<10}{'start':<8}{'end':<8}{'ok'}")
+
+    header = f"{'expected':<10}{'produced':<10}{'start':<8}{'end':<8}{'ok'}"
+    if has_prosody:
+        header += f"  {'prosody'}"
+    lines.append(header)
+
     for p in result.phonemes:
         mark = "✓" if p.ok else "✗"
-        lines.append(f"{p.expected:<10}{p.produced:<10}{p.start_s:<8.2f}{p.end_s:<8.2f}{mark}")
+        row = f"{p.expected:<10}{p.produced:<10}{p.start_s:<8.2f}{p.end_s:<8.2f}{mark}"
+        if has_prosody:
+            prosody_str = p.prosody.label if p.prosody is not None else ""
+            row += f"  {prosody_str}"
+        lines.append(row)
+
     wrong = sum(1 for p in result.phonemes if not p.ok)
     total = len(result.phonemes)
     lines.append("")
     lines.append(f"PER: {result.per:.3f}  ({wrong}/{total} phonemes wrong)")
+    if result.prosody_score is not None:
+        prosody_pct = int(result.prosody_score * 100)
+        lines.append(f"Prosody: {prosody_pct}% of scorable spans correct")
     if result.dropped_reference_count:
         lines.append(
             f"(dropped {result.dropped_reference_count} reference char(s) not in model vocab)"
