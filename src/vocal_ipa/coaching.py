@@ -1,24 +1,21 @@
-"""Coaching: per-phoneme reference media + per-error-pair override tips.
+"""Coaching: per-phoneme reference media + per-error-pair override tips + practice phrases.
 
-Two YAML data files drive the coaching surface:
+Three YAML data files drive the coaching surface:
 
 - ``data/phonemes.yaml`` is the foundation: one entry per IPA token in the
-  es+fr inventory, each with ``name`` (e.g., "voiced bilabial fricative")
-  plus optional ``image`` / ``audio`` / ``video`` paths or URLs and per-
-  language ``notes``. Mechanically populated; covers every miss the model
-  can produce on supported languages.
+  inventory, each with ``name`` plus optional ``image`` / ``audio`` / ``video``
+  paths and per-language ``notes``.
 
-- ``data/correction_overrides.yaml`` is the additive layer: a sparse list
-  of (lang, expected, produced) entries with a ``title`` + ``tip`` prose.
-  Hand-curated for the high-value error pairs surfaced in the failure-modes
-  docs. Empty overrides are fine — the comparison view (expected vs
-  produced reference media) still works.
+- ``data/correction_overrides.yaml`` is the additive layer: a sparse list of
+  (lang, expected, produced) entries with a ``title`` + ``tip`` prose.
+
+- ``data/practice_phrases.yaml`` is the phrase library: curated sentences
+  grouped by language and category (pangram, beginner, targeted, tongue-twister).
+  Used by the web UI to pre-fill the reference field and populate the Phrases tab.
 
 For every miss in a ScoreResult, ``lookup_miss(lang, expected, produced)``
 returns a ``MissReference`` carrying both phoneme entries plus the optional
-override Tip. Returns ``None`` when the expected token isn't in the
-inventory yet (graceful degradation; a separate test asserts inventory
-coverage).
+override Tip. Returns ``None`` when the expected token isn't in the inventory.
 """
 
 from __future__ import annotations
@@ -56,6 +53,15 @@ class MissReference:
     tip: Tip | None              # populated only when an override matches
 
 
+@dataclass(frozen=True)
+class Phrase:
+    lang: str
+    category: str  # "pangram" | "beginner" | "targeted" | "tongue-twister"
+    text: str
+    targets: tuple[str, ...]  # IPA tokens this phrase exercises
+    note: str
+
+
 def _read_data(filename: str) -> str:
     return (files("vocal_ipa") / "data" / filename).read_text(encoding="utf-8")
 
@@ -89,6 +95,23 @@ def load_overrides() -> list[Tip]:
         )
         for entry in raw
     ]
+
+
+@functools.cache
+def load_phrases() -> dict[str, list[Phrase]]:
+    """Return practice phrases keyed by language code."""
+    raw = yaml.safe_load(_read_data("practice_phrases.yaml")) or []
+    result: dict[str, list[Phrase]] = {}
+    for entry in raw:
+        p = Phrase(
+            lang=entry["lang"],
+            category=entry["category"],
+            text=entry["text"],
+            targets=tuple(entry.get("targets") or []),
+            note=entry.get("note", ""),
+        )
+        result.setdefault(p.lang, []).append(p)
+    return result
 
 
 def lookup_miss(lang: str, expected: str, produced: str) -> MissReference | None:
