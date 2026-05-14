@@ -69,6 +69,9 @@ def test_run_with_reference_renders_scored_html(monkeypatch, tmp_path) -> None:
     assert 'class="phoneme miss"' in scored
     assert 'data-start="0.04"' in scored
     assert "1/2 phonemes wrong" in scored
+    # IPA tokens in the score table should be wrapped in tooltip spans.
+    assert 'class="ipa-tip"' in scored
+    assert 'data-tip=' in scored
 
 
 def _run_helper(audio_path, reference: str, lang: str = "es", dialect: str | None = None):

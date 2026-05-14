@@ -19,7 +19,7 @@ from importlib.resources import files
 
 import gradio as gr
 
-from .coaching import MissReference
+from .coaching import MissReference, load_phonemes
 from .pipeline import transcribe
 from .score import ScoreResult, score
 
@@ -66,6 +66,33 @@ _SCORED_STYLES = """
             font-size: 0.95em; }
 .miss-tip strong { display: block; margin-bottom: 0.2em; }
 .miss-tip p { margin: 0; white-space: pre-wrap; }
+
+/* IPA token tooltips — shown on hover over any token in the score table. */
+.ipa-tip {
+  position: relative;
+  cursor: help;
+  text-decoration: underline dotted currentColor;
+}
+.ipa-tip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #f8f8f8;
+  padding: 5px 9px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  max-width: 280px;
+  font-size: 0.82em;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+  z-index: 50;
+}
+.ipa-tip[data-tip]:hover::after { opacity: 1; }
 </style>
 """
 
@@ -135,24 +162,43 @@ def _format_timing(*, audio_s: float, load_s: float, inference_s: float) -> str:
     return f"audio {audio_s:.2f}s · model load {load_s:.2f}s · inference {inference_s:.2f}s"
 
 
+def _ipa_tip(token: str, lang: str, inv: dict) -> str:
+    """Wrap an IPA token in a CSS tooltip span if it is in the phoneme inventory."""
+    phoneme = inv.get(token)
+    if phoneme is None:
+        return escape(token)
+    tip = phoneme.name
+    note = phoneme.notes.get(lang, "")
+    if note:
+        tip += "\n" + note[:100]
+    return f'<span class="ipa-tip" data-tip="{escape(tip)}">{escape(token)}</span>'
+
+
 def _render_scored_html(result: ScoreResult) -> str:
     wrong = sum(1 for p in result.phonemes if not p.ok)
     total = len(result.phonemes)
     has_prosody = any(p.prosody is not None for p in result.phonemes)
+    inv = load_phonemes()
+    lang = result.language
     spans = []
     rows = []
     for p in result.phonemes:
         cls = "ok" if p.ok else "miss"
-        title = "ok" if p.ok else f"produced: {p.produced}"
+        # Build tooltip title for the scored-line span: phoneme name + prosody if any.
+        phoneme = inv.get(p.expected)
+        tip_parts = [phoneme.name if phoneme else p.expected]
+        if not p.ok:
+            tip_parts.append(f"produced: {p.produced}")
         if p.prosody is not None:
-            title += f" | {p.prosody.label}"
+            tip_parts.append(p.prosody.label)
         spans.append(
             f'<span class="phoneme {cls}" '
             f'data-start="{p.start_s:.2f}" data-end="{p.end_s:.2f}" '
-            f'title="{escape(title)}">{escape(p.expected)}</span>'
+            f'title="{escape(" | ".join(tip_parts))}">{escape(p.expected)}</span>'
         )
         row = (
-            f"<tr><td>{escape(p.expected)}</td><td>{escape(p.produced)}</td>"
+            f"<tr><td>{_ipa_tip(p.expected, lang, inv)}</td>"
+            f"<td>{_ipa_tip(p.produced, lang, inv)}</td>"
             f"<td>{p.start_s:.2f}</td><td>{p.end_s:.2f}</td>"
             f"<td>{'✓' if p.ok else '✗'}</td>"
         )
