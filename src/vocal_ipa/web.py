@@ -261,6 +261,18 @@ def _render_miss_card(ref: MissReference) -> str:
     return "".join(parts)
 
 
+def _phoneme_media_html(phoneme, alt_suffix: str = "") -> list[str]:
+    """Return <img> and <audio> elements for a phoneme's media fields, if present."""
+    parts = []
+    image_src = _media_url(phoneme.image)
+    if image_src:
+        parts.append(f'<img src="{image_src}" alt="{escape(phoneme.name)}{alt_suffix}">')
+    audio_src = _media_url(phoneme.audio)
+    if audio_src:
+        parts.append(f'<audio controls preload="none" src="{audio_src}"></audio>')
+    return parts
+
+
 def _render_miss_side(label: str, phoneme) -> str:
     parts = [
         '<div class="miss-side">',
@@ -268,12 +280,7 @@ def _render_miss_side(label: str, phoneme) -> str:
         f'<span class="miss-token">{escape(phoneme.token)}</span>',
         f'<span class="miss-name">{escape(phoneme.name)}</span>',
     ]
-    image_src = _media_url(phoneme.image)
-    if image_src:
-        parts.append(f'<img src="{image_src}" alt="{escape(phoneme.name)} diagram">')
-    audio_src = _media_url(phoneme.audio)
-    if audio_src:
-        parts.append(f'<audio controls preload="none" src="{audio_src}"></audio>')
+    parts.extend(_phoneme_media_html(phoneme, alt_suffix=" diagram"))
     if phoneme.video:
         parts.append(
             f'<a href="{escape(phoneme.video)}" target="_blank" rel="noreferrer">video</a>'
@@ -335,12 +342,7 @@ def _render_library_html() -> str:
             parts.append('<div class="ph-card">')
             parts.append(f'<div class="ph-token">{escape(token)}</div>')
             parts.append(f'<div class="ph-name">{escape(phoneme.name)}</div>')
-            image_src = _media_url(phoneme.image)
-            if image_src:
-                parts.append(f'<img src="{image_src}" alt="{escape(phoneme.name)}">')
-            audio_src = _media_url(phoneme.audio)
-            if audio_src:
-                parts.append(f'<audio controls preload="none" src="{audio_src}"></audio>')
+            parts.extend(_phoneme_media_html(phoneme))
             notes_html = [
                 f'<div class="ph-note"><span class="ph-note-lang">{lc}:</span> {escape(note)}</div>'
                 for lc in ("es", "fr")
