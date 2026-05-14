@@ -1151,3 +1151,61 @@ ju:
   video: null
   notes:
     en: "Vocab artifact — syllabic /l/ in `bottle`, `little`, `people`. The schwa is often reduced or absent."
+
+ɒ:
+  name: open back rounded vowel
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "British English LOT vowel — `o` in `hot`, `stop`, `got` (en-gb). American English uses /ɑː/ here (cot–caught merger)."
+
+əʊ:
+  name: mid central to near-close back rounded diphthong
+  image: null
+  audio: null
+  video: null
+  notes:
+    en: "British English GOAT vowel — `o` in `go`, `home`, `stone` (en-gb). American English uses /oʊ/ instead."
+
+# -- Mandarin: additional tone-marked compound vowel tokens --
+
+iɛɜ:
+  name: Mandarin compound vowel nucleus iɛ (neutral tone)
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Tone-5 (neutral/unstressed) form of the iɛ vowel nucleus. Appears in particles and unstressed syllables."
+
+ua5:
+  name: Mandarin compound vowel ua (neutral tone)
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Tone-5 (neutral/unstressed) form of the ua compound vowel."
+
+uo5:
+  name: Mandarin compound vowel uo (neutral tone)
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Tone-5 (neutral/unstressed) form of the uo compound vowel. Common in 的 (de) and other particles."
+
+y2:
+  name: Mandarin front rounded vowel ü (tone 2, rising)
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Tone-2 (rising) form of the ü vowel. Appears in 鱼 (yú), 雨 (yǔ when sandhi applies)."
+
+yɛɜ:
+  name: Mandarin compound vowel yɛ (neutral tone)
+  image: null
+  audio: null
+  video: null
+  notes:
+    cmn: "Tone-5 (neutral/unstressed) form of the yɛ compound vowel."
