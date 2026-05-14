@@ -12,7 +12,7 @@ short_description: Audio to IPA pronunciation feedback with per-phoneme scoring.
 
 Audio in, IPA out. A pronunciation feedback CLI for language learners.
 
-> **Status:** Phase 6 — Spanish, French, Mandarin, and Japanese. Segmental per-phoneme scoring + prosody scoring (stress, tone contours, intonation). Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
+> **Status:** Phase 7 — Spanish, French, Mandarin, and Japanese. Segmental scoring, prosody scoring, IPA tooltips, and vowel audio in the web UI. Experimental. See [`pronunciation_app_roadmap.md`](pronunciation_app_roadmap.md) for the long arc.
 
 ## What it does
 
@@ -148,6 +148,17 @@ shows the IPA output is identical across `fr-fr`, `fr-be`, `fr-ch`, `fr-ca`
 `es-mx` produces the same IPA as `es-419`. Real Quebec/Belgian dialect
 handling needs a different reference source than espeak; tracked as future
 work.
+
+### IPA tooltips
+
+Every IPA token in the score table is wrapped in a hover tooltip showing its
+phoneme name and a language-specific note. Hover over any `expected` or
+`produced` cell to see e.g. "close front rounded vowel / French `u` in `tu`".
+Tokens not in the inventory (model artifacts, `∅`) are shown as plain text.
+
+When a miss-comparison card appears for a vowel, an inline audio player lets
+you hear the reference pronunciation (15 es+fr vowels curated from Wikimedia
+Commons CC-BY-SA 3.0; see `src/vocal_ipa/data/phonemes/LICENSES.md`).
 
 ### Prosody scoring
 

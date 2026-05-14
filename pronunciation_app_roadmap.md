@@ -92,11 +92,10 @@ Phoneme inventory mismatch is real here — espeak-ng's French phoneme set shoul
 - `text_to_ipa()` promoted to return `(ipa, metadata)` at this phase; Phase 5 keeps the `str` return until the prosody path actually needs it.
 - **Prerequisite (not yet planned):** `wav2vec2-lv-60-espeak-cv-ft` has degraded accuracy for Mandarin and near-unusable accuracy for Japanese — both due to broken espeak voices during training label generation. Segmental scoring for cmn/ja in Phase 5 catches gross errors but misses subtle ones and produces false positives (model artifacts the user notices before the model does). Phase 6 prosody work on cmn/ja should be preceded by a model-swap to language-specific checkpoints (a Mandarin-finetuned wav2vec2 and a Japanese phoneme recognizer with correct labels). The pipeline change is a one-line model ID swap; the work is finding/evaluating the checkpoints.
 
-### Phase 7 — IPA encyclopedia + phoneme media curation
-- Game-style tooltips on every IPA token rendered (score table, miss cards, free-transcription output): hover/tap → name + 1-line description + link to encyclopedia entry. Currently the page shows raw tokens (β, ʁ, y, ɛ̃) that are opaque to anyone who doesn't already know IPA.
-- Dedicated reference page (Gradio tab or route) showing the full inventory grouped by manner/place (consonants) and height/backness (vowels). Reuses `coaching.load_phonemes()` — no parallel data source.
-- Phoneme media curation from Wikimedia Commons (CC-BY-SA / public domain): PNG diagrams + OGG audio per phoneme, populating the existing null `image`/`audio` fields in `phonemes.yaml`. The plumbing already serves these via Gradio's `allowed_paths`; this commit just adds the files and `LICENSES.md` attribution.
-- Mostly content + frontend polish; little engineering risk. Inventory grows alongside Phase 5's added language(s).
+### Phase 7 — IPA encyclopedia + phoneme media curation ✓ (2026-05-13)
+- **Tooltips:** CSS `::after` popup on every IPA token in the score table (expected and produced cells). Hover reveals phoneme name + language-specific note from `phonemes.yaml`. Zero JS — `data-tip` attribute + CSS transition. Applied via `_ipa_tip()` helper in `web.py`; `coaching.load_phonemes()` is called once per render (already `@functools.cache`).
+- **Vowel audio (es + fr):** 15 OGG files in `src/vocal_ipa/data/phonemes/` covering all pure and nasal vowels for Spanish and French (a e i o u ɛ ɔ ə œ ø y ɑ̃ ɛ̃ ɔ̃ œ̃). Sourced from Wikimedia Commons CC-BY-SA 3.0; attribution in `LICENSES.md`. Audio appears in miss-comparison cards when the expected or produced phoneme has a non-null `audio` field.
+- **Deferred:** vowel chart PNG diagrams (no suitable free images found at correct paths), consonant media, separate inventory browse page, cmn/ja media (pending model swap).
 
 ### Phase 8 — Optional polish
 - Web UI / containerize / deploy
