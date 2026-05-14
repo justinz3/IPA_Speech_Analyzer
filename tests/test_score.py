@@ -95,7 +95,7 @@ def _patch_pipeline(monkeypatch, *, log_probs, target_ids, transcription):
     monkeypatch.setattr(
         score_module,
         "reference_to_token_ids",
-        lambda ref, p: (target_ids, ["k", "a", "s", "a"]),
+        lambda ref, p: (target_ids, ["k", "a", "s", "a"], [False, False, False, False]),
     )
     monkeypatch.setattr(
         score_module,
@@ -201,7 +201,7 @@ def _patch_pipeline_for_inventory_tokens(monkeypatch, *, log_probs, target_ids, 
     monkeypatch.setattr(
         score_module,
         "reference_to_token_ids",
-        lambda ref, p: (target_ids, ["β", "v", "β"]),
+        lambda ref, p: (target_ids, ["β", "v", "β"], [False, False, False]),
     )
     monkeypatch.setattr(
         score_module,
@@ -268,7 +268,7 @@ def test_score_miss_reference_is_none_when_token_not_in_inventory(monkeypatch, t
     monkeypatch.setattr(
         score_module,
         "reference_to_token_ids",
-        lambda ref, p: ([1, 2, 1], ["Q", "R", "Q"]),
+        lambda ref, p: ([1, 2, 1], ["Q", "R", "Q"], [False, False, False]),
     )
     # Targets [Q, R, Q]; model emits S in the middle slot (a miss).
     log_probs = _flat_log_probs([1, 1, 3, 3, 1, 1])

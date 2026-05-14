@@ -21,7 +21,8 @@ import torchaudio.functional as TAF
 FRAME_RATE_HZ = 50.0
 SECONDS_PER_FRAME = 1.0 / FRAME_RATE_HZ
 
-_STRIP_MARKS = str.maketrans("", "", "ˈˌːˑ")
+_PRIMARY_STRESS = "ˈ"
+_SKIP_CHARS = frozenset("ˌːˑ")   # strip these; ˈ is handled separately for stress tracking
 _SPECIAL_TOKEN_PREFIX = "<"
 
 
@@ -45,18 +46,19 @@ class AlignedPhoneme:
 def reference_to_token_ids(
     ref_ipa: str,
     processor,
-) -> tuple[list[int], list[str]]:
+) -> tuple[list[int], list[str], list[bool]]:
     """Tokenize phonemizer-style IPA into model-vocab IDs.
 
-    Strips stress (ˈ ˌ) and length (ː ˑ) marks, then walks the string with
-    greedy max-munch against the model vocab so multi-codepoint phonemes
-    like ``tʃ``, ``oʊ`` match before their single-char prefixes.
+    Walks the string with greedy max-munch against the model vocab so
+    multi-codepoint phonemes like ``tʃ``, ``oʊ`` match before their
+    single-char prefixes. Stress marks (ˈ) are stripped but tracked: the
+    third return value is a bool per kept token, True when a primary-stress
+    mark (ˈ) immediately preceded it. Secondary stress (ˌ) and length marks
+    (ː ˑ) are silently skipped. Tokens not in the vocab are dropped with a
+    one-shot warning.
 
-    Tokens not in the vocab are dropped with a one-shot warning. Returns
-    ``(token_ids, surface_phonemes_kept)`` so callers can reconstruct the
-    expected-phoneme sequence.
+    Returns ``(token_ids, surface_phonemes_kept, is_stressed)``.
     """
-    cleaned = ref_ipa.translate(_STRIP_MARKS)
     vocab: dict[str, int] = processor.tokenizer.get_vocab()
     candidates = sorted(
         (t for t in vocab if t and not t.startswith(_SPECIAL_TOKEN_PREFIX)),
@@ -66,25 +68,34 @@ def reference_to_token_ids(
 
     ids: list[int] = []
     kept: list[str] = []
+    stressed: list[bool] = []
     dropped: list[str] = []
+    pending_stress = False
     i = 0
-    n = len(cleaned)
+    n = len(ref_ipa)
     while i < n:
-        ch = cleaned[i]
-        if ch.isspace():
+        ch = ref_ipa[i]
+        if ch.isspace() or ch in _SKIP_CHARS:
+            i += 1
+            continue
+        if ch == _PRIMARY_STRESS:
+            pending_stress = True
             i += 1
             continue
         match = None
         for tok in candidates:
-            if cleaned.startswith(tok, i):
+            if ref_ipa.startswith(tok, i):
                 match = tok
                 break
         if match is None:
             dropped.append(ch)
+            pending_stress = False
             i += 1
             continue
         ids.append(vocab[match])
         kept.append(match)
+        stressed.append(pending_stress)
+        pending_stress = False
         i += len(match)
 
     if dropped:
@@ -93,7 +104,7 @@ def reference_to_token_ids(
             f"Dropped {len(dropped)} reference character(s) not in model vocab: {sample!r}",
             stacklevel=2,
         )
-    return ids, kept
+    return ids, kept, stressed
 
 
 def forced_align(

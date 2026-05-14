@@ -56,40 +56,60 @@ def _processor() -> _FakeProcessor:
 
 
 def test_reference_to_token_ids_simple_word():
-    ids, kept = reference_to_token_ids("kasa", _processor())
+    ids, kept, stressed = reference_to_token_ids("kasa", _processor())
     assert kept == ["k", "a", "s", "a"]
     assert ids == [_VOCAB["k"], _VOCAB["a"], _VOCAB["s"], _VOCAB["a"]]
+    assert stressed == [False, False, False, False]
 
 
 def test_reference_to_token_ids_strips_stress_and_length():
-    ids, kept = reference_to_token_ids("ˈkaːsa", _processor())
+    ids, kept, _ = reference_to_token_ids("ˈkaːsa", _processor())
     assert kept == ["k", "a", "s", "a"]
     assert ids == [_VOCAB["k"], _VOCAB["a"], _VOCAB["s"], _VOCAB["a"]]
 
 
 def test_reference_to_token_ids_drops_word_boundary_spaces():
-    ids, _ = reference_to_token_ids("ka sa", _processor())
+    ids, _, _ = reference_to_token_ids("ka sa", _processor())
     assert ids == [_VOCAB["k"], _VOCAB["a"], _VOCAB["s"], _VOCAB["a"]]
 
 
 def test_reference_to_token_ids_greedy_max_munch():
     # "oʊ" is in the vocab; max-munch must prefer it over "o" + "ʊ".
-    ids, kept = reference_to_token_ids("koʊ", _processor())
+    ids, kept, _ = reference_to_token_ids("koʊ", _processor())
     assert kept == ["k", "oʊ"]
     assert ids == [_VOCAB["k"], _VOCAB["oʊ"]]
 
 
 def test_reference_to_token_ids_greedy_match_does_not_overshoot():
     # "tʃ" is in the vocab but "ta" is not; we must fall through to "t" + "a".
-    _, kept = reference_to_token_ids("ta", _processor())
+    _, kept, _ = reference_to_token_ids("ta", _processor())
     assert kept == ["t", "a"]
 
 
 def test_reference_to_token_ids_warns_on_unknown_char():
     with pytest.warns(UserWarning, match="not in model vocab"):
-        _, kept = reference_to_token_ids("ka@sa", _processor())
+        _, kept, _ = reference_to_token_ids("ka@sa", _processor())
     assert kept == ["k", "a", "s", "a"]
     assert "@" not in kept
+
+
+def test_reference_to_token_ids_stress_marks_tracked():
+    # ˈk → k is stressed; a, s, a are not.
+    _, _, stressed = reference_to_token_ids("ˈkasa", _processor())
+    assert stressed == [True, False, False, False]
+
+
+def test_reference_to_token_ids_mid_word_stress():
+    # kaˈsa → s is stressed.
+    _, kept, stressed = reference_to_token_ids("kaˈsa", _processor())
+    assert kept == ["k", "a", "s", "a"]
+    assert stressed == [False, False, True, False]
+
+
+def test_reference_to_token_ids_secondary_stress_not_tracked():
+    # ˌ (secondary stress) is silently stripped, not tracked as stress.
+    _, _, stressed = reference_to_token_ids("ˌkasa", _processor())
+    assert stressed == [False, False, False, False]
 
 
 # -- forced_align -------------------------------------------------------------
