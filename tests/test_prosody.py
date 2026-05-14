@@ -7,7 +7,6 @@ run in < 1 s with no network access.
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from vocal_ipa.prosody import (
     HOP_LENGTH,
@@ -23,7 +22,6 @@ from vocal_ipa.prosody import (
     score_tone,
     token_tone,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers — synthetic audio

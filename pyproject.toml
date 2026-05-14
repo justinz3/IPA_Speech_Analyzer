@@ -94,3 +94,5 @@ ignore = [
 "tests/test_cli.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_web.py" = ["RUF001", "RUF002", "RUF003"]
 "tests/test_coaching.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/test_per.py" = ["RUF001", "RUF002", "RUF003"]
+"tests/test_prosody.py" = ["RUF001", "RUF002", "RUF003"]
