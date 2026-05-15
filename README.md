@@ -5,7 +5,7 @@ sdk_version: 5.50.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Audio to IPA pronunciation feedback with per-phoneme scoring. English, Spanish, French, Mandarin, Japanese.
+short_description: Per-phoneme pronunciation feedback. en/es/fr/cmn/ja.
 ---
 
 # vocal-ipa-trainer
