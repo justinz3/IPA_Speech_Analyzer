@@ -1,9 +1,6 @@
 # Hugging Face Spaces install path. Mirrors [project.dependencies] +
 # [project.optional-dependencies.web] in pyproject.toml; keep in sync when
 # upgrading deps. Local dev uses `uv sync --extra web` instead.
-#
-# Install the package itself so `vocal_ipa` is importable from the src/ layout.
-.
 torch>=2.3,<3.0
 torchaudio>=2.3,<3.0
 transformers>=4.44,<5.0
