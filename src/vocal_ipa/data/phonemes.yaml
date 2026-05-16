@@ -137,6 +137,26 @@ y:
   examples:
     fr: "s**o**rt, p**o**mme, h**o**mme"
 
+ɔː:
+  name: open-mid back rounded vowel (long)
+  image: null
+  audio: phonemes/thought_audio.ogg
+  video: null
+  notes:
+    en: "English THOUGHT vowel — `aw` in `law`, `caught`, `thought`."
+  examples:
+    en: "th**ough**t, c**augh**t, l**aw**"
+
+ɑ:
+  name: open back unrounded vowel
+  image: null
+  audio: phonemes/alpha_audio.ogg
+  video: null
+  notes:
+    fr: "French `â` in `pâte`, `glas`. Backer and longer than /a/."
+  examples:
+    fr: "p**â**te, gl**as**"
+
 ə:
   name: mid central vowel (schwa)
   image: phonemes/schwa_pos.svg
@@ -238,7 +258,7 @@ w:
 aʊ:
   name: open-to-near-close diphthong (/a/ → /ʊ/)
   image: null
-  audio: null
+  audio: phonemes/mouth_audio.ogg
   video: null
   notes:
     en: "English `ow` in `now`. Spanish vowels do *not* glide; if you see /aʊ/ where the reference is just /a/, that's English diphthongization."
@@ -627,7 +647,7 @@ th:
 ts:
   name: 'voiceless alveolar affricate'
   image: null
-  audio: null
+  audio: phonemes/alv-aff_audio.ogg
   video: null
   notes:
     cmn: "Pinyin 'z' initial (zài 在)."
@@ -659,7 +679,7 @@ tsh:
 tɕ:
   name: 'voiceless alveolo-palatal affricate'
   image: null
-  audio: null
+  audio: phonemes/alveolo-pal-aff_audio.ogg
   video: null
   notes:
     cmn: "Pinyin 'j' initial. Tongue blade against alveolar+palate."
@@ -677,7 +697,7 @@ tɕh:
 ɕ:
   name: 'voiceless alveolo-palatal fricative'
   image: null
-  audio: null
+  audio: phonemes/alveolo-pal-fric_audio.ogg
   video: null
   notes:
     cmn: "Pinyin 'x' initial. Softer than English 'sh' with palate contact."
@@ -688,7 +708,7 @@ tɕh:
 ʐ:
   name: 'voiced retroflex fricative'
   image: null
-  audio: null
+  audio: phonemes/retro-fric_audio.ogg
   video: null
   notes:
     cmn: "Pinyin 'r' initial. Often realized as approximant ɻ in casual speech."
@@ -708,7 +728,7 @@ tɕh:
 ŋ:
   name: 'voiced velar nasal'
   image: null
-  audio: null
+  audio: phonemes/velar-n_audio.ogg
   video: null
   notes:
     en: "English `ng` in `ring`, `sing`, `thing`. Also in `n` before /k/ and /g/ (`bank`, `angry`)."
@@ -1022,7 +1042,7 @@ aː:
 iː:
   name: 'close front long vowel'
   image: null
-  audio: null
+  audio: phonemes/fleece_audio.ogg
   video: null
   notes:
     en: "English FLEECE vowel — `ee` in `see`, `feet`, `machine`."
@@ -1033,7 +1053,7 @@ iː:
 uː:
   name: 'close back long vowel'
   image: null
-  audio: null
+  audio: phonemes/goose_audio.ogg
   video: null
   notes:
     en: "English GOOSE vowel — `oo` in `food`, `blue`, `through`."
@@ -1074,7 +1094,7 @@ bʲ:
 dʑ:
   name: 'voiced alveolo-palatal affricate'
   image: null
-  audio: null
+  audio: phonemes/voiced-alveolo-pal-aff_audio.ogg
   video: null
   notes:
     ja: "Japanese j- onset (e.g. じ じゃ じゅ じょ). Realized as [ʑ] intervocalically."
@@ -1084,7 +1104,7 @@ dʑ:
 ç:
   name: 'voiceless palatal fricative'
   image: null
-  audio: null
+  audio: phonemes/pal-fric_audio.ogg
   video: null
   notes:
     ja: "Japanese hy- onset (e.g. ひ ひゃ ひゅ ひょ). Allophone of /h/ before /i/ and /j/."
@@ -1094,7 +1114,7 @@ dʑ:
 ɸ:
   name: 'voiceless bilabial fricative'
   image: null
-  audio: null
+  audio: phonemes/bilabial-fric_audio.ogg
   video: null
   notes:
     ja: "Japanese f- onset (e.g. ふ ふぁ ふぃ ふぇ). Bilabial, not labiodental like English /f/."
@@ -1122,7 +1142,7 @@ rʲ:
 ɴ:
   name: 'voiced uvular nasal'
   image: null
-  audio: null
+  audio: phonemes/uvular-n_audio.ogg
   video: null
   notes:
     ja: "Japanese moraic nasal (-ん, the special 'N' phoneme). Realized as [m n ŋ ɴ] depending on context; ɴ is the canonical citation form."
@@ -1132,7 +1152,7 @@ rʲ:
 ʔ:
   name: 'glottal stop'
   image: null
-  audio: null
+  audio: phonemes/glottal-stop_audio.ogg
   video: null
   notes:
     ja: "Japanese geminate marker (small っ — pyopenjtalk emits 'cl'). The ʔ token is the closest closure event in the model vocab; phonetically closer to consonant length than a true glottal stop."
@@ -1145,7 +1165,7 @@ rʲ:
 aɪ:
   name: 'near-open front unrounded diphthong'
   image: null
-  audio: null
+  audio: phonemes/price_audio.ogg
   video: null
   notes:
     en: "English `I` in `price`, `time`, `high`. Glides from /a/ to /ɪ/."
@@ -1166,7 +1186,7 @@ e̞:
 ɪ:
   name: near-close near-front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/kit_audio.ogg
   video: null
   notes:
     en: "English KIT vowel — `i` in `bit`, `sit`, `fish`. Shorter and more relaxed than /iː/."
@@ -1176,7 +1196,7 @@ e̞:
 æ:
   name: near-open front unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/trap_audio.ogg
   video: null
   notes:
     en: "English TRAP vowel — `a` in `cat`, `bad`, `hand`. Lower and more front than /ɛ/."
@@ -1186,7 +1206,7 @@ e̞:
 ʌ:
   name: open-mid back unrounded vowel
   image: null
-  audio: null
+  audio: phonemes/strut_audio.ogg
   video: null
   notes:
     en: "English STRUT vowel — `u` in `but`, `cup`, `love`."
@@ -1196,7 +1216,7 @@ e̞:
 ʊ:
   name: near-close near-back rounded vowel
   image: null
-  audio: null
+  audio: phonemes/foot_audio.ogg
   video: null
   notes:
     en: "English FOOT vowel — `oo` in `book`, `put`, `could`. Shorter and more relaxed than /uː/."
@@ -1206,7 +1226,7 @@ e̞:
 ɜː:
   name: open-mid central unrounded vowel (long)
   image: null
-  audio: null
+  audio: phonemes/nurse_audio.ogg
   video: null
   notes:
     en: "English NURSE vowel — `er` in `bird`, `word`, `learn`. No equivalent in Spanish or French."
@@ -1224,7 +1244,7 @@ e̞:
 ɑː:
   name: open back unrounded vowel (long)
   image: null
-  audio: null
+  audio: phonemes/palm_audio.ogg
   video: null
   notes:
     en: "American English LOT/PALM vowel — `a` in `father`, `spa`; also `o` in `hot`, `stop` (cot–caught merger)."
@@ -1234,7 +1254,7 @@ e̞:
 eɪ:
   name: close-mid front to near-close diphthong
   image: null
-  audio: null
+  audio: phonemes/face_audio.ogg
   video: null
   notes:
     en: "English FACE vowel — `a` in `day`, `say`, `they`. Glides from /e/ toward /ɪ/."
@@ -1244,7 +1264,7 @@ eɪ:
 oʊ:
   name: close-mid back rounded diphthong
   image: null
-  audio: null
+  audio: phonemes/goat_audio.ogg
   video: null
   notes:
     en: "American English GOAT vowel — `o` in `go`, `home`, `stone`. British RP uses /əʊ/ instead."
@@ -1254,7 +1274,7 @@ oʊ:
 ɔɪ:
   name: open-mid back to near-close front diphthong
   image: null
-  audio: null
+  audio: phonemes/choice_audio.ogg
   video: null
   notes:
     en: "English CHOICE vowel — `oi` in `boy`, `coin`, `voice`."
@@ -1266,7 +1286,7 @@ oʊ:
 ɹ:
   name: voiced alveolar approximant
   image: null
-  audio: null
+  audio: phonemes/approx-r_audio.ogg
   video: null
   notes:
     en: "English `r` in `red`, `right`, `very`. Tongue tip approaches (but doesn't touch) the alveolar ridge. Very different from Spanish trilled /r/ or French uvular /ʁ/."
@@ -1340,7 +1360,7 @@ ju:
 ɒ:
   name: open back rounded vowel
   image: null
-  audio: null
+  audio: phonemes/lot_audio.ogg
   video: null
   notes:
     en: "British English LOT vowel — `o` in `hot`, `stop`, `got` (en-gb). American English uses /ɑː/ here (cot–caught merger)."
