@@ -327,10 +327,18 @@ _LIBRARY_STYLES = """
 """
 
 _LIBRARY_GROUPS = [
-    ("Oral vowels (shared)", ["a", "e", "i", "o", "u", "y", "ø", "œ", "ɛ", "ɔ", "ə", "ɑ"]),
-    ("English vowels", ["ɪ", "æ", "ʌ", "ʊ", "ɜː", "ɑː", "iː", "uː", "ɒ", "ɔː", "eɪ", "oʊ", "aɪ", "aʊ", "ɔɪ"]),
-    ("Nasal vowels (French)", ["ɑ̃", "ɛ̃", "ɔ̃", "œ̃"]),
-    ("Consonants", ["β", "ɾ", "r", "x", "θ", "ð", "ɣ", "ʁ", "ɲ", "ʃ", "ʒ", "tʃ", "ŋ", "ɥ"]),
+    # ── Vowels ────────────────────────────────────────────────────────────
+    ("Vowels — shared (es / fr / ja)", ["a", "e", "i", "o", "u"]),
+    ("Vowels — French", ["y", "ø", "œ", "ɛ", "ɔ", "ə", "ɑ", "ɑ̃", "ɛ̃", "ɔ̃", "œ̃"]),
+    ("Vowels — English", ["ɪ", "æ", "ʌ", "ʊ", "ɜː", "ɑː", "iː", "uː", "ɒ", "ɔː", "eɪ", "oʊ", "aɪ", "aʊ", "ɔɪ"]),
+    # ── Consonants ────────────────────────────────────────────────────────
+    ("Consonants — Spanish", ["β", "ɾ", "r", "ɣ", "x", "θ", "ð", "ɲ", "tʃ"]),
+    ("Consonants — French", ["ʁ", "ʃ", "ʒ", "ɲ", "ɥ"]),
+    ("Consonants — English", ["θ", "ð", "ŋ", "ʃ", "ʒ", "tʃ", "ɹ"]),
+    # Mandarin initials: affricates, fricatives, aspirated stops
+    ("Consonants — Mandarin", ["tɕ", "tɕh", "ts.", "ts.h", "ts", "tsh", "ɕ", "ʐ", "χ", "s.", "kh", "ph", "th"]),
+    # Japanese consonants absent from other languages
+    ("Consonants — Japanese", ["tɕ", "dʑ", "ç", "ɸ", "ɴ", "ʔ", "kʲ", "pʲ", "bʲ", "mʲ", "rʲ"]),
 ]
 
 
