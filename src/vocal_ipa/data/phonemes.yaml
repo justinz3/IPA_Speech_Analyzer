@@ -28,6 +28,10 @@ a:
   notes:
     es: "Spanish `a` — pure, no glide. Position constant from start to end."
     fr: "French `a` in `ami`, `papa`."
+  examples:
+    es: "p**a**so, c**a**sa"
+    fr: "p**a**tte, l**à**, femme"
+    ja: "**あ**る (aru)"
 
 e:
   name: close-mid front unrounded vowel
@@ -37,6 +41,10 @@ e:
   notes:
     es: "Spanish `e` — same height as French `é`; no glide."
     fr: "French `é` in `été`."
+  examples:
+    es: "p**e**so, m**e**sa"
+    fr: "cl**é**, ch**e**z, all**e**r"
+    ja: "**え**き (eki)"
 
 i:
   name: close front unrounded vowel
@@ -45,6 +53,11 @@ i:
   video: null
   notes:
     en: "English `ee` in `see`. Tongue high and front, lips spread."
+  examples:
+    en: "fl**ee**ce, s**ee**, b**e**"
+    es: "p**i**so, s**i**, **y**"
+    fr: "s**i**, **î**le, rég**ie**"
+    ja: "**い**る (iru)"
 
 o:
   name: close-mid back rounded vowel
@@ -53,6 +66,10 @@ o:
   video: null
   notes:
     es: "Spanish `o` — pure, no glide to /ʊ/ as in English."
+  examples:
+    es: "p**o**so, c**o**sa"
+    fr: "s**au**t, bure**au**, ch**o**se"
+    ja: "**お**に (oni)"
 
 u:
   name: close back rounded vowel
@@ -62,6 +79,11 @@ u:
   notes:
     es: "Spanish `u` — pure, no glide."
     fr: "French `ou` in `tout`. Distinguished from /y/ which is front rounded."
+  examples:
+    en: "g**oo**se, bl**ue**"
+    es: "p**u**so, l**u**na"
+    fr: "c**ou**p, r**ou**e"
+    ja: "**う**なぎ (unagi)"
 
 y:
   name: close front rounded vowel
@@ -70,6 +92,8 @@ y:
   video: null
   notes:
     fr: "French `u` in `tu`, `lune`, `huit`. No English equivalent — round the lips as for /u/ but place the tongue as for /i/."
+  examples:
+    fr: "t**u**, s**û**r, r**ue**"
 
 ø:
   name: close-mid front rounded vowel
@@ -78,6 +102,8 @@ y:
   video: null
   notes:
     fr: "French `eu` in `peu`, `bleues`. Front rounded — say `é` with rounded lips."
+  examples:
+    fr: "p**eu**, c**eu**x, qu**eue**"
 
 œ:
   name: open-mid front rounded vowel
@@ -86,6 +112,8 @@ y:
   video: null
   notes:
     fr: "French `œu` in `fleurs`, `peur`. More open than /ø/."
+  examples:
+    fr: "s**œu**r, p**eu**r, j**eu**ne"
 
 ɛ:
   name: open-mid front unrounded vowel
@@ -95,6 +123,9 @@ y:
   notes:
     en: "English DRESS vowel — `e` in `bed`, `said`, `friend`."
     fr: "French `è` in `mère`, `plaît`. More open than /e/."
+  examples:
+    en: "dr**e**ss, b**e**d, s**ai**d, fr**ie**nd"
+    fr: "b**ai**e, f**ai**te, cr**è**me, m**è**re"
 
 ɔ:
   name: open-mid back rounded vowel
@@ -103,6 +134,8 @@ y:
   video: null
   notes:
     fr: "French `o` in `homme`, `bord`. More open than /o/."
+  examples:
+    fr: "s**o**rt, p**o**mme, h**o**mme"
 
 ə:
   name: mid central vowel (schwa)
@@ -114,6 +147,9 @@ y:
     en: "English unstressed vowel as in `sofa`."
 
 # -- Length marks (model-emitted, decorative on Spanish) --
+  examples:
+    en: "comm**a**, ab**o**ut, th**e**"
+    fr: "r**e**poser, j**e**, p**e**tit"
 
 eː:
   name: close-mid front unrounded vowel (long)
@@ -140,6 +176,8 @@ oː:
   video: null
   notes:
     fr: "French `an`/`en` in `grand`, `comment`. Nasalize while pronouncing the vowel."
+  examples:
+    fr: "s**an**s, ch**am**p, v**en**t, t**em**ps"
 
 ɛ̃:
   name: open-mid front nasal vowel
@@ -148,6 +186,8 @@ oː:
   video: null
   notes:
     fr: "French `in`/`ain` in `vin`, `pain`. No English analogue."
+  examples:
+    fr: "v**in**, imp**ai**r, p**ain**, pl**ein**"
 
 ɔ̃:
   name: open-mid back nasal vowel
@@ -156,6 +196,8 @@ oː:
   video: null
   notes:
     fr: "French `on` in `bon`, `bonjour`."
+  examples:
+    fr: "s**on**, n**om**, b**on**"
 
 œ̃:
   name: open-mid front rounded nasal vowel
@@ -166,6 +208,8 @@ oː:
     fr: "French `un` in `un`, `parfum`. Many Parisian speakers merge /œ̃/ with /ɛ̃/; phonemizer keeps them distinct."
 
 # -- Glides / vocab-fused two-vowel tokens --
+  examples:
+    fr: "**un**, parf**um**"
 
 j:
   name: voiced palatal approximant
@@ -174,6 +218,10 @@ j:
   video: null
   notes:
     en: "English `y` in `yes`."
+  examples:
+    es: "**Vi**ena, re**y**"
+    fr: "fie**f**, pa**y**er, fi**ll**e"
+    ja: "**や**くしゃ (yakusha), **ゆ**ず (yuzu)"
 
 w:
   name: voiced labio-velar approximant
@@ -182,6 +230,10 @@ w:
   video: null
   notes:
     es: "Spanish `u` before another vowel in `bueno`, `puerto`."
+  examples:
+    es: "H**u**ila, a**u**to, **w**eb"
+    fr: "**ou**i, lo**i**"
+    ja: "**わ**さび (wasabi)"
 
 aʊ:
   name: open-to-near-close diphthong (/a/ → /ʊ/)
@@ -190,6 +242,8 @@ aʊ:
   video: null
   notes:
     en: "English `ow` in `now`. Spanish vowels do *not* glide; if you see /aʊ/ where the reference is just /a/, that's English diphthongization."
+  examples:
+    en: "m**ou**th, h**ow**, n**ow**"
 
 oɪ:
   name: close-mid back to near-close front diphthong (/o/ → /ɪ/)
@@ -230,6 +284,12 @@ p:
   image: null
   audio: null
   video: null
+  examples:
+    cmn: "**帮** (bāng)"
+    en: "**p**ie, s**p**y, ca**p**"
+    es: "**p**ato, lu**p**a"
+    fr: "**p**ère, grou**p**e"
+    ja: "**パ**ン (pan)"
 
 b:
   name: voiced bilabial stop
@@ -246,6 +306,12 @@ t:
   video: null
   notes:
     es: "Spanish /t/ is dental, not alveolar — tongue tip touches the back of upper teeth, not the alveolar ridge."
+  examples:
+    cmn: "**端** (duān)"
+    en: "**t**ie, s**t**y, ca**t**"
+    es: "**t**amiz"
+    fr: "**t**out, **th**é"
+    ja: "**た**べる (taberu)"
 
 d:
   name: voiced alveolar stop
@@ -260,6 +326,12 @@ k:
   image: null
   audio: null
   video: null
+  examples:
+    cmn: "**干** (gān)"
+    en: "**k**ind, s**k**y, cra**ck**"
+    es: "**c**aso, **qu**e, **k**ilo"
+    fr: "co**r**ps, ave**c**, **qu**and"
+    ja: "**く**る (kuru)"
 
 ɡ:
   name: voiced velar stop
@@ -276,6 +348,10 @@ f:
   image: null
   audio: null
   video: null
+  examples:
+    en: "**f**ind, lea**f**"
+    es: "**f**aro"
+    fr: "**f**aire, vi**f**"
 
 v:
   name: voiced labiodental fricative
@@ -291,6 +367,11 @@ s:
   image: null
   audio: null
   video: null
+  examples:
+    en: "**s**igh, ma**ss**"
+    es: "**s**aco, ca**s**a, e**s**tá"
+    fr: "**s**ans, ça, a**ss**ez"
+    ja: "**す**る (suru)"
 
 z:
   name: voiced alveolar fricative
@@ -308,6 +389,9 @@ z:
   notes:
     en: "English `th` in `thin`, `think`, `through`. Tongue tip between teeth; NO puff of air."
     es: "Castilian Spanish `z` and soft `c` (`manzana`, `cinco`). Latin American Spanish uses /s/ instead — set --dialect es-419."
+  examples:
+    en: "**th**igh, pa**th**, **th**ing"
+    es: "c**e**ra, ca**z**a (Castilian)"
 
 ð:
   name: voiced dental fricative
@@ -317,6 +401,9 @@ z:
   notes:
     en: "English `th` in `this`, `the`, `there`. Voiced version of /θ/ — tongue tip between teeth with vocal cords vibrating."
     es: "Realization of intervocalic /d/ in Spanish (`nada → naða`)."
+  examples:
+    en: "**th**y, brea**th**e, fa**th**er"
+    es: "de**d**o (intervocalic), ca**d**a, ar**d**e"
 
 ʃ:
   name: voiceless postalveolar fricative
@@ -325,6 +412,10 @@ z:
   video: null
   notes:
     en: "English `sh` in `she`."
+  examples:
+    en: "**sh**y, ca**sh**, emo**ti**on"
+    es: "**sh**ow (loanword), Frei**x**enet"
+    fr: "**ch**ance, t**ch**èque"
 
 ʒ:
   name: voiced postalveolar fricative
@@ -334,6 +425,9 @@ z:
   notes:
     en: "English `s` in `vision`, `measure`, `pleasure`."
     fr: "French `j` in `je`, `jour`."
+  examples:
+    en: "plea**s**ure, bei**ge**, mea**s**ure"
+    fr: "**j**amais, vi**s**age"
 
 x:
   name: voiceless velar fricative
@@ -342,6 +436,9 @@ x:
   video: null
   notes:
     es: "Spanish `j` in `jardín`, `mujer`. Back-of-throat scrape, NOT English /h/."
+  examples:
+    cmn: "**火** (huǒ), **好** (hǎo)"
+    es: "**j**arra, **g**ente, Mé**x**ico"
 
 h:
   name: voiceless glottal fricative
@@ -358,6 +455,8 @@ h:
   video: null
   notes:
     es: "Realization of intervocalic /g/ in Spanish (`agua → aɣwa`)."
+  examples:
+    es: "gal**g**o (intervocalic), si**g**no, á**g**uila"
 
 β:
   name: voiced bilabial fricative
@@ -366,6 +465,8 @@ h:
   video: null
   notes:
     es: "Realization of /b/ and /v/ between vowels in Spanish. Lips touch lightly without contact between lower lip and upper teeth."
+  examples:
+    es: "be**b**é (intervocalic), fút**b**ol"
 
 ʁ:
   name: voiced uvular fricative
@@ -376,6 +477,8 @@ h:
     fr: "French `r`. Back-of-throat zone, similar to German `ach` or Spanish /x/. Different articulation from English /r/."
 
 # -- Consonants: affricates --
+  examples:
+    fr: "**r**ega**r**der, **r**ue, nôt**r**e"
 
 tʃ:
   name: voiceless postalveolar affricate
@@ -385,6 +488,10 @@ tʃ:
   notes:
     es: "Spanish `ch` in `leche`, `mucho`. Stays voiceless even between vowels."
     en: "English `ch` in `chair`."
+  examples:
+    en: "**Ch**ina, cat**ch**, **ch**urch"
+    es: "**ch**ico, mu**ch**o"
+    fr: "t**ch**èque"
 
 dʒ:
   name: voiced postalveolar affricate
@@ -401,6 +508,11 @@ m:
   image: null
   audio: null
   video: null
+  examples:
+    en: "**m**y, ca**m**"
+    es: "**m**eta, ca**m**a"
+    fr: "**m**ême"
+    ja: "**み**かん (mikan)"
 
 n:
   name: voiced alveolar nasal
@@ -409,6 +521,11 @@ n:
   video: null
   notes:
     es: "Assimilates to following consonant: `un buen` → `[um bwen]` (n→m before bilabial)."
+  examples:
+    en: "**n**igh, ca**n**"
+    es: "**n**i, ca**n**a, si**n**"
+    fr: "**n**ous, bo**nn**e"
+    ja: "**な**っとう (natto)"
 
 ɲ:
   name: voiced palatal nasal
@@ -420,6 +537,10 @@ n:
     fr: "French `gn` in `agneau`, `montagne`."
 
 # -- Consonants: liquids --
+  examples:
+    es: "**ñ**u, ca**ñ**a, có**ny**uge"
+    fr: "ga**gn**er, champa**gn**e"
+    ja: "**に**わ (niwa), こん**にゃ**く (konnyaku)"
 
 l:
   name: voiced alveolar lateral approximant
@@ -428,6 +549,10 @@ l:
   video: null
   notes:
     es: "Spanish /l/ stays clear (no `dark l` velarization) in all positions, unlike American English coda /l/."
+  examples:
+    en: "**l**ie, ga**l**"
+    es: "**l**una, ha**l**a"
+    fr: "**l**aisser, seu**l**"
 
 r:
   name: voiced alveolar trill
@@ -436,6 +561,8 @@ r:
   video: null
   notes:
     es: "Spanish trilled `r` — multiple taps. Used for `rr` (`perro`) and word-initial `r` (`rosa`). Single intervocalic `r` is the tap /ɾ/, not /r/."
+  examples:
+    es: "**r**ío, ca**rr**o, hon**r**a"
 
 ɾ:
   name: voiced alveolar tap
@@ -445,6 +572,9 @@ r:
   notes:
     en: "American English flap — `tt`/`dd` in `butter`, `ladder`, `better`. Appears between vowels when the following vowel is unstressed."
     es: "Spanish single `r` (`pero`, `caro`). Same articulation as the `tt` in American English `butter`. NOT a trill."
+  examples:
+    es: "ca**r**o, pe**r**o, pe**r**a"
+    ja: "**ろ**く (roku), そ**ら** (sora)"
 
 ʎ:
   name: voiced palatal lateral approximant
@@ -541,6 +671,8 @@ tɕh:
   video: null
   notes:
     cmn: "Pinyin 'q' initial."
+  examples:
+    cmn: "**去** (qù), **请** (qǐng)"
 
 ɕ:
   name: 'voiceless alveolo-palatal fricative'
@@ -549,6 +681,9 @@ tɕh:
   video: null
   notes:
     cmn: "Pinyin 'x' initial. Softer than English 'sh' with palate contact."
+  examples:
+    cmn: "**晓** (xiǎo)"
+    ja: "**し**た (shita), いっ**しょ**う (isshou)"
 
 ʐ:
   name: 'voiced retroflex fricative'
@@ -557,6 +692,8 @@ tɕh:
   video: null
   notes:
     cmn: "Pinyin 'r' initial. Often realized as approximant ɻ in casual speech."
+  examples:
+    cmn: "**日** (rì)"
 
 χ:
   name: 'voiceless uvular fricative'
@@ -565,6 +702,8 @@ tɕh:
   video: null
   notes:
     cmn: "Pinyin 'h' initial — espeak's cmn-latn-pinyin voice emits the uvular variant."
+  examples:
+    cmn: "**好** (hǎo — variant of x)"
 
 ŋ:
   name: 'voiced velar nasal'
@@ -574,6 +713,12 @@ tɕh:
   notes:
     en: "English `ng` in `ring`, `sing`, `thing`. Also in `n` before /k/ and /g/ (`bank`, `angry`)."
     cmn: "Pinyin 'ng' coda (zhōng 中). Mandarin syllables often end in -ng."
+  examples:
+    cmn: "**江** (jiāng), **明** (míng)"
+    en: "sa**ng**, si**nk**, si**ng**er"
+    es: "te**ng**o"
+    fr: "campi**ng**, fu**nk**"
+    ja: "り**ん**ご (ringo), な**ん**きょく (nankyoku)"
 
 ʲ:
   name: 'palatalization marker'
@@ -882,6 +1027,8 @@ iː:
   notes:
     en: "English FLEECE vowel — `ee` in `see`, `feet`, `machine`."
     ja: "Long /i/ — moraic vowel doubling (e.g. 良い yo-i not lengthened, but おにいさん o-ni-i-san is)."
+  examples:
+    en: "fl**ee**ce, s**ee**, b**e**"
 
 uː:
   name: 'close back long vowel'
@@ -891,6 +1038,8 @@ uː:
   notes:
     en: "English GOOSE vowel — `oo` in `food`, `blue`, `through`."
     ja: "Long /u/ — common in loanwords and certain native words (e.g. 風船 fu-u-sen)."
+  examples:
+    en: "g**oo**se, bl**ue**, n**ew**"
 
 kʲ:
   name: 'voiceless palatalized velar plosive'
@@ -899,6 +1048,8 @@ kʲ:
   video: null
   notes:
     ja: "Japanese ky- onset (e.g. きゃ きゅ きょ). Velar /k/ with simultaneous palatalization."
+  examples:
+    ja: "**きょ**うかい (kyoukai)"
 
 pʲ:
   name: 'voiceless palatalized bilabial plosive'
@@ -907,6 +1058,8 @@ pʲ:
   video: null
   notes:
     ja: "Japanese py- onset (e.g. ぴゃ ぴゅ ぴょ)."
+  examples:
+    ja: "はっ**ぴょ**う (happyou)"
 
 bʲ:
   name: 'voiced palatalized bilabial plosive'
@@ -915,6 +1068,8 @@ bʲ:
   video: null
   notes:
     ja: "Japanese by- onset (e.g. びゃ びゅ びょ)."
+  examples:
+    ja: "**びょ**うき (byouki)"
 
 dʑ:
   name: 'voiced alveolo-palatal affricate'
@@ -923,6 +1078,8 @@ dʑ:
   video: null
   notes:
     ja: "Japanese j- onset (e.g. じ じゃ じゅ じょ). Realized as [ʑ] intervocalically."
+  examples:
+    ja: "**じょ**じょ (jojo), かん**じゃ** (kanja)"
 
 ç:
   name: 'voiceless palatal fricative'
@@ -931,6 +1088,8 @@ dʑ:
   video: null
   notes:
     ja: "Japanese hy- onset (e.g. ひ ひゃ ひゅ ひょ). Allophone of /h/ before /i/ and /j/."
+  examples:
+    ja: "**ひ**と (hito), **ひょ**う (hyou)"
 
 ɸ:
   name: 'voiceless bilabial fricative'
@@ -939,6 +1098,8 @@ dʑ:
   video: null
   notes:
     ja: "Japanese f- onset (e.g. ふ ふぁ ふぃ ふぇ). Bilabial, not labiodental like English /f/."
+  examples:
+    ja: "**ふ**じ (fuji)"
 
 mʲ:
   name: 'voiced palatalized bilabial nasal'
@@ -947,6 +1108,8 @@ mʲ:
   video: null
   notes:
     ja: "Japanese my- onset (e.g. みゃ みゅ みょ)."
+  examples:
+    ja: "**みゃ**く (myaku)"
 
 rʲ:
   name: 'voiced palatalized alveolar approximant'
@@ -963,6 +1126,8 @@ rʲ:
   video: null
   notes:
     ja: "Japanese moraic nasal (-ん, the special 'N' phoneme). Realized as [m n ŋ ɴ] depending on context; ɴ is the canonical citation form."
+  examples:
+    ja: "に**ほ**ん (nihon — final N)"
 
 ʔ:
   name: 'glottal stop'
@@ -985,6 +1150,8 @@ aɪ:
   notes:
     en: "English `I` in `price`, `time`, `high`. Glides from /a/ to /ɪ/."
     ja: "English diphthong /aɪ/ emitted by the wav2vec2 model for some Japanese vowel sequences. Artifact of degraded espeak-ja training labels; not a native Japanese phoneme."
+  examples:
+    en: "pr**i**ce, p**ie**, fl**y**"
 
 e̞:
   name: 'mid front unrounded vowel (lowered)'
@@ -1003,6 +1170,8 @@ e̞:
   video: null
   notes:
     en: "English KIT vowel — `i` in `bit`, `sit`, `fish`. Shorter and more relaxed than /iː/."
+  examples:
+    en: "k**i**t, b**i**g, s**i**ng"
 
 æ:
   name: near-open front unrounded vowel
@@ -1011,6 +1180,8 @@ e̞:
   video: null
   notes:
     en: "English TRAP vowel — `a` in `cat`, `bad`, `hand`. Lower and more front than /ɛ/."
+  examples:
+    en: "tr**a**p, b**a**g, s**a**ng"
 
 ʌ:
   name: open-mid back unrounded vowel
@@ -1019,6 +1190,8 @@ e̞:
   video: null
   notes:
     en: "English STRUT vowel — `u` in `but`, `cup`, `love`."
+  examples:
+    en: "str**u**t, s**u**ng, bl**oo**d"
 
 ʊ:
   name: near-close near-back rounded vowel
@@ -1027,6 +1200,8 @@ e̞:
   video: null
   notes:
     en: "English FOOT vowel — `oo` in `book`, `put`, `could`. Shorter and more relaxed than /uː/."
+  examples:
+    en: "f**oo**t, h**oo**k, p**u**t"
 
 ɜː:
   name: open-mid central unrounded vowel (long)
@@ -1035,6 +1210,8 @@ e̞:
   video: null
   notes:
     en: "English NURSE vowel — `er` in `bird`, `word`, `learn`. No equivalent in Spanish or French."
+  examples:
+    en: "n**ur**se, b**ir**d, h**ear**d"
 
 ɚ:
   name: r-colored mid central vowel
@@ -1051,6 +1228,8 @@ e̞:
   video: null
   notes:
     en: "American English LOT/PALM vowel — `a` in `father`, `spa`; also `o` in `hot`, `stop` (cot–caught merger)."
+  examples:
+    en: "p**al**m, br**a**, f**a**ther"
 
 eɪ:
   name: close-mid front to near-close diphthong
@@ -1059,6 +1238,8 @@ eɪ:
   video: null
   notes:
     en: "English FACE vowel — `a` in `day`, `say`, `they`. Glides from /e/ toward /ɪ/."
+  examples:
+    en: "f**a**ce, v**a**gue, d**a**y"
 
 oʊ:
   name: close-mid back rounded diphthong
@@ -1067,6 +1248,8 @@ oʊ:
   video: null
   notes:
     en: "American English GOAT vowel — `o` in `go`, `home`, `stone`. British RP uses /əʊ/ instead."
+  examples:
+    en: "g**oa**t, g**o**, h**o**me"
 
 ɔɪ:
   name: open-mid back to near-close front diphthong
@@ -1077,6 +1260,8 @@ oʊ:
     en: "English CHOICE vowel — `oi` in `boy`, `coin`, `voice`."
 
 # -- English: rhotic vowel sequences (American English) --
+  examples:
+    en: "ch**oi**ce, b**oy**, c**oi**n"
 
 ɹ:
   name: voiced alveolar approximant
@@ -1159,6 +1344,8 @@ ju:
   video: null
   notes:
     en: "British English LOT vowel — `o` in `hot`, `stop`, `got` (en-gb). American English uses /ɑː/ here (cot–caught merger)."
+  examples:
+    en: "l**o**t, b**o**ther, c**o**t"
 
 əʊ:
   name: mid central to near-close back rounded diphthong

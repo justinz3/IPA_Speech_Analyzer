@@ -319,14 +319,29 @@ _LIBRARY_STYLES = """
 .ph-notes { font-size: 0.73em; margin-top: 0.4em; width: 100%; }
 .ph-note { margin: 0.2em 0; }
 .ph-note-lang { font-weight: 700; }
+.ph-examples { font-size: 0.73em; margin-top: 0.5em; width: 100%;
+               border-top: 1px solid currentColor; padding-top: 0.4em; }
+.ph-example { margin: 0.2em 0; }
+.ph-ex-lang { font-weight: 700; opacity: 0.6; }
 </style>
 """
 
 _LIBRARY_GROUPS = [
-    ("Oral vowels", ["a", "e", "i", "o", "u", "y", "ø", "œ", "ɛ", "ɔ", "ə"]),
-    ("Nasal vowels", ["ɑ̃", "ɛ̃", "ɔ̃", "œ̃"]),
-    ("Consonants", ["β", "ɾ", "r", "x", "θ", "ð", "ɣ", "ʁ", "ɲ", "ʃ", "ʒ", "tʃ"]),
+    ("Oral vowels (shared)", ["a", "e", "i", "o", "u", "y", "ø", "œ", "ɛ", "ɔ", "ə", "ɑ"]),
+    ("English vowels", ["ɪ", "æ", "ʌ", "ʊ", "ɜː", "ɑː", "iː", "uː", "ɒ", "ɔː", "eɪ", "oʊ", "aɪ", "aʊ", "ɔɪ"]),
+    ("Nasal vowels (French)", ["ɑ̃", "ɛ̃", "ɔ̃", "œ̃"]),
+    ("Consonants", ["β", "ɾ", "r", "x", "θ", "ð", "ɣ", "ʁ", "ɲ", "ʃ", "ʒ", "tʃ", "ŋ", "ɥ"]),
 ]
+
+
+def _bold_md_to_html(text: str) -> str:
+    """Convert **x** markdown bold to <strong>x</strong>, escaping surrounding text."""
+    import re as _re
+    parts = _re.split(r"\*\*(.+?)\*\*", text)
+    out = []
+    for i, part in enumerate(parts):
+        out.append(escape(part) if i % 2 == 0 else f"<strong>{escape(part)}</strong>")
+    return "".join(out)
 
 
 def _render_library_html() -> str:
@@ -350,11 +365,18 @@ def _render_library_html() -> str:
             parts.extend(_phoneme_media_html(phoneme))
             notes_html = [
                 f'<div class="ph-note"><span class="ph-note-lang">{lc}:</span> {escape(note)}</div>'
-                for lc in ("es", "fr")
+                for lc in ("en", "es", "fr", "cmn", "ja")
                 if (note := phoneme.notes.get(lc, ""))
             ]
             if notes_html:
                 parts.append('<div class="ph-notes">' + "".join(notes_html) + "</div>")
+            examples_html = [
+                f'<div class="ph-example"><span class="ph-ex-lang">{lc}:</span> {_bold_md_to_html(ex)}</div>'
+                for lc in ("en", "es", "fr", "cmn", "ja")
+                if (ex := phoneme.examples.get(lc, ""))
+            ]
+            if examples_html:
+                parts.append('<div class="ph-examples">' + "".join(examples_html) + "</div>")
             parts.append("</div>")
         parts.append("</div>")
     return "".join(parts)

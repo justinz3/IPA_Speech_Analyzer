@@ -35,6 +35,7 @@ class Phoneme:
     audio: str | None = None
     video: str | None = None
     notes: dict[str, str] = field(default_factory=dict)
+    examples: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -77,6 +78,7 @@ def load_phonemes() -> dict[str, Phoneme]:
             audio=entry.get("audio"),
             video=entry.get("video"),
             notes=dict(entry.get("notes") or {}),
+            examples=dict(entry.get("examples") or {}),
         )
         for token, entry in raw.items()
     }
