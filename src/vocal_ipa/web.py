@@ -66,6 +66,8 @@ _SCORED_STYLES = """
             font-size: 0.95em; }
 .miss-tip strong { display: block; margin-bottom: 0.2em; }
 .miss-tip p { margin: 0; white-space: pre-wrap; }
+.miss-library-link { flex: 1 1 100%; font-size: 0.82em; opacity: 0.7;
+                     padding-top: 0.4em; text-align: right; }
 
 /* IPA token tooltips — shown on hover over any token in the score table. */
 .ipa-tip {
@@ -172,10 +174,15 @@ def _ipa_tip(token: str, lang: str, inv: dict) -> str:
     phoneme = inv.get(token)
     if phoneme is None:
         return escape(token)
-    tip = phoneme.name
+    parts = [phoneme.name]
     note = phoneme.notes.get(lang, "")
     if note:
-        tip += "\n" + note[:100]
+        parts.append(note)
+    ex = phoneme.examples.get(lang, "")
+    if ex:
+        # Strip bold markdown markers for plain-text tooltip
+        parts.append("e.g. " + ex.replace("**", ""))
+    tip = "\n".join(parts)
     return f'<span class="ipa-tip" data-tip="{escape(tip)}">{escape(token)}</span>'
 
 
@@ -196,10 +203,17 @@ def _render_scored_html(result: ScoreResult) -> str:
             tip_parts.append(f"produced: {p.produced}")
         if p.prosody is not None:
             tip_parts.append(p.prosody.label)
+        note = phoneme.notes.get(lang, "") if phoneme else ""
+        if note:
+            tip_parts.append(note)
+        ex = phoneme.examples.get(lang, "").replace("**", "") if phoneme else ""
+        if ex:
+            tip_parts.append("e.g. " + ex)
+        inline_tip = escape("\n".join(tip_parts))
         spans.append(
-            f'<span class="phoneme {cls}" '
+            f'<span class="phoneme {cls} ipa-tip" '
             f'data-start="{p.start_s:.2f}" data-end="{p.end_s:.2f}" '
-            f'title="{escape(" | ".join(tip_parts))}">{escape(p.expected)}</span>'
+            f'data-tip="{inline_tip}">{escape(p.expected)}</span>'
         )
         row = (
             f"<tr><td>{_ipa_tip(p.expected, lang, inv)}</td>"
@@ -262,6 +276,11 @@ def _render_miss_card(ref: MissReference) -> str:
             f"<p>{escape(ref.tip.tip.rstrip())}</p>"
             "</div>"
         )
+    token_js = escape(ref.expected.token).replace("'", "\\'")
+    parts.append(
+        f'<a class="miss-library-link" href="#" '
+        f'onclick="vipGoToLibrary(\'{token_js}\'); return false;">→ Phoneme Library</a>'
+    )
     parts.append("</div>")
     return "".join(parts)
 
@@ -352,9 +371,25 @@ def _bold_md_to_html(text: str) -> str:
     return "".join(out)
 
 
+_LIBRARY_JS = """
+<script>
+function vipGoToLibrary(token) {
+    var tabs = document.querySelectorAll('button[role="tab"]');
+    for (var t of tabs) {
+        if (t.textContent.trim() === 'Phoneme Library') { t.click(); break; }
+    }
+    setTimeout(function() {
+        var el = document.getElementById('ph-' + token);
+        if (el) el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }, 200);
+}
+</script>
+"""
+
+
 def _render_library_html() -> str:
     inv = load_phonemes()
-    parts = [_LIBRARY_STYLES]
+    parts = [_LIBRARY_STYLES, _LIBRARY_JS]
     chart_url = _media_url("phonemes/ipa_vowel_chart.png")
     if chart_url:
         parts.append(
@@ -367,7 +402,7 @@ def _render_library_html() -> str:
             phoneme = inv.get(token)
             if phoneme is None:
                 continue
-            parts.append('<div class="ph-card">')
+            parts.append(f'<div class="ph-card" id="ph-{escape(token)}">')
             parts.append(f'<div class="ph-token">{escape(token)}</div>')
             parts.append(f'<div class="ph-name">{escape(phoneme.name)}</div>')
             parts.extend(_phoneme_media_html(phoneme))

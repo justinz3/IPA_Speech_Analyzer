@@ -81,7 +81,9 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
+"app.py" = ["E402"]  # sys.path manipulation must precede package imports
 "src/vocal_ipa/cli.py" = ["B008"]  # typer.Option() in defaults is the canonical pattern
+"scripts/patch_phoneme_examples.py" = ["RUF001", "RUF002", "RUF003", "E741"]
 # IPA characters trip RUF001/002/003 "ambiguous unicode"; this is the project's
 # domain language so we suppress on files that handle IPA directly.
 "src/vocal_ipa/align.py" = ["RUF001", "RUF002", "RUF003"]
