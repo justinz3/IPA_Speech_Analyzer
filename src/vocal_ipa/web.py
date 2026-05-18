@@ -486,7 +486,7 @@ def _random_phrase(lang: str) -> str:
 
 
 def build_app() -> gr.Blocks:
-    with gr.Blocks(title="vocal-ipa-trainer") as app:
+    with gr.Blocks(title="IPA Speech Analyzer") as app:
         gr.Markdown(DESCRIPTION)
         with gr.Tabs() as tabs:
             with gr.Tab("Scorer"):
