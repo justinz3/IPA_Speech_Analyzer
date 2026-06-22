@@ -38,10 +38,10 @@ PER_THRESHOLDS = {
     # Japanese is loose — the wav2vec2-lv-60-espeak-cv-ft model emits
     # English-like phonemes (aɪ, ə, e̞ instead of Japanese vowels) when
     # fed Japanese audio. Espeak's `ja` voice is also broken, so the
-    # training labels were likely degraded for ja. Slow tests stay green
-    # at this threshold; better Japanese accuracy would need a Japanese-
-    # fine-tuned wav2vec2 checkpoint (model swap).
-    "ja": 0.85,
+    # training labels were likely degraded for ja. JSUT fixtures land
+    # 0.44-0.92 (worst observed with long-vowel collapse in reference);
+    # better Japanese accuracy needs a Japanese-fine-tuned wav2vec2 checkpoint.
+    "ja": 0.95,
 }
 
 

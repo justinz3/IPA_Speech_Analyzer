@@ -7,7 +7,7 @@
     "ok": false
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "e̞",
     "start_s": 0.34,
     "end_s": 0.36,
@@ -35,11 +35,11 @@
     "ok": false
   },
   {
-    "expected": "i",
+    "expected": "iː",
     "produced": "iː",
     "start_s": 0.84,
     "end_s": 0.86,
-    "ok": false
+    "ok": true
   },
   {
     "expected": "ɴ",
@@ -126,7 +126,7 @@
     "ok": false
   },
   {
-    "expected": "e",
+    "expected": "eː",
     "produced": "aɪ",
     "start_s": 1.8,
     "end_s": 1.82,

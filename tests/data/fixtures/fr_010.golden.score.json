@@ -686,7 +686,7 @@
     "ok": true
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "u",
     "start_s": 11.4,
     "end_s": 11.42,

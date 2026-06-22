@@ -35,7 +35,7 @@
     "ok": false
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "e̞",
     "start_s": 0.64,
     "end_s": 0.66,
@@ -63,7 +63,7 @@
     "ok": true
   },
   {
-    "expected": "e",
+    "expected": "eː",
     "produced": "aɪ",
     "start_s": 1.22,
     "end_s": 1.24,
@@ -301,7 +301,7 @@
     "ok": false
   },
   {
-    "expected": "u",
+    "expected": "uː",
     "produced": "e̞",
     "start_s": 3.8,
     "end_s": 3.82,
@@ -315,7 +315,7 @@
     "ok": false
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "e̞",
     "start_s": 3.98,
     "end_s": 4.0,

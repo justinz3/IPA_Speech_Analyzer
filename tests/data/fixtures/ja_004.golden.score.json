@@ -21,7 +21,7 @@
     "ok": false
   },
   {
-    "expected": "u",
+    "expected": "uː",
     "produced": "e̞",
     "start_s": 0.56,
     "end_s": 0.58,
@@ -112,7 +112,7 @@
     "ok": false
   },
   {
-    "expected": "u",
+    "expected": "uː",
     "produced": "e̞",
     "start_s": 1.64,
     "end_s": 1.66,
@@ -175,7 +175,7 @@
     "ok": true
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "e̞",
     "start_s": 2.3,
     "end_s": 2.32,

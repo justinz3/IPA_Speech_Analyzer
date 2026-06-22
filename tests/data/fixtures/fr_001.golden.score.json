@@ -595,11 +595,11 @@
     "ok": true
   },
   {
-    "expected": "o",
+    "expected": "oː",
     "produced": "o",
     "start_s": 10.12,
     "end_s": 10.14,
-    "ok": true
+    "ok": false
   },
   {
     "expected": "d",

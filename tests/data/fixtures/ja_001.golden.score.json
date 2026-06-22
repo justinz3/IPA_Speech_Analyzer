@@ -56,7 +56,7 @@
     "ok": false
   },
   {
-    "expected": "e",
+    "expected": "eː",
     "produced": "aɪ",
     "start_s": 0.88,
     "end_s": 0.9,
